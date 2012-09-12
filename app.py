@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request
 import urllib2
 import urllib
 import json
@@ -45,6 +45,7 @@ def register():
 @app.route('/processor')
 def token():
     print request.args.get('code', None)
+    return "thanks!"
     
 @app.route('/invoke')
 def invoke():
