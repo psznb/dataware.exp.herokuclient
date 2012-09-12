@@ -1,6 +1,5 @@
-from database import Base
+from database import Base, db_session
 from sqlalchemy import Column, Integer, String
-
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -12,5 +11,5 @@ class Identifier(Base):
 
 def addToken(clientid, catalog):
     identifier = Identifier(id=clientid, catalog=catalog)
-    session.add(identifier)
+    db_session.add(identifier)
     
