@@ -4,6 +4,7 @@ import urllib2
 import urllib
 import json
 from database import init_db
+from models import *
 
 app = Flask(__name__)
 init_db()
@@ -32,7 +33,11 @@ def register():
     result = json.loads( 
                 result.replace( '\r\n','\n' ), 
                 strict=False 
-            )        
+            )
+            
+    if (result['success']):
+        addToken(CATALOG, result['client_id'])
+    
     print "%s" % result['success']
     print "%s" % result['client_id']
     return "nice!!"
