@@ -2,8 +2,11 @@ import os
 from flask import Flask
 import urllib2
 import urllib
+import json
+from database import *
 
 app = Flask(__name__)
+init_db()
 
 CATALOG     = "http://datawarecatalog.appspot.com"
 REALM       = "http://pure-lowlands-6585.herokuapp.com"
@@ -17,17 +20,23 @@ def root():
 @app.route('/register')
 def register():
     url = "%s/client_register" % CATALOG
-    print "url is %s" % url
     values = {
                 'redirect_uri':REALM,
                 'client_name':CLIENTNAME
              }
+    
     data = urllib.urlencode(values)
-    print "resuesting url... is %s" % url
     req = urllib2.Request(url,data)
     response = urllib2.urlopen(req)
-    return response.read()
-     
+    result = response.read()
+    result = json.loads( 
+                result.replace( '\r\n','\n' ), 
+                strict=False 
+            )        
+    print "%s" % result['success']
+    print "%s" % result['client_id']
+    return "nice!!"
+    
 @app.route('/invoke')
 def invoke():
 
