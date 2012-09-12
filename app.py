@@ -22,7 +22,7 @@ def root():
 def register():
     url = "%s/client_register" % CATALOG
     values = {
-                'redirect_uri':REALM,
+                'redirect_uri': "%s/%s" % (REALM, "processor")
                 'client_name':CLIENTNAME
              }
     
@@ -41,6 +41,10 @@ def register():
     print "%s" % result['success']
     print "%s" % result['client_id']
     return "nice!!"
+
+@app.route('/processor')
+def token():
+    print request.args.get('code', None)
     
 @app.route('/invoke')
 def invoke():
