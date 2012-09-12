@@ -22,7 +22,7 @@ def root():
 def register():
     url = "%s/client_register" % CATALOG
     values = {
-                'redirect_uri': "%s/%s" % (REALM, "processor")
+                'redirect_uri': "%s/%s" % (REALM, "processor"),
                 'client_name':CLIENTNAME
              }
     
