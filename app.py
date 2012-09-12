@@ -1,24 +1,13 @@
 import os
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-
-@app.route('/')
-def hello():
-    return 'Hello World!'
-
-
-import os
 import urllib2
 import urllib
-from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-root = "http://datawarecatalog.appspot.com"
-uri  = "http://pure-lowlands-6585.herokuapp.com"
-clientname = "herokuclient"
+
+CATALOG     = "http://datawarecatalog.appspot.com"
+REALM       = "http://pure-lowlands-6585.herokuapp.com"
+CLIENTNAME  = "herokuclient"
 
 @app.route('/')
 def root():
@@ -27,12 +16,14 @@ def root():
 
 @app.route('/register')
 def register():
-    url = "%s/client_register" % root
+    url = "%s/client_register" % CATALOG
+    print "url is %s" % url
     values = {
-                'redirect_uri':uri,
-                'client_name':clientname
+                'redirect_uri':REALM,
+                'client_name':CLIENTNAME
              }
     data = urllib.urlencode(values)
+    print "resuesting url... is %s" % url
     req = urllib2.Request(url,data)
     response = urllib2.urlopen(req)
     return response.read()
@@ -55,4 +46,4 @@ def invoke():
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True,host='0.0.0.0', port=port)
