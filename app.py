@@ -3,7 +3,7 @@ from flask import Flask
 import urllib2
 import urllib
 import json
-from database import *
+from database import init_db
 
 app = Flask(__name__)
 init_db()
