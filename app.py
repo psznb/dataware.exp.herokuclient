@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request
+from flask import Flask, request, render_template
 from util import *
 import urllib2
 import urllib
