@@ -49,7 +49,7 @@ def register():
     return "nice!!"
 
 @app.route('/request', methods=['GET','POST'])
-def request():
+def request_processor():
     
     error = None
     
