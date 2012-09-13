@@ -9,7 +9,10 @@ class Identifier(Base):
     def __repr__(self):
         return "%s : %s" % (token, catalog)
 
-def addToken(clientid, catalog):   
+def addIdentifier(clientid, catalog):   
     identifier = Identifier(id=clientid, catalog=catalog)
     db_session.add(identifier)
     db_session.commit()
+
+def getIdentifier(catalog):
+    return Identifier.query.filter(Identifier.catalog==catalog).first()
