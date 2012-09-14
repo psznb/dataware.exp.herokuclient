@@ -64,9 +64,9 @@ def request_processor():
         client = getMyIdentifier(catalog)
     
         values = {
-            'client_id': client['id'],
+            'client_id': client.id,
             'state': state,
-            'redirect_uri': client['redirect'],
+            'redirect_uri': client.redirect,
             'scope': '{"resource_name" : "%s", "expiry_time": %s, "query": "%s"}' % (resource_name,expiry,query)
         }
         
