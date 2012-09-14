@@ -85,8 +85,13 @@ def request_processor():
                 result.replace( '\r\n','\n' ), 
                 strict=False 
             )
+            
         app.logger.info(result)    
-        return result 
+        
+        if (!result['success']):
+            return "%s %s" % (result['error_description'], result['error'])
+            
+        return "success!" 
     
     else:
         #provide the user with the options relating to our catalogs
