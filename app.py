@@ -85,8 +85,8 @@ def request_processor():
                 result.replace( '\r\n','\n' ), 
                 strict=False 
             )
-            
-        return "done it" 
+        app.logger.info(result)    
+        return result 
     
     else:
         #provide the user with the options relating to our catalogs
