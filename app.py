@@ -88,7 +88,7 @@ def request_processor():
             
         app.logger.info(result)    
         
-        if (!result['success']):
+        if (not(result['success'])):
             return "%s %s" % (result['error_description'], result['error'])
             
         return "success!" 
