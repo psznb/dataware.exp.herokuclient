@@ -72,8 +72,8 @@ def request_processor():
         
        
         app.logger.info(values)
-        
-        url = "%s/client_request" % catalog
+       
+        url = "%s/user/%s/client_request" % (catalog,owner)
         
         app.logger.info(url)
         
