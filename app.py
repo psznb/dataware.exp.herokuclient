@@ -42,7 +42,7 @@ def register():
             )
             
     if (result['success']):
-        addIdentifier(CATALOG, result['client_id'])
+        addIdentifier(CATALOG, "%s/%s" % (REALM, "processor"), result['client_id'])
     
     print "%s" % result['success']
     print "%s" % result['client_id']
@@ -56,18 +56,27 @@ def request_processor():
     if request.method == 'POST':
        
         expiry = request.form['expiry']
+        catalog = request.form['catalog']
         query = request.form['query']
-        resource = request.form['resource']
+        resource_name = request.form['resource_name']
+        owner = request.form['owner']
         state = generaterandomstate()
-        client_id = getIdentifier(CATALOG)
-       
+        client = getMyIdentifier(catalog)
+    
         values = {
-            'client_id': client_id,
+            'client_id': client['id'],
             'state': state,
-            'redirect_uri': "%s/%s" % (REALM, "processor"),
-            'scope': '{"resource_name" : "%s", "expiry_time": %s, "query": "%s"}' % (resource,expiry,query)
+            'redirect_uri': client['redirect'],
+            'scope': '{"resource_name" : "%s", "expiry_time": %s, "query": "%s"}' % (resource_name,expiry,query)
         }
-        url = "%s/client_request" % CATALOG
+        
+       
+        app.logger.info(values)
+        
+        url = "%s/client_request" % catalog
+        
+        app.logger.info(url)
+        
         data = urllib.urlencode(values)
         req = urllib2.Request(url,data)
         response = urllib2.urlopen(req)
@@ -78,8 +87,15 @@ def request_processor():
             )
             
         return "done it" 
+    
     else:
-       return render_template('request.html', error=error)
+        #provide the user with the options relating to our catalogs
+        options = {
+            'catalogs': [CATALOG],
+            'resources': ['homework'],
+            'owners': ['tlodgecatalog']
+        }
+        return render_template('request.html', options=options, error=error)
     
 @app.route('/processor')
 def token():

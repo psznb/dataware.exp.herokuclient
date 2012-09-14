@@ -1,4 +1,39 @@
 {% extends "layout.html" %}
+
 {% block request %}
-<h1> hello! </h1>
+<form action={{url_for('request_processor')}} method=post>
+
+     <legend>Request a new processor</legend>
+    
+     <label>Catalog</label>
+     <select name="catalog">
+       {% for catalog in options.catalogs%}
+       <option>{{catalog}}</option> 
+       {% endfor %}
+     </select> 
+     
+     <label>Client Name</label>
+     <label> Resource owner's name </label>
+     <select name="owner">
+        {% for owner in options.owners%}
+        <option>{{owner}}</option>
+        {% endfor %}
+     </select>
+     
+     <label>Resource Name</label>
+     <select name="resource_name">
+        {% for resource in options.resources%}
+        <option>{{resource}}</option>
+        {% endfor %}
+     </select>
+     
+     <input type="hidden" name="expiry" value="9999999999">
+     
+     <label>Python Code</label>
+     <textarea rows="5" name="query">
+     def run(parameters): return 45
+     </textarea>
+     
+     <input type="submit" class="btn"></input>
+</form>
 {% endblock %}
