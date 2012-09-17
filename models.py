@@ -41,6 +41,10 @@ def addProcessorRequest(state, catalog, resource, redirect, expiry, query):
 def lookupProcessorRequest(state): 
     return Identifier.query.filter(ProcessingRequest.state==state).first()
 
+def updateProcessorRequest(state, code):
+    db_session.query.filter(ProcessingRequest.state=state).update({ProcessingRequest.code: code})
+    db_session.commit()
+
 def getMyIdentifier(catalog):
     #return {'id':'something','redirect':'somewhere','catalog':'acatalog'}
     return Identifier.query.filter(Identifier.catalog==catalog).first()

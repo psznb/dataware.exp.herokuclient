@@ -110,6 +110,7 @@ def request_processor():
 def token():
     code  =  request.args.get('code', None)
     state =  request.args.get('state', None)
+    updateProcessorRequest(state=state, code=code)
     prorec = lookupProcessorRequest(state=state) 
     
     print prorec
