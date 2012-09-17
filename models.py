@@ -1,5 +1,5 @@
 from database import Base, db_session
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, BigInteger
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -16,7 +16,7 @@ class ProcessingRequest(Base):
     catalog = Column(String(256))
     resource = Column(String(256))
     redirect =  Column(String(256))
-    expiry = Column(Integer)
+    expiry = Column(BigInteger)
     query = Column(String(512))
     code = Column(String(256))
     token = Column(String(256))
