@@ -138,6 +138,7 @@ def execute():
         return "thank you!"
     else:
         processors = getProcessorRequests()
+        print processors
         return render_template('execute.html', processors=processors)
                 
     
