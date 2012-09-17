@@ -39,7 +39,7 @@ def addProcessorRequest(state, catalog, resource, redirect, expiry, query):
     return True
 
 def lookupProcessorRequest(state): 
-    return ProcessingRequest.query.filter(ProcessingRequest.id==state).first()
+    return ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
 
 def updateProcessorRequest(state, code):
     print "updating code %s for state %s" % (code,state)
