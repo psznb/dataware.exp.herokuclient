@@ -1,6 +1,7 @@
 from database import Base, db_session
 from sqlalchemy import Column, Integer, String, BigInteger
 
+
 class Identifier(Base):
     __tablename__ = 'identifiers'
     id = Column(String(256), primary_key=True)
@@ -20,7 +21,7 @@ class ProcessingRequest(Base):
     query = Column(String(512))
     code = Column(String(256))
     token = Column(String(256))
-    
+  
     def __repr__(self):
         return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.state, self.resource, self.id, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
         
@@ -56,6 +57,9 @@ def updateProcessorRequest(state, code=None, token=None):
         
     return None
 
+def getProcessorRequests():
+     return db_session.query(ProcessingRequest).all()
+     
 def getMyIdentifier(catalog):
     #return {'id':'something','redirect':'somewhere','catalog':'acatalog'}
     return Identifier.query.filter(Identifier.catalog==catalog).first()

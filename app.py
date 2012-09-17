@@ -113,7 +113,7 @@ def token():
     prec = updateProcessorRequest(state=state, code=code)
     #now obtain the code!
     
-    if (not(prec is None)): 
+    if not(prec is None): 
         url = '%s/client_access?grant_type=authorization_code&redirect_uri=%s&code=%s' % (prec.catalog, prec.redirect,code)
         
         f = urllib2.urlopen(url)
@@ -124,13 +124,22 @@ def token():
         
         result = json.loads(data.replace( '\r\n','\n' ), strict=False)
         
-        if (result["success"]):
+        if result["success"]:
             updateProcessorRequest(state=state, token=result["access_token"])
             return "Successfully obtained token"
         else:
             return result
             
     return "Hmmm couldn't retrieve the token"
+    
+@app.route('/execute', methods=['GET','POST'])
+def execute():
+    if request.method == 'POST':
+        return "thank you!"
+    else:
+        processors = getProcessorRequests()
+        return render_template('execute.html', processors=processors)
+                
     
 @app.route('/invoke')
 def invoke():
