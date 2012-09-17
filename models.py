@@ -41,11 +41,16 @@ def addProcessorRequest(state, catalog, resource, redirect, expiry, query):
 def lookupProcessorRequest(state): 
     return ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
 
-def updateProcessorRequest(state, code):
+def updateProcessorRequest(state, code=None, token=None):
+
     p = db_session.query(ProcessingRequest).filter(ProcessingRequest.state==state).first()
     
     if (not(p is None)):
-        p.code = code
+        if (not(code is None)):
+            p.code = code
+        if (not(token is None)):
+            p.token = token
+        
         db_session.commit()
         return p
         

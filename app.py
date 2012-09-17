@@ -115,14 +115,20 @@ def token():
     
     if (not(prec is None)): 
         url = '%s/client_access?grant_type=authorization_code&redirect_uri=%s&code=%s' % (prec.catalog, prec.redirect,code)
-    
-        print ("calling %s" % url)
-    
-        f = urllib2.urlopen(url)
-        data = f.read()
-        f.close()
-        return data
         
+        f = urllib2.urlopen(url)
+        
+        data = f.read()
+        
+        f.close()
+        
+        result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+        
+        if (result["success"]):
+            updateProcessorRequest(state=state, token=result["access_token"])
+        else:
+            return result
+            
     return "Hmmm couldn't retrieve the token"
     
 @app.route('/invoke')
