@@ -43,7 +43,7 @@ def lookupProcessorRequest(state):
 
 def updateProcessorRequest(state, code):
     print "updating code %s for state %s" % (code,state)
-    p = db_session.query(ProcessingRequest.*).filter(ProcessingRequest.id==state).first()
+    p = db_session.query(ProcessingRequest).filter(ProcessingRequest.id==state).first()
     
     #p = ProcessingRequest.query.filter(ProcessingRequest.id==state).first()
     
