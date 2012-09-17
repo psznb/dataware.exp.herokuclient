@@ -114,7 +114,7 @@ def token():
     #now obtain the code!
     
     if (not(prec is None)): 
-        url = '%s/client_access?granttype=authorization_code&redirect_uri=%s&code=%s' % (prec.catalog, prec.redirect,code)
+        url = '%s/client_access?grant_type=authorization_code&redirect_uri=%s&code=%s' % (prec.catalog, prec.redirect,code)
     
         print ("calling %s" % url)
     
