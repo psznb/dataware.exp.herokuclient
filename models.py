@@ -8,7 +8,7 @@ class Identifier(Base):
     catalog  = Column(String(256))
     
     def __repr__(self):
-        return "{id:'%s', redirect:'%s', catalog:'%s'}" % (id, redirect, catalog)
+        return "{id:'%s', redirect:'%s', catalog:'%s'}" % (self.id, self.redirect, self.catalog)
 
 class ProcessingRequest(Base):
     __tablename__ = 'processingrequest'
@@ -22,7 +22,7 @@ class ProcessingRequest(Base):
     token = Column(String(256))
     
     def __repr__(self):
-        return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (state, resource, id, expiry, redirect, catalog, query,code,token)
+        return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.state, self.resource, self.id, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
         
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
