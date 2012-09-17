@@ -43,7 +43,8 @@ def lookupProcessorRequest(state):
     return Identifier.query.filter(ProcessingRequest.state==state).first()
 
 def updateProcessorRequest(state, code):
-    prec = Identifier.query.filter(ProcessingRequest.state==state).first();
+    print "updating code %s for state %s" % (code,state)
+    prec = ProcessingRequest.query.filter(ProcessingRequest.state==state).first();
     prec.code = code
     db_session.commit()
 
