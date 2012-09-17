@@ -12,7 +12,7 @@ class Identifier(Base):
 
 class ProcessingRequest(Base):
     __tablename__ = 'processingrequest'
-    state = Column(String(256), primary_key=True)
+    id = Column(String(256), primary_key=True)
     catalog = Column(String(256))
     resource = Column(String(256))
     redirect =  Column(String(256))
@@ -33,18 +33,18 @@ def addIdentifier(catalog, redirect, clientid):
     
 def addProcessorRequest(state, catalog, resource, redirect, expiry, query):   
     
-    prorec = ProcessingRequest(state=state, catalog=catalog, resource=resource, 
+    prorec = ProcessingRequest(id=state, catalog=catalog, resource=resource, 
                          redirect=redirect, expiry=expiry, query=query)
     db_session.add(prorec)
     db_session.commit()
     return True
 
 def lookupProcessorRequest(state): 
-    return ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
+    return ProcessingRequest.query.filter(ProcessingRequest.id==state).first()
 
 def updateProcessorRequest(state, code):
     print "updating code %s for state %s" % (code,state)
-    p = ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
+    p = ProcessingRequest.query.filter(ProcessingRequest.id==state).first()
     p.code = code
     db_session.commit()
 
