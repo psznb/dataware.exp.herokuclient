@@ -89,16 +89,20 @@ def request_processor():
         app.logger.info(result)    
         
         if (not(result['success'])):
-            return "%s %s" % (result['error_description'], result['error'])
-            
+            return "%s:%s" % (result['error_description'], result['error'])
+        
+        #store the state and the code and the various bits for re-use?
+         
+        addProcessorRequest(state=state, catalog=catalog, resource=resource_name,redirect=client.redirect,expiry=int(expiry),query=query)
+        
         return "success!" 
     
     else:
         #provide the user with the options relating to our catalogs
         options = {
             'catalogs': [CATALOG],
-            'resources': ['homework'],
-            'owners': ['tlodgecatalog']
+            'resources': [RESOURCENAME],
+            'owners': [RESOURCEUSERNAME]
         }
         return render_template('request.html', options=options, error=error)
     
@@ -106,6 +110,10 @@ def request_processor():
 def token():
     code  =  request.args.get('code', None)
     state =  request.args.get('state', None)
+    prorec = lookupProcessorRequest(state=state) 
+    
+    print prorec
+    
     return "thanks!"
     
 @app.route('/invoke')
