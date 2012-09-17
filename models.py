@@ -38,7 +38,7 @@ def addProcessorRequest(state, catalog, resource, redirect, expiry, query):
     db_session.commit()
     return True
 
-def lookupProcessorRequest(state=state): 
+def lookupProcessorRequest(state): 
     return Identifier.query.filter(ProcessingRequest.state==state).first()
 
 def getMyIdentifier(catalog):
