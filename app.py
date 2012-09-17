@@ -110,8 +110,20 @@ def request_processor():
 def token():
     code  =  request.args.get('code', None)
     state =  request.args.get('state', None)
-    updateProcessorRequest(state=state, code=code)    
-    return "thanks!"
+    prec = updateProcessorRequest(state=state, code=code)
+    #now obtain the code!
+    
+    if (not(prec is None)): 
+        url = '%s/client_access?granttype=authorization_code&redirect_uri=%s&code=%s' % (prec.catalog, prec.redirect,code)
+    
+        print ("calling %s" % url)
+    
+        f = urllib2.urlopen(url)
+        data = f.read()
+        f.close()
+        return data
+        
+    return "Hmmm couldn't retrieve the token"
     
 @app.route('/invoke')
 def invoke():

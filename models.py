@@ -42,13 +42,14 @@ def lookupProcessorRequest(state):
     return ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
 
 def updateProcessorRequest(state, code):
-    print "updating code %s for state %s" % (code,state)
     p = db_session.query(ProcessingRequest).filter(ProcessingRequest.state==state).first()
     
     if (not(p is None)):
-        print "updating!"
         p.code = code
         db_session.commit()
+        return p
+        
+    return None
 
 def getMyIdentifier(catalog):
     #return {'id':'something','redirect':'somewhere','catalog':'acatalog'}
