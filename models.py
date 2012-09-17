@@ -10,7 +10,7 @@ class Identifier(Base):
     def __repr__(self):
         return "{id:'%s', redirect:'%s', catalog:'%s'}" % (self.id, self.redirect, self.catalog)
 
-class ProcessingRequest(Base):
+class ProcRequest(Base):
     __tablename__ = 'processingrequest'
     id = Column(String(256), primary_key=True)
     catalog = Column(String(256))
@@ -21,8 +21,8 @@ class ProcessingRequest(Base):
     code = Column(String(256))
     token = Column(String(256))
     
-    def __repr__(self):
-        return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.id, self.resource, self.id, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
+    #def __repr__(self):
+    #    return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', #query:'%s', code:'%s', token:'%s'}" % (self.id, self.resource, self.id, self.expiry, #self.redirect, self.catalog, self.query, self.code, self.token)
         
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
@@ -32,21 +32,20 @@ def addIdentifier(catalog, redirect, clientid):
     return True
     
 def addProcessorRequest(state, catalog, resource, redirect, expiry, query):   
-    prorec = ProcessingRequest(id=state, catalog=catalog, resource=resource, 
+    prorec = ProcRequest(id=state, catalog=catalog, resource=resource, 
                          redirect=redirect, expiry=expiry, query=query)
     db_session.add(prorec)
     db_session.commit()
     return True
 
 def lookupProcessorRequest(state): 
-    return ProcessingRequest.query.filter(ProcessingRequest.id==state).first()
+    return ProcRequest.query.filter(ProcRequest.id==state).first()
 
 def updateProcessorRequest(state, code):
     print "updating code %s for state %s" % (code,state)
-    return ProcessingRequest.query.filter(ProcessingRequest.token=="").all()
-    #p = ProcessingRequest.query.filter(ProcessingRequest.id==state).first()
-    #p.code = code
-    #db_session.commit()
+    p = ProcRequest.query.filter(ProcRequest.id==state).first()
+    p.code = code
+    db_session.commit()
 
 def getMyIdentifier(catalog):
     #return {'id':'something','redirect':'somewhere','catalog':'acatalog'}
