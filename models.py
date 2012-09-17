@@ -44,9 +44,8 @@ def lookupProcessorRequest(state):
 
 def updateProcessorRequest(state, code):
     print "updating code %s for state %s" % (code,state)
-    prec = ProcessingRequest.query.filter(ProcessingRequest.code==code).first()
-    print prec
-    prec.code = code
+    p = ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
+    p.code = code
     db_session.commit()
 
 def getMyIdentifier(catalog):
