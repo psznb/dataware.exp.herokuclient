@@ -22,7 +22,7 @@ class ProcessingRequest(Base):
     token = Column(String(256))
     
     def __repr__(self):
-        return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.state, self.resource, self.id, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
+        return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.id, self.resource, self.id, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
         
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
@@ -32,7 +32,6 @@ def addIdentifier(catalog, redirect, clientid):
     return True
     
 def addProcessorRequest(state, catalog, resource, redirect, expiry, query):   
-    
     prorec = ProcessingRequest(id=state, catalog=catalog, resource=resource, 
                          redirect=redirect, expiry=expiry, query=query)
     db_session.add(prorec)
@@ -44,9 +43,10 @@ def lookupProcessorRequest(state):
 
 def updateProcessorRequest(state, code):
     print "updating code %s for state %s" % (code,state)
-    p = ProcessingRequest.query.filter(ProcessingRequest.id==state).first()
-    p.code = code
-    db_session.commit()
+    return ProcessingRequest.query.filter(ProcessingRequest.token=="").all()
+    #p = ProcessingRequest.query.filter(ProcessingRequest.id==state).first()
+    #p.code = code
+    #db_session.commit()
 
 def getMyIdentifier(catalog):
     #return {'id':'something','redirect':'somewhere','catalog':'acatalog'}
