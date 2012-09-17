@@ -32,7 +32,7 @@ def addIdentifier(catalog, redirect, clientid):
     return True
     
 def addProcessorRequest(state, catalog, resource, redirect, expiry, query):   
-    prorec = ProcessingRequest(id=state, catalog=catalog, resource=resource, 
+    prorec = ProcessingRequest(state=state, catalog=catalog, resource=resource, 
                          redirect=redirect, expiry=expiry, query=query)
     db_session.add(prorec)
     db_session.commit()
