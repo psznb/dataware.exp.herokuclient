@@ -28,6 +28,7 @@ def addIdentifier(catalog, redirect, clientid):
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
     db_session.add(identifier)
     db_session.commit()
+    print identifier
     return True
     
 def addProcessorRequest(state, catalog, resource, redirect, expiry, query):   
