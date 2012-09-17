@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 
 {% block execute %}
+     <h1> Available processors! </h1>
+     <ul>
      {% for processor in processors%}
-        <h1>{{processor.query}}</h1>
+        <li>{{processor.query}}</li>
      {% endfor %}
+     </ul>
 {% endblock %}
