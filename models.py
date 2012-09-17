@@ -19,10 +19,10 @@ class ProcessingRequest(Base):
     expiry = Column(Integer)
     query = Column(String(512))
     code = Column((String(256))
-    token = Column((String(256))
+    processor_token = Column((String(256))
     
     def __repr__(self):
-        return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (state, resource, id, expiry, redirect, catalog, query,code,token)
+        return "{state:'%s', resource:'%s', id:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (state, resource, id, expiry, redirect, catalog, query,code,processor_token)
         
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
