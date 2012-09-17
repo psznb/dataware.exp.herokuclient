@@ -126,6 +126,7 @@ def token():
         
         if (result["success"]):
             updateProcessorRequest(state=state, token=result["access_token"])
+            return "Successfully obtained token"
         else:
             return result
             
