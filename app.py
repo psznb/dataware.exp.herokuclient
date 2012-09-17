@@ -137,8 +137,9 @@ def execute():
     if request.method == 'POST':
         return "thank you!"
     else:
+        #NOTE THE THIRD PARTY CLIENT HAS NO IDEA OF THE URL OF THE PROCESSING ENTITY
+        #SO IT NEEDS TO GET THIS SOMEHOW IN ITS INTERACTION WITH THE CATALOG!
         processors = getProcessorRequests()
-        print processors
         return render_template('execute.html', processors=processors)
                 
     
