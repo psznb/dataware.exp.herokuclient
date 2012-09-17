@@ -45,6 +45,7 @@ def lookupProcessorRequest(state):
 def updateProcessorRequest(state, code):
     print "updating code %s for state %s" % (code,state)
     prec = ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
+    print prec
     prec.code = code
     db_session.commit()
 
