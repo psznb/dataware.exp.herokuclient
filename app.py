@@ -137,7 +137,7 @@ def execute():
     if request.method == 'POST':
         print "got a post!"
         state = request.form['state']
-        parameters = request.form['args']
+        parameters = request.form['parameters']
         print "state=%s and params = %s" % (state, parameters)
         
         processor = getProcessorRequest(state=state)
