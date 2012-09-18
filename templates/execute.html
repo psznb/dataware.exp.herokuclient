@@ -2,13 +2,13 @@
 
 {% block execute %}
      <h1> Available processors! </h1>
-     
+    {% for processor in processors %}
       <form action={{url_for('execute')}} method=post>
         <input type="text" placeholder="{processor parameters}" name="args"  value="{}"></td>
         <input type="hidden" value="{{processor.state}}"></input>
         <input type="submit" class="btn">Run</input>
       </form>
-            
+      {% endfor %}    
             
      <table class="table table-condensed table-striped table-bordered">
         <thead>
