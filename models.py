@@ -56,8 +56,8 @@ def updateProcessorRequest(state, code=None, token=None):
     return None
 
 def getProcessorRequest(state): 
-    return ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
-
+    return db_session.query(ProcessingRequest).filter(ProcessingRequest.state==state).first()
+  
 def getProcessorRequests():
      return db_session.query(ProcessingRequest).all()
      
