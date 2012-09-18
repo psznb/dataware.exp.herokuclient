@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block processors %}
+{% block execute %}
      <h1> Available processors! </h1>
      <table class="table table-condensed table-striped table-bordered">
         <thead>
@@ -13,7 +13,7 @@
             </tr>   
         </thead>                
         <tbody> 
-            {% for processor in processors%}
+            {% for processor in processors %}
             <form action="{{url_for('execute')}}" method=post>
                 <tr>
                     <td>{{processor.catalog}}</td>
