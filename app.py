@@ -138,8 +138,11 @@ def execute():
         print "got a post!"
         state = request.form['state']
         parameters = request.form['args']
-    
+        print "state=%s and params = %s" % (state, parameters)
+        
         processor = getProcessorRequest(state=state)
+        
+        print processor
         
         if not(processor is None):
             #NOTE THE THIRD PARTY CLIENT HAS NO IDEA OF THE URL OF THE PROCESSING ENTITY
@@ -155,7 +158,8 @@ def execute():
             req = urllib2.Request(url,data)
             response = urllib2.urlopen(req)
             return response.read()
-
+            
+        return "can't find processor"
     else:
         processors = getProcessorRequests()
         print processors

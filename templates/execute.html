@@ -14,8 +14,8 @@
         </thead>                
         <tbody> 
             {% for processor in processors %}
-            <form action="{{url_for('execute')}}" method=post>
-                <input type="hidden" value="{{processor.state}}">
+            <form action={{url_for('execute')}} method=post>
+                <input type="hidden" value="{{processor.state}}"></input>
                 <tr>
                     <td>{{processor.catalog}}</td>
                     <td>{{processor.resource}}</td>  
