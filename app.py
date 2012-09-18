@@ -135,9 +135,9 @@ def token():
 @app.route('/execute', methods=['GET','POST'])
 def execute():
     if request.method == 'POST':
-       
+        print "got a post!"
         state = request.form['state']
-        parameters = request.form['parameters']
+        parameters = request.form['args']
     
         processor = getProcessorRequest(state=state)
         
