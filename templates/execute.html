@@ -19,9 +19,10 @@
                     <td>{{processor.catalog}}</td>
                     <td>{{processor.resource}}</td>  
                     <td>{{processor.query}}</td>
-                    <td><input type="text" placeholder="{processor parameters}">{}</td>
+                    <td><input type="text" placeholder="{processor parameters}" name="parameters"  value="{}"></td>
                     <td><button type="submit" class="btn">Run</button></td>
-                </tr>         
+                </tr> 
+                <input type="hidden" value="{{processor.state}}">
             </form>
             {% endfor %}
         </tbody>

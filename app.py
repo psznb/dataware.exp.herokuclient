@@ -135,30 +135,32 @@ def token():
 @app.route('/execute', methods=['GET','POST'])
 def execute():
     if request.method == 'POST':
-        return "thank you!"
+       
+        state = request.form['state']
+        parameters = request.form['parameters']
+    
+        processor = getProcessorRequest(state=state)
+        
+        if not(processor is None):
+            #NOTE THE THIRD PARTY CLIENT HAS NO IDEA OF THE URL OF THE PROCESSING ENTITY
+            #SO IT NEEDS TO GET THIS SOMEHOW WITH ITS INTERACTION WITH THE CATALOG!
+            url = 'http://hwresource.block49.net:9000/invoke_processor'    
+    
+            values = {
+                'access_token':processor.token,
+                'parameters': parameters
+            }
+
+            data = urllib.urlencode(values)
+            req = urllib2.Request(url,data)
+            response = urllib2.urlopen(req)
+            return response.read()
+
     else:
-        #NOTE THE THIRD PARTY CLIENT HAS NO IDEA OF THE URL OF THE PROCESSING ENTITY
-        #SO IT NEEDS TO GET THIS SOMEHOW IN ITS INTERACTION WITH THE CATALOG!
         processors = getProcessorRequests()
         print processors
         return render_template('execute.html', processors=processors)
                 
-    
-@app.route('/invoke')
-def invoke():
-
-    url = 'http://128.243.22.219/invoke_processor'    
-    
-    values = {
-                'access_token':'pPMVHkZWe5fqedk*KENG1liiBcs8iiTyC4H5YLC1XcE=',
-                'parameters':'{}'
-              }
-
-    data = urllib.urlencode(values)
-    req = urllib2.Request(url,data)
-    response = urllib2.urlopen(req)
-    return response.read()
-
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))

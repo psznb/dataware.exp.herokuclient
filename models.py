@@ -39,8 +39,6 @@ def addProcessorRequest(state, catalog, resource, redirect, expiry, query):
     db_session.commit()
     return True
 
-def lookupProcessorRequest(state): 
-    return ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
 
 def updateProcessorRequest(state, code=None, token=None):
 
@@ -56,6 +54,9 @@ def updateProcessorRequest(state, code=None, token=None):
         return p
         
     return None
+
+def getProcessorRequest(state): 
+    return ProcessingRequest.query.filter(ProcessingRequest.state==state).first()
 
 def getProcessorRequests():
      return db_session.query(ProcessingRequest).all()
