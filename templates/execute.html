@@ -2,6 +2,14 @@
 
 {% block execute %}
      <h1> Available processors! </h1>
+     
+      <form action={{url_for('execute')}} method=post>
+        <input type="text" placeholder="{processor parameters}" name="args"  value="{}"></td>
+        <input type="hidden" value="{{processor.state}}"></input>
+        <input type="submit" class="btn">Run</input>
+      </form>
+            
+            
      <table class="table table-condensed table-striped table-bordered">
         <thead>
             <tr>
@@ -14,17 +22,15 @@
         </thead>                
         <tbody> 
             {% for processor in processors %}
-            <form action={{url_for('execute')}} method=post>
-                <input type="hidden" value="{{processor.state}}"></input>
+           
+                
                 <tr>
                     <td>{{processor.catalog}}</td>
                     <td>{{processor.resource}}</td>  
                     <td>{{processor.query}}</td>
-                    <td><input type="text" placeholder="{processor parameters}" name="args"  value="{}"></td>
-                    <td><button type="submit" class="btn">Run</button></td>
+                    <td></td>
                 </tr> 
                 
-            </form>
             {% endfor %}
         </tbody>
     </table>  
