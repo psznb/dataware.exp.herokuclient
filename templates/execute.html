@@ -4,9 +4,9 @@
      <h1> Available processors! </h1>
     {% for processor in processors %}
       <form action={{url_for('execute')}} method=post>
-        <input type="text" placeholder="{processor parameters}" name="args"  value="{}"></td>
-        <input type="hidden" value="{{processor.state}}"></input>
-        <input type="submit" class="btn">Run</input>
+        <input type="text" name="args" value=""></td>
+        <input type="hidden" value="123456"/>
+        <input type="submit" class="btn"/>
       </form>
       {% endfor %}    
             
