@@ -23,6 +23,17 @@ RESOURCENAME     = "homework"
 def root():
     return render_template('summary.html', catalogs=["http://datawarecatalog.appspot.com"]);
 
+@app.route('/request_resources')
+def request_resources():
+    catalog  =  request.args.get('catalog', None)
+    client = getMyIdentifier(catalog)
+    url = "%s/client_list_resources?client_id=%s&client_uri=%s" % (client.id, client.redirect)
+    f = urllib2.urlopen(url)
+    data = f.read()    
+    f.close()
+    result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+    return result
+    
 @app.route('/register')
 def register():
     url = "%s/client_register" % CATALOG

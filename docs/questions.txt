@@ -1,0 +1,17 @@
+Stuff that's missing / questions
+
+* a third party client currently has no way, in the set of exchanges, of getting the end point url of the processor that will undertake the final processing request
+
+* how does a resource bootstrap it's schema and details with it's dataware wrapper?
+
+* How are queries that can be performed on data made available for third parties to browse and construct their own queries on?
+
+* How are processes that are to be run DESCRIBED
+
+
+Thir party clients:
+
+1st: Register with a catalog {need to ensure that this can only be done ONCE}
+
+2nd: Query catalog: get list of resources available for installing a processor: {catalog, resourcename, resourceownerscatalogname, url of processing entity}
+

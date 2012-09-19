@@ -1,6 +1,22 @@
 {% extends "layout.html" %}
 
 {% block summary %}
+<script type="text/javascript">
+    function request_resources() {
+		$.ajax({
+			type: 'GET',
+			url: '/request_resources?catalog_uri=' +  $("#catalog_uri").val(),
+			success: function( data, status  ) {
+                console.log(data)
+				data = eval( '(' + data + ')' );
+			    alert(data)
+			},
+			error: function( data, status ) {
+				error_box( "We are currently unable to process this installation. Please try again later." );
+			}
+		});
+    }
+</script>
 
 <div class="container">
     <div class="row">
@@ -13,8 +29,8 @@
 
     <div class="row">
         <div class="span4 offset4 well">
-            <legend> Search a catalog for resources </legend>
-            <form action="#">
+            <legend> Search a catalog you've registered with for resources </legend>
+            <form action="javascript:request_resources()">
                 <select name="catalog_uri" class="span4" id="catalog_uri">
                         {% for catalog in catalogs%}
                             <option>{{catalog}}</option> 
