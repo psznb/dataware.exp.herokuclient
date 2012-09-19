@@ -33,11 +33,12 @@
 
 <table>
     <thead>
-        <tr><th>First name</th><th>Last name</th></tr>
+        <tr><th>owner</th><th>resouce name</th></tr>
     </thead>
     <tbody data-bind="foreach: items">
         <tr>
-            <td data-bind="text: $data"></td>
+            <td data-bind="text: owner"></td>
+            <td data-bind="text: resource_name"></td>
         </tr>
     </tbody>
 </table>
@@ -58,7 +59,7 @@
 			
 			success: function( data, status  ) {
                 console.log(data)
-                ko.applyBindings(new ResourceListModel(JSON.stringify(data)));
+                ko.applyBindings(new ResourceListModel(data));
 			},
 			error: function( data, status ) {
 				alert( "We are currently unable to process this installation. Please try again later." );
