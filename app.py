@@ -25,8 +25,13 @@ def root():
 
 @app.route('/request_resources')
 def request_resources():
-    catalog  =  request.args.get('catalog', None)
+    catalog  =  request.args.get('catalog_uri', None)
+    print "searching for catalog %s", catalog)
+    
     client = getMyIdentifier(catalog)
+    
+    print client
+    
     url = "%s/client_list_resources?client_id=%s&client_uri=%s" % (client.id, client.redirect)
     f = urllib2.urlopen(url)
     data = f.read()    
