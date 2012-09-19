@@ -58,8 +58,7 @@
 			
 			success: function( data, status  ) {
                 console.log(data)
-                ko.applyBindings(new ResourceListModel(data));
-                console.log(JSON.stringify(data))
+                ko.applyBindings(new ResourceListModel(JSON.stringify(data)));
 			},
 			error: function( data, status ) {
 				alert( "We are currently unable to process this installation. Please try again later." );
