@@ -21,8 +21,7 @@ RESOURCENAME     = "homework"
 
 @app.route('/')
 def root():
-	return "hello"
-
+    return render_template('summary.html', catalogs=["http://datawarecatalog.appspot.com"]);
 
 @app.route('/register')
 def register():

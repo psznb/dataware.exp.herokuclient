@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block summary %}
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-info">
+               Find a list of resources available to you to process from the following list of  catalogs
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span4 offset4 well">
+            <legend> Search a catalog for resources </legend>
+            <form action="#">
+                <select name="catalog_uri" class="span4" id="catalog_uri">
+                        {% for catalog in catalogs%}
+                            <option>{{catalog}}</option> 
+                        {% endfor %}
+                </select>
+                <button class="btn btn-warning" type="submit">Use!</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
