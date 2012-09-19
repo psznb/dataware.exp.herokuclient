@@ -36,9 +36,15 @@ def request_resources():
     print url
     
     f = urllib2.urlopen(url)
-    data = f.read()    
+    data = f.read()  
     f.close()
+    
+    print data
+    
     result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+    
+    print result
+    
     return result
     
 @app.route('/register')
