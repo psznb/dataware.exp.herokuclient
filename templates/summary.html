@@ -1,22 +1,11 @@
 {% extends "layout.html" %}
 
 {% block summary %}
-<script type="text/javascript">
-    function request_resources() {
-		$.ajax({
-			type: 'GET',
-			url: '/request_resources?catalog_uri=' +  $("#catalog_uri").val(),
-			dataType: "json",
-			
-			success: function( data, status  ) {
-                console.log(data)
-			},
-			error: function( data, status ) {
-				alert( "We are currently unable to process this installation. Please try again later." );
-			}
-		});
-    }
-</script>
+<script src="{{ url_for('static', filename='knockout/knockout-min.js') }}"></script> 
+<script src="{{ url_for('static', filename='knockout/knockout-mapping.js') }}"></script> 
+
+
+
 
 <div class="container">
     <div class="row">
@@ -41,5 +30,39 @@
         </div>
     </div>
 </div>
+<table>
+    <thead>
+        <tr><th>First name</th><th>Last name</th></tr>
+    </thead>
+    <tbody data-bind="foreach: items">
+        <tr>
+            <td data-bind="text: $data"></td>
+        </tr>
+    </tbody>
+</table>
 
+<script type="text/javascript">
+    
+    var ResourceListModel = function(items) {
+        this.items = ko.observableArray(items);
+    };
+
+    ko.applyBindings(new ResourceListModel(["Alpha", "Beta", "Gamma"]));
+    
+    function request_resources() {
+		$.ajax({
+			type: 'GET',
+			url: '/request_resources?catalog_uri=' +  $("#catalog_uri").val(),
+			dataType: "json",
+			
+			success: function( data, status  ) {
+                console.log(data)
+                console.log(JSON.stringify(data))
+			},
+			error: function( data, status ) {
+				alert( "We are currently unable to process this installation. Please try again later." );
+			}
+		});
+    }
+</script>
 {% endblock %}
