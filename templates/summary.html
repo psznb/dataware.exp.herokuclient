@@ -30,6 +30,7 @@
         </div>
     </div>
 </div>
+
 <table>
     <thead>
         <tr><th>First name</th><th>Last name</th></tr>
@@ -47,7 +48,7 @@
         this.items = ko.observableArray(items);
     };
 
-    ko.applyBindings(new ResourceListModel(["Alpha", "Beta", "Gamma"]));
+  
     
     function request_resources() {
 		$.ajax({
@@ -57,6 +58,7 @@
 			
 			success: function( data, status  ) {
                 console.log(data)
+                ko.applyBindings(new ResourceListModel(data));
                 console.log(JSON.stringify(data))
 			},
 			error: function( data, status ) {
