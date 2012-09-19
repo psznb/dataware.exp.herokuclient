@@ -26,7 +26,7 @@ def root():
 @app.route('/request_resources')
 def request_resources():
     catalog  =  request.args.get('catalog_uri', None)
-    print "searching for catalog %s", catalog)
+    print "searching for catalog %s" % catalog
     
     client = getMyIdentifier(catalog)
     
