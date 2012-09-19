@@ -29,19 +29,26 @@
             </form>
         </div>
     </div>
+    
+    <table class="table table-condensed table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Owner</th>
+                <th>Resource Name</th>
+                <th> </th>
+            </tr>   
+        </thead>                
+        <tbody data-bind="foreach: items">
+            <form action='#' method=post>
+                <tr>
+                    <td data-bind="text: owner"></td>
+                    <td data-bind="text: resource_name"></td>  
+                    <td><button type="submit" class="btn">Request</button></td>
+                </tr> 
+            </form>
+        </tbody>
+    </table>
 </div>
-
-<table>
-    <thead>
-        <tr><th>owner</th><th>resouce name</th></tr>
-    </thead>
-    <tbody data-bind="foreach: items">
-        <tr>
-            <td data-bind="text: owner"></td>
-            <td data-bind="text: resource_name"></td>
-        </tr>
-    </tbody>
-</table>
 
 <script type="text/javascript">
     
@@ -49,8 +56,6 @@
         this.items = ko.observableArray(items);
     };
 
-  
-    
     function request_resources() {
 		$.ajax({
 			type: 'GET',
@@ -58,7 +63,6 @@
 			dataType: "json",
 			
 			success: function( data, status  ) {
-                console.log(data);
                 ko.applyBindings(new ResourceListModel(data));
 			},
 			error: function( data, status ) {
