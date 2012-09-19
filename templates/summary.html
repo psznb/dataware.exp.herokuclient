@@ -6,13 +6,15 @@
 		$.ajax({
 			type: 'GET',
 			url: '/request_resources?catalog_uri=' +  $("#catalog_uri").val(),
+			dataType: "json",
+			
 			success: function( data, status  ) {
                 console.log(data)
 				data = eval( '(' + data + ')' );
 			    alert(data)
 			},
 			error: function( data, status ) {
-				error_box( "We are currently unable to process this installation. Please try again later." );
+				alert( "We are currently unable to process this installation. Please try again later." );
 			}
 		});
     }
