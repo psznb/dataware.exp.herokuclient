@@ -39,13 +39,11 @@ def request_resources():
     data = f.read()  
     f.close()
     
-    print data
+    return data
     
-    result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-    
-    print result
-    
-    return result
+    #result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+    #print result
+    #return result
     
 @app.route('/register')
 def register():
