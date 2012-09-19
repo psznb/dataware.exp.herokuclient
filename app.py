@@ -32,7 +32,7 @@ def request_resources():
     
     print client
     
-    url = "%s/client_list_resources?client_id=%s&client_uri=%s" % (client.id, client.redirect)
+    url = "%s/client_list_resources?client_id=%s&client_uri=%s" % (catalog, client.id, client.redirect)
     f = urllib2.urlopen(url)
     data = f.read()    
     f.close()
