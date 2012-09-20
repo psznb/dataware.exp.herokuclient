@@ -85,6 +85,8 @@
         var self = this;
         this.items = ko.observableArray(items);
         this.query = ko.observable(false);
+        console.log("items length is " + (items.length));
+        
         this.selectedCatalog = items.length > 0 ? ko.observable(items[0]) : ko.observable();
        
         this.toggleQuery = function(){
