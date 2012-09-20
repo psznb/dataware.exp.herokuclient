@@ -101,9 +101,9 @@
         }
     };
 
-    var rlm = new ResourceListModel([])
+    var rlm = new ResourceListModel([], {{processors | safe}})
     console.log({{processors | safe}});
-    ko.applyBindings(rlm, {{processors | safe}});
+    ko.applyBindings(rlm);
     
     
     function request_resources() {
