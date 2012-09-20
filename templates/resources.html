@@ -19,43 +19,51 @@
         </div>
     </div>
     
-    <table class="table table-condensed table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Owner</th>
-                <th>Resource Name</th>
-                <th>Action</th>
-            </tr>   
-        </thead>                
-        <tbody data-bind="foreach: items">
-            <form action='#' method=post>
-                <tr>
-                    <td data-bind="text: owner"></td>
-                    <td data-bind="text: resource_name"></td>  
-                    <td> <a href="#"> query! </a> </td>
-                </tr> 
-            </form>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="span12">
+            <table class="table table-condensed table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Owner</th>
+                        <th>Resource Name</th>
+                        <th>Action</th>
+                    </tr>   
+                </thead>                
+                <tbody data-bind="foreach: items">
+                    <form action='#' method=post>
+                        <tr>
+                            <td data-bind="text: owner"></td>
+                            <td data-bind="text: resource_name"></td>  
+                            <td> <a href="#" click:function(){$parent.query(true);}> query! </a> </td>
+                        </tr> 
+                    </form>
+                </tbody>
+            </table>
+        </div>
+    </div>
     
-    <form action={{url_for('request_processor')}} method=post>
-         <legend>Request a new processor</legend>
-         
-         <label>Catalog: <span data-bind="text:selectedCatalog().catalog_uri"></span></label>
-         
-         <label>Owner Name: <span data-bind="text:selectedCatalog().owner"></span></label>
-         
-         <label>Resource Name: <span data-bind="text:selectedCatalog().resource_name"></span></label>
-         
-         <input type="hidden" name="catalog" data-bind="value:selectedCatalog().catalog_uri">
-         <input type="hidden" name="resource_name" data-bind="value:selectedCatalog().resource_name">
-         <input type="hidden" name="owner" data-bind="value:selectedCatalog().owner">
-         <input type="hidden" name="expiry" value="9999999999">
-         
-         <label>Python Code</label>
-         <textarea rows="5" name="query">def run(parameters): return 45</textarea>
-         <input type="submit" class="btn"></input>
-    </form>
+    <div class="row" data-bind="visible:query()">
+        <div class="span4">
+            <form action={{url_for('request_processor')}} method=post>
+                 <legend>Request a new processor</legend>
+                 
+                 <label>Catalog: <span data-bind="text:selectedCatalog().catalog_uri"></span></label>
+                 
+                 <label>Owner Name: <span data-bind="text:selectedCatalog().owner"></span></label>
+                 
+                 <label>Resource Name: <span data-bind="text:selectedCatalog().resource_name"></span></label>
+                 
+                 <input type="hidden" name="catalog" data-bind="value:selectedCatalog().catalog_uri">
+                 <input type="hidden" name="resource_name" data-bind="value:selectedCatalog().resource_name">
+                 <input type="hidden" name="owner" data-bind="value:selectedCatalog().owner">
+                 <input type="hidden" name="expiry" value="9999999999">
+                 
+                 <label>Python Code</label>
+                 <textarea rows="5" name="query">def run(parameters): return 45</textarea>
+                 <input type="submit" class="btn"></input>
+            </form>
+        </div>
+    </div>
     
     <h2> Processors </h2>
     <div class="row">
