@@ -133,7 +133,7 @@
         
         this.ampending = ko.computed(function(){
             return self.typeToShow() == "pending";
-        }
+        });
         
         this.processorsToShow = ko.computed(function(){
             var desiredType = this.typeToShow();
