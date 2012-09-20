@@ -43,29 +43,30 @@
             </div>
         </div>
     </div>
-    <div class="row" data-bind="visible:query()">
-        <div class="span4">
-            <form action={{url_for('request_processor')}} method=post>
-                 <legend>Request a new processor</legend>
-                 
-                 <label>Catalog: <span data-bind="text:selectedCatalog().catalog_uri"></span></label>
-                 
-                 <label>Owner Name: <span data-bind="text:selectedCatalog().owner"></span></label>
-                 
-                 <label>Resource Name: <span data-bind="text:selectedCatalog().resource_name"></span></label>
-                 
-                 <input type="hidden" name="catalog" data-bind="value:selectedCatalog().catalog_uri">
-                 <input type="hidden" name="resource_name" data-bind="value:selectedCatalog().resource_name">
-                 <input type="hidden" name="owner" data-bind="value:selectedCatalog().owner">
-                 <input type="hidden" name="expiry" value="9999999999">
-                 
-                 <label>Python Code</label>
-                 <textarea rows="5" name="query">def run(parameters): return 45</textarea>
-                 <input type="submit" class="btn"></input>
-            </form>
+    <div data-bind="if: selectedCatalog()">
+        <div class="row" data-bind="visible:query()">
+            <div class="span4">
+                <form action={{url_for('request_processor')}} method=post>
+                     <legend>Request a new processor</legend>
+                     
+                     <label>Catalog: <span data-bind="text:selectedCatalog().catalog_uri"></span></label>
+                     
+                     <label>Owner Name: <span data-bind="text:selectedCatalog().owner"></span></label>
+                     
+                     <label>Resource Name: <span data-bind="text:selectedCatalog().resource_name"></span></label>
+                     
+                     <input type="hidden" name="catalog" data-bind="value:selectedCatalog().catalog_uri">
+                     <input type="hidden" name="resource_name" data-bind="value:selectedCatalog().resource_name">
+                     <input type="hidden" name="owner" data-bind="value:selectedCatalog().owner">
+                     <input type="hidden" name="expiry" value="9999999999">
+                     
+                     <label>Python Code</label>
+                     <textarea rows="5" name="query">def run(parameters): return 45</textarea>
+                     <input type="submit" class="btn"></input>
+                </form>
+            </div>
         </div>
     </div>
-    
     <h2> Processors </h2>
     <div class="row">
         <div class="span12">
