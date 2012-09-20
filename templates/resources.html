@@ -38,11 +38,30 @@
         </tbody>
     </table>
     
+    <form action={{url_for('request_processor')}} method=post>
+         <legend>Request a new processor</legend>
+         
+         <label>Catalog: <span data-bind="text:selectedCatalog().catalog_uri"</label>
+         
+         <label>Owner Name: <span data-bind="text:selectedCatalog().owner"</label>
+         
+         <label>Resource Name: <span data-bind="text:selectedCatalog().resource_name"</label>
+         
+         <input type="hidden" name="catalog" data-bind="value:selectedCatalog().catalog_uri">
+         <input type="hidden" name="resource_name" data-bind="value:selectedCatalog().resource_name">
+         <input type="hidden" name="owner" data-bind="value:selectedCatalog().owner">
+         <input type="hidden" name="expiry" value="9999999999">
+         
+         <label>Python Code</label>
+         <textarea rows="5" name="query">def run(parameters): return 45</textarea>
+         <input type="submit" class="btn"></input>
+    </form>
+    
     <h2> Processors </h2>
     <div class="row">
-        <div class="span2">
+        <div class="span12">
             <ul class="nav nav-pills">
-               <li><a href='#'>Pending</a>
+               <li class="active"><a href='#'>Pending</a>
                <li><a href='#'>Accepted</a>
             </ul>
         </div>
@@ -54,6 +73,8 @@
     
     var ResourceListModel = function(items) {
         this.items = ko.observableArray(items);
+        this.query = ko.observable(false);
+        this.selectedCatalog = ko.observable(items[0]);
     };
 
     function request_resources() {
