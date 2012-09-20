@@ -22,6 +22,7 @@
     <div data-bind="if: haveresources()">
         <div class="row">
             <div class="span12">
+                <legend> Resources </legend>
                 <table class="table table-condensed table-striped table-bordered">
                     <thead>
                         <tr>
@@ -43,6 +44,7 @@
             </div>
         </div>
     </div>
+    
     <div data-bind="if: selectedCatalog()">
         <div class="row" data-bind="visible:query()">
             <div class="span4">
@@ -73,8 +75,13 @@
              <div class="span12">
                 <legend> Processors </legend>
                 <ul class="nav nav-pills">
-                   <li class="active"><a href='#'>Pending</a>
-                   <li><a href='#'>Accepted</a>
+                   <li class="active">
+                     <a href='#' data-bind="click:function(){typeToShow('pending')}">Pending</a>
+                   </li>
+                   
+                   <li>
+                     <a href='#' data-bind="click:function(){typeToShow('active')}">Accepted</a>
+                   </li>
                 </ul>
            
                 <table class="table table-condensed table-striped table-bordered">
@@ -98,6 +105,7 @@
              </div>
         </div>
     </div>
+    
 </div> <!-- end of container -->
 
 <script type="text/javascript">
@@ -120,6 +128,21 @@
         this.toggleQuery = function(){
             self.query(!self.query());
         }
+        
+        this.typeToShow = ko.observable("pending")
+    
+        this.processorsToShow = ko.computed(function(){
+            var desiredType = this.typeToShow();
+            
+            return ko.utils.arrayFilter(this.processors(), function(processor){
+                if (desiredType == "pending"){
+                    return processor.token=="None"; 
+                }
+                return processor.token != "None";
+            });
+            
+        }, this);
+
     };
 
     var rlm = new ResourceListModel([], {{processors | safe}})
@@ -142,8 +165,5 @@
 			}
 		});
     }
-    
-   
-    
 </script>
 {% endblock %}
