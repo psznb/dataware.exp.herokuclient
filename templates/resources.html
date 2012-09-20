@@ -34,7 +34,7 @@
                         <tr>
                             <td data-bind="text: owner"></td>
                             <td data-bind="text: resource_name"></td>  
-                            <td> <a href="#" click:function(){$parent.toggleQuery();}> query! </a> </td>
+                            <td> <a href="#" click:function(){$parent.selectedCatalog($data);$parent.toggleQuery();}> query! </a> </td>
                         </tr> 
                     </form>
                 </tbody>
@@ -86,7 +86,8 @@
         this.selectedCatalog = ko.observable(items[0]);
        
         this.toggleQuery = function(){
-            this.query(!this.query());
+            self.query(!self.query());
+            console.log("query is " + self.query());
         }
     };
 
@@ -100,7 +101,6 @@
 			dataType: "json",
 			
 			success: function( data, status  ) {
-                console.log("success!")
                 ko.applyBindings(new ResourceListModel(data));
 			},
 			error: function( data, status ) {
