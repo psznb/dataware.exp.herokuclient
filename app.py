@@ -21,7 +21,7 @@ RESOURCENAME     = "homework"
 
 @app.route('/')
 def root():
-    
+    return render_template('summary.html')
 
 @app.route('/resources')
 def resources():
