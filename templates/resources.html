@@ -69,35 +69,36 @@
     </div>
     
     <div data-bind="if: haveresources()">
-    <h2> Processors </h2>
         <div class="row">
-            <div class="span12">
+             <div class="span12">
+                <legend> Processors </legend>
                 <ul class="nav nav-pills">
                    <li class="active"><a href='#'>Pending</a>
                    <li><a href='#'>Accepted</a>
                 </ul>
-            </div>
-            <table class="table table-condensed table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Resource</th>
-                        <th>Query</th>
-                        <th></th>
-                    </tr>   
-                </thead>                
-                <tbody data-bind="foreach: processors">
-                    <form action='#' method=post>
+           
+                <table class="table table-condensed table-striped table-bordered">
+                    <thead>
                         <tr>
-                            <td data-bind="text: resource"></td>
-                            <td data-bind="text: query"></td>  
-                            <td> </td>
-                        </tr> 
-                    </form>
-                </tbody>
-            </table>
+                            <th>Resource</th>
+                            <th>Query</th>
+                            <th></th>
+                        </tr>   
+                    </thead>                
+                    <tbody data-bind="foreach: processors">
+                        <form action='#' method=post>
+                            <tr>
+                                <td data-bind="text: resource"></td>
+                                <td data-bind="text: query"></td>  
+                                <td> </td>
+                            </tr> 
+                        </form>
+                    </tbody>
+                 </table>
+             </div>
         </div>
     </div>
-</div>
+</div> <!-- end of container -->
 
 <script type="text/javascript">
     
