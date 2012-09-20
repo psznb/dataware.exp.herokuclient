@@ -91,7 +91,8 @@
         this.selectedCatalog = items.length > 0 ? ko.observable(items[0]) : ko.observable();
         
         this.haveItems = ko.computed(function(){
-            return true;//self.items().length > 0;
+            console.log("retruning " + (self.items().length > 0));
+            return self.items().length > 0;
         },this);
         
         this.toggleQuery = function(){
