@@ -90,7 +90,7 @@
         }
     };
 
-    ko.applyBindings(new ResourceListModel([{catalog_uri:"",resource_name:"",resource_uri:"",owner:""}]);
+    ko.applyBindings(new ResourceListModel([{catalog_uri:"",resource_name:"",resource_uri:"",owner:""}]));
     
     function request_resources() {
 		console.log('/request_resources?catalog_uri=' +  $("#catalog_uri").val());
