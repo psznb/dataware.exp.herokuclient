@@ -20,6 +20,7 @@
     </div>
     
     <div data-bind="if: haveItems()">
+        <h1> Have items! </h1>
         <div class="row">
             <div class="span12">
                 <table class="table table-condensed table-striped table-bordered">
@@ -90,13 +91,11 @@
         this.selectedCatalog = items.length > 0 ? ko.observable(items[0]) : ko.observable();
         
         this.haveItems = function(){
-            console.log("in here" + (self.items().length > 0));
             return self.items().length > 0;
         }
         
         this.toggleQuery = function(){
             self.query(!self.query());
-            console.log("query is " + self.query());
         }
     };
 
