@@ -1,4 +1,4 @@
 import time
 
-def generaterandomstate():
+def generateuniquestate():
     return "%d", time.time()
