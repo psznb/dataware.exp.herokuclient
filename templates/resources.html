@@ -35,7 +35,7 @@
                             <tr>
                                 <td data-bind="text: owner"></td>
                                 <td data-bind="text: resource_name"></td>  
-                                <td> <a href="#" data-bind="click:function(){$parent.selectedCatalog($data);$parent.toggleQuery();}"> query! </a> </td>
+                                <td> <i class="icon-road"></i> <a href="#" data-bind="click:function(){$parent.selectedCatalog($data);$parent.toggleQuery();}"> new processing request </a> </td>
                             </tr> 
                         </form>
                     </tbody>
@@ -68,7 +68,7 @@
         </div>
     </div>
     
-     <div data-bind="if: selectedCatalog()">
+    <div data-bind="if: if: haveresources()">
     <h2> Processors </h2>
         <div class="row">
             <div class="span12">
