@@ -25,7 +25,7 @@ def root():
 
 @app.route('/resources')
 def resources():
-    return render_template('resources.html', catalogs=["http://datawarecatalog.appspot.com"]);
+    return render_template('resources.html', catalogs=["http://datawarecatalog.appspot.com"], processors=getProcessorRequests());
     
 @app.route('/request_resources')
 def request_resources():
