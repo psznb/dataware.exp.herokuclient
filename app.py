@@ -91,11 +91,11 @@ def request_processor():
     if request.method == 'POST':
        
         expiry = request.form['expiry']
-        catalog = request.form['catalog']
+        catalog = request.form['catalog'] 
         query = request.form['query']
         resource_name = request.form['resource_name']
         owner = request.form['owner']
-        state = generaterandomstate()
+        state = generateuniquestate()
         client = getMyIdentifier(catalog)
     
         values = {

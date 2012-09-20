@@ -1,2 +1,4 @@
+import time
+
 def generaterandomstate():
-    return 11234;
+    return "%d", time.time()
