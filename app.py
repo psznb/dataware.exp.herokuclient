@@ -21,8 +21,12 @@ RESOURCENAME     = "homework"
 
 @app.route('/')
 def root():
-    return render_template('summary.html', catalogs=["http://datawarecatalog.appspot.com"]);
+    
 
+@app.route('/resources')
+def resources():
+    return render_template('resources.html', catalogs=["http://datawarecatalog.appspot.com"]);
+    
 @app.route('/request_resources')
 def request_resources():
     catalog  =  request.args.get('catalog_uri', None)
@@ -45,29 +49,39 @@ def request_resources():
     #print result
     #return result
     
-@app.route('/register')
+@app.route('/register', methods=['GET','POST'])
 def register():
-    url = "%s/client_register" % CATALOG
-    values = {
+
+    if request.method == 'POST':
+        catalog = request.form['catalog_uri']
+        
+        url = "%s/client_register" % catalog
+        
+        values = {
                 'redirect_uri': "%s/%s" % (REALM, "processor"),
                 'client_name':CLIENTNAME
              }
     
-    data = urllib.urlencode(values)
-    req = urllib2.Request(url,data)
-    response = urllib2.urlopen(req)
-    result = response.read()
-    result = json.loads( 
-                result.replace( '\r\n','\n' ), 
-                strict=False 
-            )
-            
-    if (result['success']):
-        addIdentifier(CATALOG, "%s/%s" % (REALM, "processor"), result['client_id'])
+        data = urllib.urlencode(values)
+        req = urllib2.Request(url,data)
+        response = urllib2.urlopen(req)
+        result = response.read()
+        result = json.loads( 
+                    result.replace( '\r\n','\n' ), 
+                    strict=False 
+                )
+                
+        if (result['success']):
+            addIdentifier(catalog, "%s/%s" % (REALM, "processor"), result['client_id'])
+        
+        print "%s" % result['success']
+        print "%s" % result['client_id']
+        return "Thanks - successfully registered!"
     
-    print "%s" % result['success']
-    print "%s" % result['client_id']
-    return "nice!!"
+    else:
+    
+        return render_template('register.html', catalogs=["http://datawarecatalog.appspot.com"])
+        
 
 @app.route('/request', methods=['GET','POST'])
 def request_processor():

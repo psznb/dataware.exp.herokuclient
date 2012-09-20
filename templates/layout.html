@@ -11,7 +11,7 @@
         <a class="brand" href="#">A third party client!</a>
          <ul class="nav">
             <li><a href="#" class="menu_button" id="home">Register</a></li>
-            <li><a href="{{url_for('summary')}}" class="menu_button" id="summary">Process</a></li>
+            <li><a href="{{url_for('root')}}" class="menu_button" id="summary">Process</a></li>
          </ul> 
     </div>
 </div>
@@ -26,8 +26,10 @@
         <div class="row">
             <div class="span12">
                 {% block request %}{% endblock %}
+                {% block register %}{%endblock %}
                 {% block execute %}{% endblock %}
                 {% block summary %}{% endblock %}
+                {% block resources %}{% endblock %}
             </div>
         </div>
     </div>
