@@ -8,8 +8,9 @@ Stuff that's missing / questions
 
 * How are processes that are to be run DESCRIBED
 
+* should resource offer access to data via a set of restful interfaces rather than through snadboxed python? 
 
-Thir party clients:
+Third party clients:
 
 1st: Register with a catalog {need to ensure that this can only be done ONCE}
 
