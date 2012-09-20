@@ -75,11 +75,11 @@
              <div class="span12">
                 <legend> Processors </legend>
                 <ul class="nav nav-pills">
-                   <li class="active">
+                   <li data-bind="css:{'active':ampending()}">
                      <a href='#' data-bind="click:function(){typeToShow('pending')}">Pending</a>
                    </li>
                    
-                   <li>
+                  <li data-bind="css:{'active':!ampending()}">
                      <a href='#' data-bind="click:function(){typeToShow('active')}">Accepted</a>
                    </li>
                 </ul>
@@ -130,7 +130,11 @@
         }
         
         this.typeToShow = ko.observable("pending")
-    
+        
+        this.ampending = ko.computed(function(){
+            return self.typeToShow() == "pending";
+        }
+        
         this.processorsToShow = ko.computed(function(){
             var desiredType = this.typeToShow();
             
