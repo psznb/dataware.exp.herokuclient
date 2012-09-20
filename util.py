@@ -1,4 +1,4 @@
 import time
 
 def generateuniquestate():
-    return "%d", time.time()
+    return "%d" % time.time()
