@@ -90,9 +90,9 @@
 
         this.selectedCatalog = items.length > 0 ? ko.observable(items[0]) : ko.observable();
         
-        this.haveItems = function(){
+        this.haveItems = ko.computed(function(){
             return self.items().length > 0;
-        }
+        },this);
         
         this.toggleQuery = function(){
             self.query(!self.query());
