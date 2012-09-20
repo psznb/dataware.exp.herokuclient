@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div data-bind="if: haveItems()">
+    <div data-bind="if: selectedCatalog()">
         <div class="row" data-bind="visible:query()">
             <div class="span4">
                 <form action={{url_for('request_processor')}} method=post>
