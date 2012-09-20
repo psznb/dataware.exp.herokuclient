@@ -44,6 +44,7 @@
         </div>
     </div>
     <div data-bind="if: haveItems()">
+        <h1> Have some items </h1>
         <div class="row" data-bind="visible:query()">
             <div class="span4">
                 <form action={{url_for('request_processor')}} method=post>
@@ -89,8 +90,8 @@
         this.selectedCatalog = items.length > 0 ? ko.observable(items[0]) : ko.observable();
         
         this.haveItems = function(){
-            console.log("in gere");
-            return items.length > 0;
+            console.log("in here" + (self.items.length > 0));
+            return self.items.length > 0;
         }
         
         this.toggleQuery = function(){
