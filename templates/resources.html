@@ -34,7 +34,7 @@
                         <tr>
                             <td data-bind="text: owner"></td>
                             <td data-bind="text: resource_name"></td>  
-                            <td> <a href="#" click:function(){$parent.query(true);}> query! </a> </td>
+                            <td> <a href="#" click:function(){$parent.toggleQuery();}> query! </a> </td>
                         </tr> 
                     </form>
                 </tbody>
@@ -80,11 +80,18 @@
 <script type="text/javascript">
     
     var ResourceListModel = function(items) {
+        var self = this;
         this.items = ko.observableArray(items);
         this.query = ko.observable(false);
-        this.selectedCatalog = ko.observable(items[0]);
+        this.selectedCatalog = ko.observable({catalog_uri:"",resource_name:"",resource_uri:"",owner:""});
+       
+        this.toggleQuery = function(){
+            this.query(!this.query());
+        }
     };
 
+    ko.applyBindings(new ResourceListModel([]));
+    
     function request_resources() {
 		$.ajax({
 			type: 'GET',
