@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block register %}
+
+<div class="container">
+    
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-info">
+               The following is a listing of all the catalogs that we know about.  Select one to register with.  You will be able to request processors to query data from the resources in catalog(s) you have registered with.
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <div class="span4 offset4 well">
+                <legend> Pick a catalog to register with </legend>
+                <form action="{{url_for('root')}}" method=post>
+                    <select name="catalog_uri" class="span4" id="catalog_uri">
+                            {% for catalog in catalogs%}
+                                <option>{{catalog}}</option> 
+                            {% endfor %}
+                    </select>
+                    <button class="btn btn-warning" type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

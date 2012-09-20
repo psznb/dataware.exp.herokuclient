@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block resources %}
+<script src="{{ url_for('static', filename='knockout/knockout-min.js') }}"></script> 
+<script src="{{ url_for('static', filename='knockout/knockout-mapping.js') }}"></script> 
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-info">
+               Find a list of resources available to you to process from the following list of  catalogs
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span8 offset2 well">
+            <legend> Pick a catalog to view resources </legend>
+            <form action="javascript:request_resources()">
+                <select name="catalog_uri" class="span7" id="catalog_uri">
+                        {% for catalog in catalogs%}
+                            <option>{{catalog}}</option> 
+                        {% endfor %}
+                </select>
+                <button class="btn btn-warning" type="submit">Use!</button>
+            </form>
+        </div>
+    </div>
+    
+    <table class="table table-condensed table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Owner</th>
+                <th>Resource Name</th>
+                <th>Action</th>
+            </tr>   
+        </thead>                
+        <tbody data-bind="foreach: items">
+            <form action='#' method=post>
+                <tr>
+                    <td data-bind="text: owner"></td>
+                    <td data-bind="text: resource_name"></td>  
+                    <td> <a href="#"> query! </a> </td>
+                </tr> 
+            </form>
+        </tbody>
+    </table>
+    
+    <h2> Processors </h2>
+    <div class="row">
+        <div class="span2">
+            <ul class="nav nav-pills">
+               <li><a href='#'>Pending</a>
+               <li><a href='#'>Accepted</a>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    
+    var ResourceListModel = function(items) {
+        this.items = ko.observableArray(items);
+    };
+
+    function request_resources() {
+		$.ajax({
+			type: 'GET',
+			url: '/request_resources?catalog_uri=' +  $("#catalog_uri").val(),
+			dataType: "json",
+			
+			success: function( data, status  ) {
+                ko.applyBindings(new ResourceListModel(data));
+			},
+			error: function( data, status ) {
+				alert( "We are currently unable to process this installation. Please try again later." );
+			}
+		});
+    }
+</script>
+{% endblock %}
