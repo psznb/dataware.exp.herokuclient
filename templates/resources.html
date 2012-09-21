@@ -85,16 +85,16 @@
                 </ul>
                 <div class="row">
                     <div class="span2">
-                        <strong> Resource <strong>
+                        <strong> Resource </strong>
                     </div>
-                    <div class="span2">
-                      <strong> Query <strong>
+                    <div class="span3">
+                      <strong> Query </strong>
+                    </div>
+                    <div class="span4" data-bind="visible:!ampending()">
+                      <strong> Parameters </strong>
                     </div>
                     <div class="span2" data-bind="visible:!ampending()">
-                      <strong> Parameters <strong>
-                    </div>
-                    <div class="span2" data-bind="visible:!ampending()">
-                      <strong> Actions <strong>
+                      <strong> Actions </strong>
                     </div>
                 </div>
                 <div class="row" data-bind="foreach: processorsToShow">
@@ -103,14 +103,14 @@
                            <div class="span2">
                                <span data-bind="text: resource"></span>
                            </div>
-                           <div class="span2">
+                           <div class="span3">
                                <span data-bind="text: query"></span>
                            </div>
-                           <div class="span2" data-bind="visible:!$parent.ampending()">     
+                           <div class="span4" data-bind="visible:!$parent.ampending()">     
                                 <input type="text" name="parameters"  value="{}">
                            </div>
                             <div class="span2" data-bind="visible:!$parent.ampending()"> 
-                                    <button type="submit" class="btn">Run</button>
+                                <button type="submit" class="btn">Run</button>
                             </div> 
                       </form>
                  </div>
