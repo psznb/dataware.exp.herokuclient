@@ -64,7 +64,7 @@
                      
                      <label>Python Code</label>
                      <textarea rows="5" name="query">def run(parameters): return 45</textarea>
-                     <input type="submit" class="btn"></input>
+                     <input type="submit" class="btn">
                 </form>
             </div>
         </div>
@@ -97,23 +97,25 @@
                       <strong> Actions </strong>
                     </div>
                 </div>
-                <div class="row" data-bind="foreach: processorsToShow">
-                     <form action={{url_for('execute')}} method=post> 
-                        <input type="hidden" name="state" data-bind="value: state">
-                           <div class="span2">
-                               <span data-bind="text: resource"></span>
-                           </div>
-                           <div class="span3">
-                               <span data-bind="text: query"></span>
-                           </div>
-                           <div class="span4" data-bind="visible:!$parent.ampending()">     
-                                <input type="text" name="parameters"  value="{}">
-                           </div>
-                            <div class="span2" data-bind="visible:!$parent.ampending()"> 
-                                <button type="submit" class="btn">Run</button>
-                            </div> 
-                      </form>
-                 </div>
+                <div data-bind="foreach: processorsToShow">
+                    <div class="row">
+                         <form action={{url_for('execute')}} method=post> 
+                            <input type="hidden" name="state" data-bind="value: state">
+                               <div class="span2">
+                                   <span data-bind="text: resource"></span>
+                               </div>
+                               <div class="span3">
+                                   <span data-bind="text: query"></span>
+                               </div>
+                               <div class="span4" data-bind="visible:!$parent.ampending()">     
+                                    <input type="text" name="parameters"  value="{}">
+                               </div>
+                                <div class="span2" data-bind="visible:!$parent.ampending()"> 
+                                    <button type="submit" class="btn">Run</button>
+                                </div> 
+                          </form>
+                     </div>
+                  </div>
              </div>
         </div>
     </div>  
