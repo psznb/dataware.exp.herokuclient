@@ -32,13 +32,13 @@
                         </tr>   
                     </thead>                
                     <tbody data-bind="foreach: resources">
-                        <form action='#' method=post>
+                        
                             <tr>
                                 <td data-bind="text: owner"></td>
                                 <td data-bind="text: resource_name"></td>  
                                 <td> <i class="icon-road"></i> <a href="#" data-bind="click:function(){$parent.selectedCatalog($data);$parent.toggleQuery();}"> new processing request </a> </td>
                             </tr> 
-                        </form>
+                       
                     </tbody>
                 </table>
             </div>
@@ -92,10 +92,11 @@
                             <th data-bind="visible:!ampending()">Parameters</th>
                             <th data-bind="visible:!ampending()">Action</th>
                         </tr>   
-                    </thead>                
+                    </thead>       
+                    
                     <tbody data-bind="foreach: processorsToShow">
-                        <form action={{url_for('execute')}} method=post>
-                            <input type="hidden" name="state" data-bind="value: state"></input>
+                          <form action={{url_for('execute')}} method=post>  
+                            <input type="hidden" name="state" data-bind="value: state">
                             <tr>
                                 <td data-bind="text: resource"></td>
                                 <td data-bind="text: query"></td>
