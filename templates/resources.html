@@ -83,38 +83,40 @@
                      <a href='#' data-bind="click:function(){typeToShow('active')}">Accepted</a>
                    </li>
                 </ul>
-           
-                <table class="table table-condensed table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Resource</th>
-                            <th>Query</th>
-                            <th data-bind="visible:!ampending()">Parameters</th>
-                            <th data-bind="visible:!ampending()">Action</th>
-                        </tr>   
-                    </thead>       
-                    
-                    <tbody data-bind="foreach: processorsToShow">
-                          <form action={{url_for('execute')}} method=post>  
-                            <input type="hidden" name="state" data-bind="value: state">
-                            <tr>
-                                <td data-bind="text: resource"></td>
-                                <td data-bind="text: query"></td>
-                                
-                                <td data-bind="visible:!$parent.ampending()">
-                                    <input type="text" name="parameters"  value="{}">
-                                </td>
-                                <td data-bind="visible:!$parent.ampending()">
+                <div class="row">
+                    <div class="span2">
+                        <strong> Resource <strong>
+                    </div>
+                    <div class="span2">
+                      <strong> Query <strong>
+                    </div>
+                    <div class="span2" data-bind="visible:!ampending()">
+                      <strong> Parameters <strong>
+                    </div>
+                    <div class="span2" data-bind="visible:!ampending()">
+                      <strong> Actions <strong>
+                    </div>
+                </div>
+                <div class="row" data-bind="foreach: processorsToShow">
+                     <form action={{url_for('execute')}} method=post> 
+                        <input type="hidden" name="state" data-bind="value: state">
+                           <div class="span2">
+                               <span data-bind="text: resource"></span>
+                           </div>
+                           <div class="span2">
+                               <span data-bind="text: query"></span>
+                           </div>
+                           <div class="span2" data-bind="visible:!$parent.ampending()">     
+                                <input type="text" name="parameters"  value="{}">
+                           </div>
+                            <div class="span2" data-bind="visible:!$parent.ampending()"> 
                                     <button type="submit" class="btn">Run</button>
-                                </td>
-                            </tr> 
-                        </form>
-                    </tbody>
-                 </table>
+                            </div> 
+                      </form>
+                 </div>
              </div>
         </div>
-    </div>
-    
+    </div>  
 </div> <!-- end of container -->
 
 <script type="text/javascript">
