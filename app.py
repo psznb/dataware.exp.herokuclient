@@ -185,8 +185,8 @@ def execute():
             response = urllib2.urlopen(req)
             data = response.read()
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-            print result
-            return response.read()
+            print result.keys
+            return data
             
         return "can't find processor"
     else:
