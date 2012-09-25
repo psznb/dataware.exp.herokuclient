@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, flash, redirect
 from util import *
 import urllib2
 import urllib
@@ -67,9 +67,8 @@ def register():
         if (result['success']):
             addIdentifier(catalog, "%s/%s" % (REALM, "processor"), result['client_id'])
         
-        print "%s" % result['success']
-        print "%s" % result['client_id']
-        return "Thanks - successfully registered!"
+        flash('Successfully regsitered with ' % catalog)
+        return redirect(url_for('resources'))
     
     else:
     
