@@ -29,16 +29,9 @@ def resources():
     
 @app.route('/request_resources')
 def request_resources():
-    catalog  =  request.args.get('catalog_uri', None)
-    print "searching for catalog %s" % catalog
-    
+    catalog  =  request.args.get('catalog_uri', None)  
     client = getMyIdentifier(catalog)
-    
-    print client
-    
-    url = "%s/client_list_resources?client_id=%s&client_uri=%s" % (catalog, client.id, client.redirect)
-    print url
-    
+    url = "%s/client_list_resources?client_id=%s&client_uri=%s" % (catalog, client.id, client.redirect) 
     f = urllib2.urlopen(url)
     data = f.read()  
     f.close()
@@ -177,8 +170,6 @@ def execute():
         
         processor = getProcessorRequest(state=state)
         
-        print processor
-        
         if not(processor is None):
             #NOTE THE THIRD PARTY CLIENT HAS NO IDEA OF THE URL OF THE PROCESSING ENTITY
             #SO IT NEEDS TO GET THIS SOMEHOW WITH ITS INTERACTION WITH THE CATALOG!
@@ -192,6 +183,9 @@ def execute():
             data = urllib.urlencode(values)
             req = urllib2.Request(url,data)
             response = urllib2.urlopen(req)
+            data = response.read()
+            result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+            print result
             return response.read()
             
         return "can't find processor"
