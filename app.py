@@ -185,10 +185,10 @@ def execute():
             response = urllib2.urlopen(req)
             data = response.read()
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-            print result['return']
-            keys = list(result['return'][0].keys())
+            values = result['return']
+            keys = list(values[0].keys())
             print keys
-            return render_template('result.html', result=result, keys=keys);
+            return render_template('result.html', result=values, keys=keys);
             
         return "can't find processor"
     else:
