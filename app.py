@@ -186,8 +186,7 @@ def execute():
             data = response.read()
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
             print result['return']
-            values = json.loads(result['return'].replace( '\r\n','\n' ), strict=False)
-            keys = list(values.keys())
+            keys = list(result['return'][0].keys())
             print keys
             return render_template('result.html', result=result, keys=keys);
             
