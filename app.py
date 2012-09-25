@@ -67,7 +67,7 @@ def register():
         if (result['success']):
             addIdentifier(catalog, "%s/%s" % (REALM, "processor"), result['client_id'])
         
-        flash('Successfully regsitered with ' % catalog)
+        flash('Successfully regsitered with %s' % catalog)
         return redirect(url_for('resources'))
     
     else:
