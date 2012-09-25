@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block result %}
+     <h1> Execution result </h1>
+     <table class="table table-condensed table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Catalog</th>
+                <th>Resource</th>
+                <th>Query</th>
+                <th>Parameters</th>
+                <th> </th>
+            </tr>   
+        </thead>                
+        <tbody> 
+            {% for processor in processors %}
+            <form action={{url_for('execute')}} method=post>
+                <input type="hidden" name="state" value="{{processor.state}}"></input>
+                <tr>
+                    <td>{{processor.catalog}}</td>
+                    <td>{{processor.resource}}</td>  
+                    <td>{{processor.query}}</td>
+                    <td><input type="text" placeholder="{processor parameters}" name="parameters"  value="{}"></td>
+                    <td><button type="submit" class="btn">Run</button></td>
+                </tr> 
+                
+            </form>
+            {% endfor %}
+        </tbody>
+    </table>  
+{% endblock %}
