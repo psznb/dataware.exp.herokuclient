@@ -185,9 +185,9 @@ def execute():
             response = urllib2.urlopen(req)
             data = response.read()
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-            print result
-            
-            keys = list(result['return'].keys())
+            print result['return']
+            values = json.loads(result['return'].replace( '\r\n','\n' ), strict=False)
+            keys = list(values.keys())
             print keys
             return render_template('result.html', result=result, keys=keys);
             
