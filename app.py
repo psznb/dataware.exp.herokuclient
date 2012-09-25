@@ -21,6 +21,7 @@ RESOURCENAME     = "homework"
 
 @app.route('/')
 def root():
+    session['logged_in'] = True 
     return render_template('summary.html')
 
 @app.route('/resources')
