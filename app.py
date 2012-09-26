@@ -160,7 +160,12 @@ def token():
             return result
             
     return "Hmmm couldn't retrieve the token"
-    
+ 
+@app.route('/purge')
+def purge():
+    purge()
+    return "Purged!"
+
 @app.route('/execute', methods=['GET','POST'])
 def execute():
     if request.method == 'POST':
