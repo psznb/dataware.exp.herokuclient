@@ -186,16 +186,16 @@ def execute():
             response = urllib2.urlopen(req)
             data = response.read()
             
-            print data
-            
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-            
-            values = result['return']
-
-            print values
-
-            return "thanks!"
-            
+             
+            if (result['success']):
+                print result
+                values = result['return']
+                print values
+                return "thanks!"
+            else if (result['error_description']):
+                return result['error_description'];
+                
             #keys = list(values[0].keys())
             #print keys
             #return render_template('result.html', result=values, keys=keys);
