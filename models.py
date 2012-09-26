@@ -65,7 +65,7 @@ def getMyIdentifier(catalog):
     #return {'id':'something','redirect':'somewhere','catalog':'acatalog'}
     return Identifier.query.filter(Identifier.catalog==catalog).first()
     
-def purge():
+def purgedata():
     db_session.query(ProcessingRequest).delete()
     db_session.query(Identifier).delete()
     db_session.commit()

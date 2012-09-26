@@ -163,7 +163,7 @@ def token():
  
 @app.route('/purge')
 def purge():
-    purge()
+    purgedata()
     return "Purged!"
 
 @app.route('/execute', methods=['GET','POST'])
