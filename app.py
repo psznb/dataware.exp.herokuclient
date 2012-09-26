@@ -185,12 +185,16 @@ def execute():
             req = urllib2.Request(url,data)
             response = urllib2.urlopen(req)
             data = response.read()
+            
+            print data
+            
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+            
             values = result['return']
 
             print values
 
-            return values
+            return "thanks!"
             
             #keys = list(values[0].keys())
             #print keys
