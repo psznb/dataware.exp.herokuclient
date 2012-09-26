@@ -189,17 +189,18 @@ def execute():
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
              
             if result['success']:
-                print result
                 values = result['return']
-                print values
-                return "thanks!"
+                if isinstance(values, list):
+                    if len(values) > 0:
+                        if isinstance(values[0], dict):
+                            keys = list(values[0].keys())
+                            return render_template('result.html', result=values, keys=keys)
+                
+                return data
+                
             elif result['error_description']:
                 return result['error_description'];
                 
-            #keys = list(values[0].keys())
-            #print keys
-            #return render_template('result.html', result=values, keys=keys);
-            
         return "Error"
     else:
         processors = getProcessorRequests()
