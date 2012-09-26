@@ -187,9 +187,12 @@ def execute():
             data = response.read()
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
             values = result['return']
-            keys = list(values[0].keys())
-            print keys
-            return render_template('result.html', result=values, keys=keys);
+            print values
+            return values
+            
+            #keys = list(values[0].keys())
+            #print keys
+            #return render_template('result.html', result=values, keys=keys);
             
         return "can't find processor"
     else:
