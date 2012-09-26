@@ -155,7 +155,8 @@ def token():
         
         if result["success"]:
             updateProcessorRequest(state=state, token=result["access_token"])
-            return "Successfully obtained token"
+            redirect(prec.catalog)
+            #return "Successfully obtained token <a href='%s'>return to catalog</a>" % prec.catalog
         else:
             return result
             
@@ -164,7 +165,7 @@ def token():
 @app.route('/purge')
 def purge():
     purgedata()
-    return "Purged!"
+    return redirect(url_for('root'))
 
 @app.route('/execute', methods=['GET','POST'])
 def execute():
