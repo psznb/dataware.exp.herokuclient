@@ -188,19 +188,19 @@ def execute():
             
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
              
-            if (result['success']):
+            if result['success']:
                 print result
                 values = result['return']
                 print values
                 return "thanks!"
-            else if (result['error_description']):
+            elif result['error_description']:
                 return result['error_description'];
                 
             #keys = list(values[0].keys())
             #print keys
             #return render_template('result.html', result=values, keys=keys);
             
-        return "can't find processor"
+        return "Error"
     else:
         processors = getProcessorRequests()
         print processors
