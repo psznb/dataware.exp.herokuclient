@@ -155,8 +155,8 @@ def token():
         
         if result["success"]:
             updateProcessorRequest(state=state, token=result["access_token"])
-            redirect(prec.catalog)
-            #return "Successfully obtained token <a href='%s'>return to catalog</a>" % prec.catalog
+            
+            return "Successfully obtained token <a href='%s'>return to catalog</a>" % prec.catalog
         else:
             return result
             
