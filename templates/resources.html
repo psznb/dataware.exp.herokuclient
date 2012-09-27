@@ -173,16 +173,16 @@
 
             $.ajax({
 			    type: 'POST',
-			    url: '/request_processor'
+			    url: '/request_processor',
 			    dataType: "json",
 			    data: requestdata,
 			    
                 success: function( data, status  ) {
 			        requestdata.token = "None"
 			        rlm.resources().push(requestdata);
-			    }
+			    },
                 error: function( data, status ) {
-				    alert( "We are currently unable to process this installation. Please try again later." );
+				    alert( "Sorry, could not request your process" );
 			    }
 			});
         }
