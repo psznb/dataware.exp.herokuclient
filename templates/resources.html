@@ -98,7 +98,7 @@
                       <strong> Actions </strong>
                     </div>
                 </div>
-                <div data-bind="foreach: processors">
+                <div data-bind="foreach: processorsToShow">
                     <div class="row">
                          <form action={{url_for('execute')}} method=post> 
                             <input type="hidden" name="state" data-bind="value: state">
