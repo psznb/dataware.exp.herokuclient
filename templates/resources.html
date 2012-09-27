@@ -179,8 +179,16 @@
 			    
                 success: function( data, status  ) {
                     console.log(data)
-			        requestdata.token = "None"
-			        rlm.resources().push(requestdata);
+                    if (data.success){
+			            rlm.resources().push({
+			                "state":data.state,
+			                "resource":requestdata.resource_name,
+			                "query": requestdata.query,
+			                "token": "None"
+			            });
+			        }else{
+			            alert("error, sorry, client rejected request");
+			        }
 			    },
                 error: function( data, status ) {
 				    alert( "Sorry, could not request your process" );

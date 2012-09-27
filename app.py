@@ -114,16 +114,13 @@ def request_processor():
         app.logger.info(result)    
         
         if (not(result['success'])):
-            return result
-        
-        #"%s:%s" % (result['error_description'], result['error'])
+            return json.dumps({'success':False})
         
         #store the state and the code and the various bits for re-use?
          
         addProcessorRequest(state=state, catalog=catalog, resource=resource_name,redirect=client.redirect,expiry=int(expiry),query=query)
-        app.logger.info("returning success!")
         
-        return json.dumps({'status':'success'})
+        return json.dumps({'success':True, 'state':state})
     
     else:
         #provide the user with the options relating to our catalogs
