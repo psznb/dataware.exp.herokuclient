@@ -123,7 +123,7 @@ def request_processor():
         addProcessorRequest(state=state, catalog=catalog, resource=resource_name,redirect=client.redirect,expiry=int(expiry),query=query)
         app.logger.info("returning success!")
         
-        return response
+        return {'status':'success'}
     
     else:
         #provide the user with the options relating to our catalogs
