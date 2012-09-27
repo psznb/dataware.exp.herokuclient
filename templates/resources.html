@@ -165,8 +165,8 @@
         this.requestProcessor = function(){
         
             requestdata =  {    "catalog": self.selectedCatalog().catalog_uri,
-                                "resource_name": selectedCatalog().resource_name,
-                                "owner" : selectedCatalog().owner,
+                                "resource_name": self.selectedCatalog().resource_name,
+                                "owner" : self.selectedCatalog().owner,
                                 "expiry": 9999999999,
                                 "query": $('textarea#query').val()
                             };
