@@ -180,7 +180,7 @@
                 success: function( data, status  ) {
                     console.log(data)
                     if (data.success){
-			            rlm.resources().push({
+			            rlm.processors().push({
 			                "state":data.state,
 			                "resource":requestdata.resource_name,
 			                "query": requestdata.query,
