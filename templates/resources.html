@@ -173,11 +173,12 @@
 
             $.ajax({
 			    type: 'POST',
-			    url: '/request_processor',
+			    url: '/request',
 			    dataType: "json",
 			    data: requestdata,
 			    
                 success: function( data, status  ) {
+                    console.log(data)
 			        requestdata.token = "None"
 			        rlm.resources().push(requestdata);
 			    },

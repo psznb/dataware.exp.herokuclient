@@ -37,12 +37,8 @@ def request_resources():
     f = urllib2.urlopen(url)
     data = f.read()  
     f.close()
-    
     return data
     
-    #result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-    #print result
-    #return result
     
 @app.route('/register', methods=['GET','POST'])
 def register():
@@ -118,13 +114,15 @@ def request_processor():
         app.logger.info(result)    
         
         if (not(result['success'])):
-            return "%s:%s" % (result['error_description'], result['error'])
+            return result
+        
+        #"%s:%s" % (result['error_description'], result['error'])
         
         #store the state and the code and the various bits for re-use?
          
         addProcessorRequest(state=state, catalog=catalog, resource=resource_name,redirect=client.redirect,expiry=int(expiry),query=query)
         
-        return "success!" 
+        return result
     
     else:
         #provide the user with the options relating to our catalogs
