@@ -48,7 +48,8 @@
     <div data-bind="if: selectedCatalog()">
         <div class="row" data-bind="visible:query()">
             <div class="span4">
-                <form action={{url_for('request_processor')}} method=post>
+               <!-- <form action={{url_for('request_processor')}} method=post>-->
+               <form data-bind="submit: requestProcessor">
                      <legend>Request a new processor</legend>
                      
                      <label>Catalog: <span data-bind="text:selectedCatalog().catalog_uri"></span></label>
@@ -63,7 +64,7 @@
                      <input type="hidden" name="expiry" value="9999999999">
                      
                      <label>Python Code</label>
-                     <textarea rows="5" name="query">def run(parameters): return homedb.fetch_urls()</textarea>
+                     <textarea rows="5" name="query" id="query">def run(parameters): return homedb.fetch_urls()</textarea>
                      <input type="submit" class="btn">
                 </form>
             </div>
@@ -161,6 +162,30 @@
             
         }, this);
 
+        this.requestProcessor = function(){
+        
+            requestdata =  {    "catalog": self.selectedCatalog().catalog_uri,
+                                "resource_name": selectedCatalog().resource_name,
+                                "owner" : selectedCatalog().owner,
+                                "expiry": 9999999999,
+                                "query": $('textarea#query').val()
+                            };
+
+            $.ajax({
+			    type: 'POST',
+			    url: '/request_processor'
+			    dataType: "json",
+			    data: requestdata,
+			    
+                success: function( data, status  ) {
+			        requestdata.token = "None"
+			        rlm.resources().push(requestdata);
+			    }
+                error: function( data, status ) {
+				    alert( "We are currently unable to process this installation. Please try again later." );
+			    }
+			});
+        }
     };
 
     var rlm = new ResourceListModel([], {{processors | safe}})
