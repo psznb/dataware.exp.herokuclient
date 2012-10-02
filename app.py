@@ -42,7 +42,7 @@ def root():
 @app.route('/login')
 def login():
 
-    provider = request.GET[ "provider" ]
+    provider = request.args.get('provider', None)  
     params=""
     
     try:
@@ -64,8 +64,8 @@ def login():
 @app.route( "/checkauth")
 def user_openid_authenticate():
     
-    o = OpenIDManager.Response( request.GET )
-    
+    #o = OpenIDManager.Response( request.GET )
+    o = OpenIDManager.Response(request.args)
     #check to see if the user logged in succesfully
     if ( o.is_success() ):
         
@@ -101,10 +101,11 @@ def user_openid_authenticate():
         _delete_authentication_cookie()
         
     try:
-        redirect_uri = "resource_request?resource_id=%s&redirect_uri=%s&state=%s" % \
-            ( request.GET[ "resource_id" ], 
-              request.GET[ "redirect_uri" ], 
-              request.GET[ "state" ] )
+        # redirect_uri = "resource_request?resource_id=%s&redirect_uri=%s&state=%s" % \
+        #     ( request.GET[ "resource_id" ], 
+        #       request.GET[ "redirect_uri" ], 
+        #       request.GET[ "state" ] )
+        redirect_uri = "http://news.bbc.co.uk" 
     except:
         redirect_uri = REALM + ROOT_PAGE
     
