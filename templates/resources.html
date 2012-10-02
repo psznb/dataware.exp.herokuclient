@@ -60,6 +60,7 @@
                      
                      <input type="hidden" name="catalog" data-bind="value:selectedCatalog().catalog_uri">
                      <input type="hidden" name="resource_name" data-bind="value:selectedCatalog().resource_name">
+                     <input type="hidden" name="resource_name" data-bind="value:selectedCatalog().resource_uri">
                      <input type="hidden" name="owner" data-bind="value:selectedCatalog().owner">
                      <input type="hidden" name="expiry" value="9999999999">
                      
@@ -166,6 +167,7 @@
         
             requestdata =  {    "catalog": self.selectedCatalog().catalog_uri,
                                 "resource_name": self.selectedCatalog().resource_name,
+                                "resource_uri":self.selectedCatalog().resource_uri,
                                 "owner" : self.selectedCatalog().owner,
                                 "expiry": 9999999999,
                                 "query": $('textarea#query').val()
