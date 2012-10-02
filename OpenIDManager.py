@@ -107,6 +107,7 @@ def createAssociation( endpoint_url ):
         "&openid.session_type=no-encryption" +\
         "&openid.ns.ax=http://openid.net/srv/ax/1.0" +\
         "&openid.ax.mode=fetch_request" +\
+        "&openid.ax.type.email=http://axschema.org/contact/email" +\
         "&openid.ax.required=email"
     
     
