@@ -162,7 +162,7 @@ def getRedirectURL( self ):
             "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select" + \
             "&openid.return_to=" + self.return_to + \
             "&openid.realm=" + self.realm + \
-            "&openid.assoc_handle=" + self.assoc_handle
+            "&openid.assoc_handle=" + self.assoc_handle +\
             "&openid.ns.ax=http://openid.net/srv/ax/1.0" +\
             "&openid.ax.mode=fetch_request" +\
             "&openid.ax.type.email=http://axschema.org/contact/email" +\
