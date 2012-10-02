@@ -60,7 +60,7 @@ def login():
     #template engine does some odd url encoding that causes problems.
     return "<script>self.parent.location = '%s'</script>" % url
 
-@app.route( "/checkauth", method = "GET" )
+@app.route( "/checkauth")
 def user_openid_authenticate():
     
     o = OpenIDManager.Response( request.GET )
