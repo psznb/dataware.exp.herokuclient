@@ -4,6 +4,7 @@ from util import *
 import urllib2
 import urllib
 import json
+import OpenIDManager
 from database import init_db
 from models import *
 from datetime import datetime, timedelta
@@ -19,17 +20,102 @@ CLIENTNAME  = "herokuclient"
 #catalog must provide an api for us to get these!
 RESOURCEUSERNAME = "tlodgecatalog" 
 RESOURCENAME     = "homework"
+EXTENSION_COOKIE = "tpc_logged_in"
 
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if (session.get("logged_in") == None):
+            return redirect(url_for('root'))
+        return f(*args, **kwargs)
+    return decorated_function
+    
 @app.route('/')
 def root():
-    session['logged_in'] = True 
-    return render_template('summary.html')
 
+    return render_template('login.html')
+    #session['logged_in'] = True 
+    #return render_template('summary.html')
+
+@app.route('/login')
+def login():
+
+    provider = request.GET[ "provider" ]
+    params=""
+    
+    try:
+        url = OpenIDManager.process(
+            realm=REALM,
+            return_to=REALM + "/checkauth?" + urllib.quote( params ),
+            provider=provider
+        )
+     except Exception, e:
+        log.error( e )
+        return user_error( e )
+    
+    #Here we do a javascript redirect. A 302 redirect won't work
+    #if the calling page is within a frame (due to the requirements
+    #of some openid providers who forbid frame embedding), and the 
+    #template engine does some odd url encoding that causes problems.
+    return "<script>self.parent.location = '%s'</script>" % url
+
+@route( "/checkauth", method = "GET" )
+def user_openid_authenticate():
+    
+    o = OpenIDManager.Response( request.GET )
+    
+    #check to see if the user logged in succesfully
+    if ( o.is_success() ):
+        
+        user_id = o.get_user_id()
+         
+        #if so check we received a viable claimed_id
+        if user_id:
+            try:
+                
+                print "wohoo!  got a new user id %s" % user_id
+                
+                #user = db.user_fetch_by_id( user_id )
+                 
+                #if this is a new user add them
+                #if ( not user ):
+                #    db.user_insert( o.get_user_id() )
+                #    user_name = None
+                #else :
+                #    user_name = user.user_name
+                
+                #_set_authentication_cookie( user_id, user_name  )
+                
+            except Exception, e:
+                return user_error( e )
+            
+            
+        #if they don't something has gone horribly wrong, so mop up
+        else:
+            _delete_authentication_cookie()
+
+    #else make sure the user is still logged out
+    else:
+        _delete_authentication_cookie()
+        
+    try:
+        redirect_uri = "resource_request?resource_id=%s&redirect_uri=%s&state=%s" % \
+            ( request.GET[ "resource_id" ], 
+              request.GET[ "redirect_uri" ], 
+              request.GET[ "state" ] )
+    except:
+        redirect_uri = REALM + ROOT_PAGE
+    
+    return "<script>self.parent.location = '%s'</script>" % ( redirect_uri, )
+   
 @app.route('/resources')
+@login_required
 def resources():
     return render_template('resources.html', catalogs=["http://datawarecatalog.appspot.com"], processors=getProcessorRequests());
     
 @app.route('/request_resources')
+@login_required
 def request_resources():
     catalog  =  request.args.get('catalog_uri', None)  
     client = getMyIdentifier(catalog)
@@ -41,6 +127,7 @@ def request_resources():
     
     
 @app.route('/register', methods=['GET','POST'])
+@login_required
 def register():
 
     if request.method == 'POST':
@@ -74,6 +161,7 @@ def register():
         
 
 @app.route('/request', methods=['GET','POST'])
+@login_required
 def request_processor():
     
     error = None
@@ -132,6 +220,7 @@ def request_processor():
         return render_template('request.html', options=options, error=error)
     
 @app.route('/processor')
+@login_required
 def token():
     code  =  request.args.get('code', None)
     state =  request.args.get('state', None)
@@ -159,11 +248,13 @@ def token():
     return "Hmmm couldn't retrieve the token"
  
 @app.route('/purge')
+@login_required
 def purge():
     purgedata()
     return redirect(url_for('root'))
 
 @app.route('/execute', methods=['GET','POST'])
+@login_required
 def execute():
     if request.method == 'POST':
         print "got a post!"
@@ -208,9 +299,18 @@ def execute():
         processors = getProcessorRequests()
         print processors
         return render_template('execute.html', processors=processors)
-                
+        
+def _delete_authentication_cookie():
+    
+    response.delete_cookie( 
+        key=EXTENSION_COOKIE,
+    )
+            
+            
+            
+               
 if __name__ == '__main__':
-    # Bind to PORT if defined, otherwise default to 5000.
+    # Bind to PORT if defined, otherwise default to 5000.ccl
     port = int(os.environ.get('PORT', 5000))
    
     app.run(debug=True,host='0.0.0.0', port=port)
