@@ -50,7 +50,7 @@ def login():
             return_to=REALM + "/checkauth?" + urllib.quote( params ),
             provider=provider
         )
-     except Exception, e:
+    except Exception, e:
         log.error( e )
         return user_error( e )
     
