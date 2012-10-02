@@ -74,12 +74,13 @@ def user_openid_authenticate():
     if ( o.is_success() ):
         
         user_id = o.get_user_id()
-         
+        email = o.get_user_email()
+       
         #if so check we received a viable claimed_id
         if user_id:
             try:
                 
-                print "wohoo!  got a new user id %s" % user_id
+                print "wohoo!  got a new user id %s emial: %s" % (user_id, email)
                 
                 #user = db.user_fetch_by_id( user_id )
                  

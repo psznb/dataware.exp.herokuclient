@@ -203,6 +203,13 @@ class Response( object ):
         return self.__params[ key ]
     
     
+    
+    def get_user_email( self ): 
+        try:
+            return self.__params[ "openid.ext1.value.email"]
+        except:
+            return None
+            
     #///////////////////////////////////////////////
     
     
