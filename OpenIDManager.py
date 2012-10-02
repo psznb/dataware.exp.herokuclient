@@ -131,7 +131,10 @@ def buildRedirectURL( endpoint_url, assoc_handle, return_to, realm ):
             "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select" + \
             "&openid.return_to=" + return_to + \
             "&openid.realm=" + realm + \
-            "&openid.assoc_handle=" + assoc_handle
+            "&openid.assoc_handle=" + assoc_handle + \
+            "&openid.ns.ax=http://openid.net/srv/ax/1.0" +\
+            "&openid.ax.mode=fetch_request" +\
+            "&openid.ax.required=email"
 
         return endpoint_url + parameters 
     else:
