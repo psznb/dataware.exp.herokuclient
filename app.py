@@ -81,7 +81,7 @@ def user_openid_authenticate():
             try:
                 
                 print "wohoo!  got a new user id %s emial: %s" % (user_id, email)
-                
+                session['logged_in'] = True 
                 #user = db.user_fetch_by_id( user_id )
                  
                 #if this is a new user add them
@@ -110,7 +110,7 @@ def user_openid_authenticate():
         #     ( request.GET[ "resource_id" ], 
         #       request.GET[ "redirect_uri" ], 
         #       request.GET[ "state" ] )
-        redirect_uri = "http://news.bbc.co.uk" 
+        redirect_uri = "resources" 
     except:
         redirect_uri = REALM + ROOT_PAGE
     
@@ -130,6 +130,7 @@ def request_resources():
     f = urllib2.urlopen(url)
     data = f.read()  
     f.close()
+    print data
     return data
     
     
@@ -264,7 +265,6 @@ def purge():
 @login_required
 def execute():
     if request.method == 'POST':
-        print "got a post!"
         state = request.form['state']
         parameters = request.form['parameters']
         print "state=%s and params = %s" % (state, parameters)
