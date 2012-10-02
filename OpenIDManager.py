@@ -104,16 +104,10 @@ def createAssociation( endpoint_url ):
         "?openid.ns=http://specs.openid.net/auth/2.0" + \
         "&openid.mode=associate" + \
         "&openid.assoc_type=HMAC-SHA1" + \
-        "&openid.session_type=no-encryption" +\
-        "&openid.ns.ax=http://openid.net/srv/ax/1.0" +\
-        "&openid.ax.mode=fetch_request" +\
-        "&openid.ax.type.email=http://axschema.org/contact/email" +\
-        "&openid.ax.required=email"
-    
-    
+        "&openid.session_type=no-encryption"
+        
+        
     result = urllib2.urlopen( url ).read()
-    print "-----result------"
-    print result
     m = re.search( "assoc_handle:(.*)\n", result )
     return m.group( 1 ); 
 
@@ -138,8 +132,12 @@ def buildRedirectURL( endpoint_url, assoc_handle, return_to, realm ):
             "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select" + \
             "&openid.return_to=" + return_to + \
             "&openid.realm=" + realm + \
-            "&openid.assoc_handle=" + assoc_handle
-            
+            "&openid.assoc_handle=" + assoc_handle + \
+            "&openid.ns.ax=http://openid.net/srv/ax/1.0" +\
+            "&openid.ax.mode=fetch_request" +\
+            "&openid.ax.type.email=http://axschema.org/contact/email" +\
+            "&openid.ax.required=email"
+
         return endpoint_url + parameters 
     else:
         raise Exception()
@@ -164,8 +162,12 @@ def getRedirectURL( self ):
             "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select" + \
             "&openid.return_to=" + self.return_to + \
             "&openid.realm=" + self.realm + \
-            "&openid.assoc_handle=" + self.assoc_handle 
-            
+            "&openid.assoc_handle=" + self.assoc_handle
+            "&openid.ns.ax=http://openid.net/srv/ax/1.0" +\
+            "&openid.ax.mode=fetch_request" +\
+            "&openid.ax.type.email=http://axschema.org/contact/email" +\
+            "&openid.ax.required=email"
+
     else:
         raise Exception()
 
@@ -177,9 +179,10 @@ class Response( object ):
           
           
     #///////////////////////////////////////////////
-
             
     def __init__( self, params ):
+        
+        print params
         
         self.__params = params
         

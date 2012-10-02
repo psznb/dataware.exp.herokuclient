@@ -59,6 +59,8 @@ def login():
     #if the calling page is within a frame (due to the requirements
     #of some openid providers who forbid frame embedding), and the 
     #template engine does some odd url encoding that causes problems.
+    app.logger.info("calling url %s" % url)
+    
     return "<script>self.parent.location = '%s'</script>" % url
 
 @app.route( "/checkauth")
@@ -66,6 +68,8 @@ def user_openid_authenticate():
     
     #o = OpenIDManager.Response( request.GET )
     o = OpenIDManager.Response(request.args)
+  
+  
     #check to see if the user logged in succesfully
     if ( o.is_success() ):
         
