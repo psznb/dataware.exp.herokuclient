@@ -16,6 +16,7 @@ class ProcessingRequest(Base):
     state = Column(String(256), primary_key=True)
     catalog = Column(String(256))
     resource = Column(String(256))
+    resource_uri = Column(String(256))
     redirect =  Column(String(256))
     expiry = Column(BigInteger)
     query = Column(String(512))
@@ -23,7 +24,7 @@ class ProcessingRequest(Base):
     token = Column(String(256))
   
     def __repr__(self):
-        return "{state:'%s', resource:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.state, self.resource, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
+        return "{state:'%s', resource:'%s', resource_uri:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.state, self.resource, self.resource_uri, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
         
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
@@ -32,9 +33,8 @@ def addIdentifier(catalog, redirect, clientid):
     print identifier
     return True
     
-def addProcessorRequest(state, catalog, resource, redirect, expiry, query):   
-    prorec = ProcessingRequest(state=state, catalog=catalog, resource=resource, 
-                         redirect=redirect, expiry=expiry, query=query)
+def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry, query):   
+    prorec = ProcessingRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query)
     db_session.add(prorec)
     db_session.commit()
     return True

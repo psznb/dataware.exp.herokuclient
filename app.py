@@ -180,6 +180,7 @@ def request_processor():
         catalog = request.form['catalog'] 
         query = request.form['query']
         resource_name = request.form['resource_name']
+        resource_uri = request.form['resource_uri']
         owner = request.form['owner']
         state = generateuniquestate()
         client = getMyIdentifier(catalog)
@@ -214,7 +215,7 @@ def request_processor():
         
         #store the state and the code and the various bits for re-use?
          
-        addProcessorRequest(state=state, catalog=catalog, resource=resource_name,redirect=client.redirect,expiry=int(expiry),query=query)
+        addProcessorRequest(state=state, catalog=catalog, resource=resource_name,resource_uri=resource_uri,redirect=client.redirect,expiry=int(expiry),query=query)
         
         return json.dumps({'success':True, 'state':state})
     
@@ -274,7 +275,9 @@ def execute():
         if not(processor is None):
             #NOTE THE THIRD PARTY CLIENT HAS NO IDEA OF THE URL OF THE PROCESSING ENTITY
             #SO IT NEEDS TO GET THIS SOMEHOW WITH ITS INTERACTION WITH THE CATALOG!
-            url = 'http://hwresource.block49.net:9000/invoke_processor'    
+            url = '%s/invoke_processor' % processor.resource_uri
+            
+            #'http://hwresource.block49.net:9000/invoke_processor'    
     
             values = {
                 'access_token':processor.token,
