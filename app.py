@@ -52,7 +52,7 @@ def login():
             provider=provider
         )
     except Exception, e:
-        log.error( e )
+        app.logger.error( e )
         return user_error( e )
     
     #Here we do a javascript redirect. A 302 redirect won't work
@@ -307,7 +307,11 @@ def _delete_authentication_cookie():
     response.delete_cookie( 
         key=EXTENSION_COOKIE,
     )
-            
+        
+        
+def user_error( e ):
+    
+    return  "An error has occurred: %s" % ( e )
             
             
                
@@ -316,3 +320,4 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
    
     app.run(debug=True,host='0.0.0.0', port=port)
+ 
