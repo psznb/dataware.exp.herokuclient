@@ -5,6 +5,7 @@ import urllib2
 import urllib
 import json
 import OpenIDManager
+import hashlib
 from database import init_db
 from models import *
 from datetime import datetime, timedelta
