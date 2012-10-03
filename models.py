@@ -1,6 +1,6 @@
 from database import Base, db_session
 from sqlalchemy import Column, Integer, String, BigInteger
-
+from sqlalchemy.dialects.mysql import LONGTEXT
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -25,7 +25,24 @@ class ProcessingRequest(Base):
   
     def __repr__(self):
         return "{state:'%s', resource:'%s', resource_uri:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.state, self.resource, self.resource_uri, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
-        
+
+class ProcessingResponse(Base):
+    __tablename__ = 'processingresponse'
+    execution_id = Column(String(256), primary_key=True)
+    access_token = Column(String(256))
+    result = Column(LONGTEXT)
+    received = Column(Integer)
+    
+    def __repr__(self):
+        return "{execution_id:'%s', access_token:'%s', result:'%s', received: %d}" % (self.execution_id, self.access_token, self.result, self.received)
+    
+def addProcessingResponse(execution_id, access_token, result, received):
+    response = ProcessingResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
+    db_session.add(response)
+    db_session.commit()
+    print response
+    return True
+    
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
     db_session.add(identifier)

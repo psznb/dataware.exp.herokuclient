@@ -262,6 +262,27 @@ def purge():
     purgedata()
     return redirect(url_for('root'))
 
+@app.route('/view/', methods=['POST'])
+def view():
+    
+    #should the hwresource owner have to register with the TPC?  Think it'd be a 
+    #bit of an interaction headache, better that the shared id's is assumed enough
+    #to authenticate a request to view a processing output.
+    
+    #third party client received when this registered with catalog
+    client_id = request.form['client_id'] 
+    
+    #processor access token
+    processor_id = request.form['processor_id'] 
+    
+    #id of the execution that took place
+    execution_id = request.form['execution_id'] 
+    
+    #lookup the execution details and confirm that this user is allowed access! return a page
+    #with the same view of the data as seen by this TPC.
+    
+    return "thanks!"
+    
 @app.route('/execute', methods=['GET','POST'])
 @login_required
 def execute():
@@ -276,9 +297,14 @@ def execute():
            
             url = '%s/invoke_processor' % processor.resource_uri
             
+            m = hashlib.md5()
+            m.update('%f' % time.time())
+            id = m.hexdigest()
+                
             values = {
                 'access_token':processor.token,
-                'parameters': parameters
+                'parameters': parameters,
+                'view_url' : "%s/view/%s" % (REALM,id)
             }
 
             data = urllib.urlencode(values)
@@ -290,8 +316,11 @@ def execute():
              
             if 'success' in result:
                 values = result['return']
-                id     = result['id']
-                print id
+                
+                #save details to allow the resource (entity we received results from) to view
+                
+                addProcessingResponse(execution_id=id, access_token=processor.token, result="%s" % values, received=int(time.time()))
+                
                 if isinstance(values, list):
                     if len(values) > 0:
                         if isinstance(values[0], dict):
