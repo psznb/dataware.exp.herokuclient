@@ -273,12 +273,9 @@ def execute():
         processor = getProcessorRequest(state=state)
         
         if not(processor is None):
-            #NOTE THE THIRD PARTY CLIENT HAS NO IDEA OF THE URL OF THE PROCESSING ENTITY
-            #SO IT NEEDS TO GET THIS SOMEHOW WITH ITS INTERACTION WITH THE CATALOG!
+           
             url = '%s/invoke_processor' % processor.resource_uri
             
-            #'http://hwresource.block49.net:9000/invoke_processor'    
-    
             values = {
                 'access_token':processor.token,
                 'parameters': parameters
@@ -291,8 +288,10 @@ def execute():
             
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
              
-            if result['success']:
+            if 'success' in result:
                 values = result['return']
+                id     = result['id']
+                print id
                 if isinstance(values, list):
                     if len(values) > 0:
                         if isinstance(values[0], dict):
@@ -301,13 +300,12 @@ def execute():
                 
                 return data
                 
-            elif result['error_description']:
+            elif 'error_description' in result:
                 return result['error_description'];
                 
         return "Error"
     else:
         processors = getProcessorRequests()
-        print processors
         return render_template('execute.html', processors=processors)
         
 def _delete_authentication_cookie():
