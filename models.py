@@ -1,6 +1,6 @@
 from database import Base, db_session
 from sqlalchemy import Column, Integer, String, BigInteger
-from sqlalchemy.dialects.mysql import LONGTEXT
+from sqlalchemy.dialects.postgresql import TEXT
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -30,7 +30,7 @@ class ProcessingResponse(Base):
     __tablename__ = 'processingresponse'
     execution_id = Column(String(256), primary_key=True)
     access_token = Column(String(256))
-    result = Column(LONGTEXT)
+    result = Column(TEXT)
     received = Column(Integer)
     
     def __repr__(self):
