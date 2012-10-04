@@ -263,7 +263,7 @@ def purge():
     purgedata()
     return redirect(url_for('root'))
 
-@app.route('/view/<executionid>', methods=['POST'])
+@app.route('/view/<execution_id>', methods=['POST'])
 def view(execution_id):
     
     #should the hwresource owner have to register with the TPC?  Think it'd be a 
