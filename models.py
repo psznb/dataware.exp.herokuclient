@@ -1,6 +1,7 @@
 from database import Base, db_session
 from sqlalchemy import Column, Integer, String, BigInteger
 from sqlalchemy.dialects.postgresql import TEXT
+from sqlalchemy.sql import and_
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -42,8 +43,8 @@ def addProcessingResponse(execution_id, access_token, result, received):
     db_session.commit()
     return True
 
-def getProcessingResponses():
-    return db_session.query(ProcessingResponse).all()
+def getProcessingResponse(execution_id, access_token):
+    return db_session.query(ProcessingResponse).filter(and_(ProcessingResponse.execution_id==execution_id, ProcessingResponse.access_token==access_token)).first()
     
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)

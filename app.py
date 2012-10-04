@@ -263,33 +263,24 @@ def purge():
     purgedata()
     return redirect(url_for('root'))
 
-@app.route('/view/', methods=['POST'])
-def view():
+@app.route('/view/<executionid>', methods=['POST'])
+def view(execution_id):
     
     #should the hwresource owner have to register with the TPC?  Think it'd be a 
     #bit of an interaction headache, better that the shared id's is assumed enough
     #to authenticate a request to view a processing output.
     
     #third party client received when this registered with catalog
-    client_id = request.form['client_id'] 
+    #client_id = request.form['client_id'] 
     
     #processor access token
     processor_id = request.form['processor_id'] 
     
-    #id of the execution that took place
-    execution_id = request.form['execution_id'] 
-    
-    #lookup the execution details and confirm that this user is allowed access! return a page
+    #lookup the execution details and confirm that this user is allowed access. Return a page
     #with the same view of the data as seen by this TPC.
+    response = getProcessingResponse(execution_id=execution_id, access_token=processor_id)
     
-    return "thanks!"
-
-@app.route('/executions')
-@login_required
-def responses():
-    responses = getProcessingResponses()
-    print responses
-    return "thnaks."
+    return str(response)
 
 @app.route('/execute', methods=['GET','POST'])
 @login_required
