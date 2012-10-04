@@ -41,6 +41,9 @@ def addProcessingResponse(execution_id, access_token, result, received):
     db_session.add(response)
     db_session.commit()
     return True
+
+def getProcessingResponses():
+    return db_session.query(ProcessingResponse).all()
     
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)

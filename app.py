@@ -283,7 +283,14 @@ def view():
     #with the same view of the data as seen by this TPC.
     
     return "thanks!"
-    
+
+@app.route('/executions')
+@login_required
+def responses():
+    responses = getProcessingResponses()
+    print responses
+    return "thnaks."
+
 @app.route('/execute', methods=['GET','POST'])
 @login_required
 def execute():
