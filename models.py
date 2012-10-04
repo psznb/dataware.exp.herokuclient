@@ -37,6 +37,11 @@ class ProcessingResponse(Base):
         return "{execution_id:'%s', access_token:'%s', result:'%s', received: %d}" % (self.execution_id, self.access_token, self.result, self.received)
     
 def addProcessingResponse(execution_id, access_token, result, received):
+    print "execution id %s" % execution_id
+    print "access token %s" % access_token
+    print "received %d" % received
+    print "response %s" % response
+    
     response = ProcessingResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
     db_session.add(response)
     db_session.commit()
