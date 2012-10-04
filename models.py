@@ -40,7 +40,7 @@ def addProcessingResponse(execution_id, access_token, result, received):
     response = ProcessingResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
     db_session.add(response)
     db_session.commit()
-    print response
+    print "added response!"
     return True
     
 def addIdentifier(catalog, redirect, clientid):   

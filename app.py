@@ -320,7 +320,7 @@ def execute():
                 
                 #save details to allow the resource (entity we received results from) to view
                 
-                addProcessingResponse(execution_id=id, access_token=processor.token, result="%s" % values, received=int(time.time()))
+                addProcessingResponse(execution_id=id, access_token=processor.token, result=str(values), received=int(time.time()))
                 
                 if isinstance(values, list):
                     if len(values) > 0:
