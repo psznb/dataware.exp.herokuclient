@@ -40,7 +40,7 @@ def addProcessingResponse(execution_id, access_token, result, received):
     print "execution id %s" % execution_id
     print "access token %s" % access_token
     print "received %d" % received
-    print "response %s" % response
+    print "response %s" % result
     
     response = ProcessingResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
     db_session.add(response)
