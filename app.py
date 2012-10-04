@@ -280,7 +280,9 @@ def view(execution_id):
     #with the same view of the data as seen by this TPC.
     data = getProcessingResponse(execution_id=execution_id, access_token=processor_id)
     
-    values = json.loads(data.replace( '\r\n','\n' ), strict=False)
+    print data.result
+    
+    values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
     
     #generalise this..
     if isinstance(values, list):
