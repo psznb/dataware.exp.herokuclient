@@ -278,9 +278,19 @@ def view(execution_id):
     
     #lookup the execution details and confirm that this user is allowed access. Return a page
     #with the same view of the data as seen by this TPC.
-    response = getProcessingResponse(execution_id=execution_id, access_token=processor_id)
+    data = getProcessingResponse(execution_id=execution_id, access_token=processor_id)
     
-    return str(response)
+    values = json.loads(data.replace( '\r\n','\n' ), strict=False)
+    
+    #generalise this..
+    if isinstance(values, list):
+        if len(values) > 0:
+            if isinstance(values[0], dict):
+                keys = list(values[0].keys())
+                return render_template('result.html', result=values, keys=keys)
+    
+    return data
+    
 
 @app.route('/execute', methods=['GET','POST'])
 @login_required
