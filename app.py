@@ -263,6 +263,10 @@ def purge():
     purgedata()
     return redirect(url_for('root'))
 
+@app.route('/result/<execution_id>', methods=['POST'])
+def result(execution_id):
+    return "thanks!!"
+    
 @app.route('/view/<execution_id>', methods=['POST'])
 def view(execution_id):
     
@@ -315,7 +319,7 @@ def execute():
             values = {
                 'access_token':processor.token,
                 'parameters': parameters,
-                'view_url' : "%s/view/%s" % (REALM,id)
+                'result_url' : "%s/result/%s" % (REALM,id)
             }
 
             data = urllib.urlencode(values)
