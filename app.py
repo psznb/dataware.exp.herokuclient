@@ -266,28 +266,29 @@ def purge():
 @app.route('/result/<execution_id>', methods=['POST'])
 def result(execution_id):
     
-     app.logger.info("seen a resultset!");
+    app.logger.info("seen a resultset!");
       
-     if 'success' in result:
+    if 'success' in result:
                 
-                values = result['return']
+        values = result['return']
+        
+        #save details to allow the resource (entity we received results from) to view
+        
+        addProcessingResponse(execution_id=id, access_token=processor.token, result=json.dumps(values), received=int(time.time()))
+        
+        if isinstance(values, list):
+            if len(values) > 0:
+                if isinstance(values[0], dict):
+                    keys = list(values[0].keys())
+                    return render_template('result.html', result=values, keys=keys)
+        
+        return data
                 
-                #save details to allow the resource (entity we received results from) to view
-                
-                addProcessingResponse(execution_id=id, access_token=processor.token, result=json.dumps(values), received=int(time.time()))
-                
-                if isinstance(values, list):
-                    if len(values) > 0:
-                        if isinstance(values[0], dict):
-                            keys = list(values[0].keys())
-                            return render_template('result.html', result=values, keys=keys)
-                
-                return data
-                
-            elif 'error_description' in result:
-                return result['error_description'];
-                
+    elif 'error_description' in result:
+        
+        return result['error_description']
         return "Error"
+    
     else:
         processors = getProcessorRequests()
         return render_template('execute.html', processors=processors)
