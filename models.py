@@ -80,7 +80,7 @@ def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry
 
 def updateProcessorRequest(state, code=None, token=None):
 
-    p = db_session.query(ProcessorRequest).filter(ProcesorRequest.state==state).first()
+    p = db_session.query(ProcessorRequest).filter(ProcessorRequest.state==state).first()
     
     if (not(p is None)):
         if (not(code is None)):
