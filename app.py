@@ -362,27 +362,28 @@ def execute():
             
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
             
+            print result
             
-            if 'success' in result:
+            #if 'success' in result:
+            #    
+            #    values = result['return']
+            #    
+            #    #save details to allow the resource (entity we received results from) to view
                 
-                values = result['return']
+            #    addProcessingResponse(execution_id=id, access_token=processor.token, #result=json.dumps(values), received=int(time.time()))
                 
-                #save details to allow the resource (entity we received results from) to view
-                
-                addProcessingResponse(execution_id=id, access_token=processor.token, result=json.dumps(values), received=int(time.time()))
-                
-                if isinstance(values, list):
-                    if len(values) > 0:
-                        if isinstance(values[0], dict):
-                            keys = list(values[0].keys())
-                            return render_template('result.html', result=values, keys=keys)
-                
-                return data
-                
-            elif 'error_description' in result:
-                return result['error_description'];
-                
-        return "Error"
+            #    if isinstance(values, list):
+            #        if len(values) > 0:
+            #            if isinstance(values[0], dict):
+            #                keys = list(values[0].keys())
+            #                return render_template('result.html', result=values, keys=keys)
+            #    
+            #    return data
+            #    
+            #elif 'error_description' in result:
+            #    return result['error_description'];
+            #    
+            #return "Error"
     else:
         processors = getProcessorRequests()
         return render_template('execute.html', processors=processors)
