@@ -270,8 +270,12 @@ def result(execution_id):
     success = request.form['success']
     result = request.form['return']
    
-    print success
-    print result
+    execution_request = getExecutionRequest(execution_id)
+    
+    if not(execution_request is None):
+        addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=result, received=int(time.time()))
+        print success
+        print result
     
     #if 'success' in result:
                 
@@ -279,7 +283,7 @@ def result(execution_id):
         
         #save details to allow the resource (entity we received results from) to view
         
-    #    addProcessingResponse(execution_id=execution_id, access_token=processor.token, #result=json.dumps(values), received=int(time.time()))
+    #    addExecutionResponse(execution_id=execution_id, access_token=processor.token, #result=json.dumps(values), received=int(time.time()))
         
     #    if isinstance(values, list):
     #        if len(values) > 0:
@@ -315,7 +319,7 @@ def view(execution_id):
     
     #lookup the execution details and confirm that this user is allowed access. Return a page
     #with the same view of the data as seen by this TPC.
-    data = getProcessingResponse(execution_id=execution_id, access_token=processor_id)
+    data = getProcessorResponse(execution_id=execution_id, access_token=processor_id)
     
     print data.result
     
@@ -331,14 +335,38 @@ def view(execution_id):
     return data
     
 
+@app.route('/executions')
+@login_required
+def executions():
+     #if 'success' in result:
+            #    
+            #    values = result['return']
+            #    
+            #    #save details to allow the resource (entity we received results from) to view
+                
+            #    addExecutionResponse(execution_id=id, access_token=processor.token, #result=json.dumps(values), received=int(time.time()))
+                
+            #    if isinstance(values, list):
+            #        if len(values) > 0:
+            #            if isinstance(values[0], dict):
+            #                keys = list(values[0].keys())
+            #                return render_template('result.html', result=values, keys=keys)
+            #    
+            #    return data
+            #    
+            #elif 'error_description' in result:
+            #    return result['error_description'];
+            #    
+            #return "Error"
+    return "Summary of executions"
+    
 @app.route('/execute', methods=['GET','POST'])
 @login_required
 def execute():
     if request.method == 'POST':
+    
         state = request.form['state']
-        parameters = request.form['parameters']
-        print "state=%s and params = %s" % (state, parameters)
-        
+        parameters = request.form['parameters'] 
         processor = getProcessorRequest(state=state)
         
         if not(processor is None):
@@ -362,28 +390,8 @@ def execute():
             
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
             
-            print result
-            
-            #if 'success' in result:
-            #    
-            #    values = result['return']
-            #    
-            #    #save details to allow the resource (entity we received results from) to view
-                
-            #    addProcessingResponse(execution_id=id, access_token=processor.token, #result=json.dumps(values), received=int(time.time()))
-                
-            #    if isinstance(values, list):
-            #        if len(values) > 0:
-            #            if isinstance(values[0], dict):
-            #                keys = list(values[0].keys())
-            #                return render_template('result.html', result=values, keys=keys)
-            #    
-            #    return data
-            #    
-            #elif 'error_description' in result:
-            #    return result['error_description'];
-            #    
-            #return "Error"
+            addExecutionRequest(execution_id=id, access_token=processor.token, parameters=parameters, sent=int(time.time()))
+            return redirect(url_for('executions'))
     else:
         processors = getProcessorRequests()
         return render_template('execute.html', processors=processors)

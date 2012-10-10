@@ -12,8 +12,8 @@ class Identifier(Base):
     def __repr__(self):
         return "{id:'%s', redirect:'%s', catalog:'%s'}" % (self.id, self.redirect, self.catalog)
 
-class ProcessingRequest(Base):
-    __tablename__ = 'processingrequest'
+class ProcessorRequest(Base):
+    __tablename__ = 'processorrequest'
     state = Column(String(256), primary_key=True)
     catalog = Column(String(256))
     resource = Column(String(256))
@@ -27,8 +27,18 @@ class ProcessingRequest(Base):
     def __repr__(self):
         return "{state:'%s', resource:'%s', resource_uri:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.state, self.resource, self.resource_uri, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
 
-class ProcessingResponse(Base):
-    __tablename__ = 'processingresponse'
+class ExecutionRequest(Base):
+    __tablename__ = 'executionrequest'
+    execution_id = Column(String(256), primary_key=True)
+    access_token = Column(String(256))
+    parameters   = Column(String(256))
+    sent         = Column(String(256))
+    
+    def __repr__(self):
+        return "{execution_id:'%s', access_token:'%s', parameters:'%s', sent: %d}" % (self.execution_id, self.access_token, self.parameters, self.sent)
+    
+class ExecutionResponse(Base):
+    __tablename__ = 'executionresponse'
     execution_id = Column(String(256), primary_key=True)
     access_token = Column(String(256))
     result = Column(TEXT)
@@ -36,15 +46,24 @@ class ProcessingResponse(Base):
     
     def __repr__(self):
         return "{execution_id:'%s', access_token:'%s', result:'%s', received: %d}" % (self.execution_id, self.access_token, self.result, self.received)
+
+def addExecutionRequest(execution_id, access_token, parameters, sent):
+    request = ExecutionRequest(execution_id = execution_id, access_token=access_token, parameters=parameters, sent=sent)
+    db_session.add(request)
+    db_session.commit()
+    return True
+
+def getExecutionRequest(execution_id):
+    return db_session.query(ExecutionRequest).filter(ExecutionRequest.execution_id==execution_id).first()
     
-def addProcessingResponse(execution_id, access_token, result, received):
-    response = ProcessingResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
+def addExecutionResponse(execution_id, access_token, result, received):
+    response = ExecutionResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
     db_session.add(response)
     db_session.commit()
     return True
 
-def getProcessingResponse(execution_id, access_token):
-    return db_session.query(ProcessingResponse).filter(and_(ProcessingResponse.execution_id==execution_id, ProcessingResponse.access_token==access_token)).first()
+def getExecutionResponse(execution_id, access_token):
+    return db_session.query(ExecutionResponse).filter(and_(ExecutionResponse.execution_id==execution_id, ExecutionResponse.access_token==access_token)).first()
     
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
@@ -54,15 +73,14 @@ def addIdentifier(catalog, redirect, clientid):
     return True
     
 def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry, query):   
-    prorec = ProcessingRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query)
+    prorec = ProcessorRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query)
     db_session.add(prorec)
     db_session.commit()
     return True
 
-
 def updateProcessorRequest(state, code=None, token=None):
 
-    p = db_session.query(ProcessingRequest).filter(ProcessingRequest.state==state).first()
+    p = db_session.query(ProcessorRequest).filter(ProcesorRequest.state==state).first()
     
     if (not(p is None)):
         if (not(code is None)):
@@ -76,16 +94,18 @@ def updateProcessorRequest(state, code=None, token=None):
     return None
 
 def getProcessorRequest(state): 
-    return db_session.query(ProcessingRequest).filter(ProcessingRequest.state==state).first()
+    return db_session.query(ProcessorRequest).filter(ProcessingRequest.state==state).first()
   
 def getProcessorRequests():
-     return db_session.query(ProcessingRequest).all()
+     return db_session.query(ProcessorRequest).all()
      
 def getMyIdentifier(catalog):
     #return {'id':'something','redirect':'somewhere','catalog':'acatalog'}
     return Identifier.query.filter(Identifier.catalog==catalog).first()
     
 def purgedata():
-    db_session.query(ProcessingRequest).delete()
+    db_session.query(ProcessorRequest).delete()
     db_session.query(Identifier).delete()
+    db_session.query(ExecutionRequest).delete()
+    db_session.query(ExecutionResponse).delete()
     db_session.commit()
