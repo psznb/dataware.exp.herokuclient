@@ -265,15 +265,23 @@ def purge():
 @app.route('/result/<execution_id>', methods=['POST'])
 def result(execution_id):
     
-    result = request.form['return']
+    data = request.form['return']
     execution_request = getExecutionRequest(execution_id)
     
     print "-------------------------"
-    print result
+    print data
+    print "-------------------------"
+    
+    result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+    
+    values = result['return']
+    
+    print "--------VALUES---------------"
+    print values
     print "-------------------------"
     
     if not(execution_request is None):
-        addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(result), received=int(time.time()))
+        addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(data), received=int(time.time()))
     
     #if 'success' in result:
                 
