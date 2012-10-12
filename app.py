@@ -326,7 +326,7 @@ def view(execution_id):
     if isinstance(values, list):
         if len(values) > 0:
             if isinstance(values[0], dict):
-               keys = list(values[0].keys())
+                keys = list(values[0].keys())
                 return render_template('result.html', result=values, keys=keys)
     
     return str(data)
