@@ -269,7 +269,7 @@ def result(execution_id):
     execution_request = getExecutionRequest(execution_id)
     
     print "-------------------------"
-    print data
+    print result
     print "-------------------------"
     
     if not(execution_request is None):
