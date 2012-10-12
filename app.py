@@ -319,7 +319,7 @@ def view(execution_id):
     
     #lookup the execution details and confirm that this user is allowed access. Return a page
     #with the same view of the data as seen by this TPC.
-    data = getProcessorResponse(execution_id=execution_id, access_token=processor_id)
+    data = getExecutionResponse(execution_id=execution_id, access_token=processor_id)
     
     print data.result
     

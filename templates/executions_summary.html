@@ -1,25 +1,24 @@
 {% extends "layout.html" %}
 
 {% block executions_summary %}
-     <h1> Executions </h1>
-     <table class="table table-condensed table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>id</th>
-                <td>query</td>
-                <td>parameters</td>
-                <td>received</td>
-            </tr>   
-        </thead>                
-        <tbody> 
-            {% for execution in executions %}
-            <tr>   
-               <td>{{execution.execution_id}}</td>
-               <td>{{execution.query}}</td>
-               <td>{{execution.parameters}}</td>
-               <td>{{execution.received}}</td>
-            </tr> 
-            {% endfor %}
-        </tbody>
-    </table>  
+    <h1> Execution Results </h1>
+    {% for execution in executions %}
+        <form action="{{url_for('view')}}/{{execution.execution_id}}" method=post>
+            <input type="hidden" name="processor_id" value="{{execution.access_token}}">
+            <div class="row">
+                <div class="span2">
+                    {{execution.query}}
+                </div>
+                <div class="span2">
+                    {{execution.parameters}}
+                </div>
+                <div class="span2">
+                    {{execution.received}}
+                </div>
+                <div class="span2">
+                    <button class="btn btn-primary" type="submit">View!</button>
+                </div>
+             </div>
+        </form>
+    {% endfor %}
 {% endblock %}
