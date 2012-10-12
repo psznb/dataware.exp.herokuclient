@@ -338,27 +338,10 @@ def view(execution_id):
 @app.route('/executions')
 @login_required
 def executions():
-     #if 'success' in result:
-            #    
-            #    values = result['return']
-            #    
-            #    #save details to allow the resource (entity we received results from) to view
-                
-            #    addExecutionResponse(execution_id=id, access_token=processor.token, #result=json.dumps(values), received=int(time.time()))
-                
-            #    if isinstance(values, list):
-            #        if len(values) > 0:
-            #            if isinstance(values[0], dict):
-            #                keys = list(values[0].keys())
-            #                return render_template('result.html', result=values, keys=keys)
-            #    
-            #    return data
-            #    
-            #elif 'error_description' in result:
-            #    return result['error_description'];
-            #    
-            #return "Error"
-    return "Summary of executions"
+     executions = getAllExecutionResponses()
+     print executions
+     return render_template("executions.html", executions=executions)
+
     
 @app.route('/execute', methods=['GET','POST'])
 @login_required
