@@ -340,7 +340,7 @@ def view(execution_id):
 def executions():
      executions = getAllExecutionResponses()
      print executions
-     return render_template("executions.html", executions=executions)
+     return render_template("executions_summary.html", executions=executions)
 
     
 @app.route('/execute', methods=['GET','POST'])
