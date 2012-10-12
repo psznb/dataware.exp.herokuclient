@@ -277,7 +277,7 @@ def result(execution_id):
     values = result['return']
     
     print "--------VALUES---------------"
-    print values
+    print json.dumps(values)
     print "-------------------------"
     
     if not(execution_request is None):
