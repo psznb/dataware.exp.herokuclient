@@ -272,7 +272,7 @@ def result(execution_id):
     execution_request = getExecutionRequest(execution_id)
     
     print "result is"
-    print str(result)
+    print json.dumps(result)
     
     if not(execution_request is None):
         addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(result), received=int(time.time()))
