@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block executions_summary %}
+     <h1> Executions </h1>
+     <table class="table table-condensed table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>id</th>
+                <td>query</td>
+                <td>parameters</td>
+                <td>received</td>
+            </tr>   
+        </thead>                
+        <tbody> 
+            {% for execution in executions %}
+            <tr>   
+               <td>{{execution.execution_id}}</td>
+               <td>{{execution.query}}</td>
+               <td>{{execution.parameters}}</td>
+               <td>{{execution.received}}</td>
+            </tr> 
+            {% endfor %}
+        </tbody>
+    </table>  
+{% endblock %}
