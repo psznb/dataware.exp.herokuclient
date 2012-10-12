@@ -322,7 +322,7 @@ def view(execution_id):
     
     #values = data.result
     
-    print data.result
+    print str(data.result)
     
    
     #values = json.loads(str(data.result), strict=False)
@@ -340,7 +340,7 @@ def view(execution_id):
     #            keys = list(values[0].keys())
     #            return render_template('result.html', result=values, keys=keys)
     
-    return str(data)
+    return str(data.result)
     
 
 @app.route('/executions')
