@@ -266,7 +266,6 @@ def purge():
 @app.route('/result/<execution_id>', methods=['POST'])
 def result(execution_id):
     
-    app.logger.info("seen a resultset!");
     success = request.form['success']
     result = request.form['return']
    
@@ -321,16 +320,16 @@ def view(execution_id):
     #with the same view of the data as seen by this TPC.
     data = getExecutionResponse(execution_id=execution_id, access_token=processor_id)
     
-    print data.result
+    print data;
     
-    values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
+   # values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
     
     #generalise this..
-    if isinstance(values, list):
-        if len(values) > 0:
-            if isinstance(values[0], dict):
-                keys = list(values[0].keys())
-                return render_template('result.html', result=values, keys=keys)
+   # if isinstance(values, list):
+   #     if len(values) > 0:
+   #         if isinstance(values[0], dict):
+   #             keys = list(values[0].keys())
+   #             return render_template('result.html', result=values, keys=keys)
     
     return data
     
