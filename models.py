@@ -63,6 +63,7 @@ def addExecutionResponse(execution_id, access_token, result, received):
     return True
 
 def getExecutionResponse(execution_id, access_token):
+    print "getting execution responsed id %s token %s" % (execution_id, access_token)
     return db_session.query(ExecutionResponse).filter(and_(ExecutionResponse.execution_id==execution_id, ExecutionResponse.access_token==access_token)).first()
 
 def getAllExecutionResponses():
