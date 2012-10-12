@@ -323,9 +323,12 @@ def view(execution_id):
     #values = data.result
     
    
-    values = json.loads(str(data.result).replace( '\r\n','\n' ), strict=False)
+    values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
    
-    print values;
+    for item in data.result:
+        print item['url']
+        
+    #print values;
     #generalise this..
     if isinstance(values, list):
         if len(values) > 0:
