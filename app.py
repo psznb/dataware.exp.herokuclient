@@ -323,7 +323,7 @@ def view(execution_id):
     #values = data.result
     
    
-    values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
+    #values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
    
     for item in data.result:
         print item['url']
