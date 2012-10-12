@@ -323,7 +323,7 @@ def view(execution_id):
     #values = data.result
     
    
-    values = json.loads(str(data.result))
+    values = json.loads(str(data.result), strict=False)
     
     #.replace( '\r\n','\n' ), strict=False)
    
