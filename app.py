@@ -320,10 +320,13 @@ def view(execution_id):
     #with the same view of the data as seen by this TPC.
     data = getExecutionResponse(execution_id=execution_id, access_token=processor_id)
     
-    print str(data);
+    print data.result
     
-   # values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
+    #print str(data);
     
+    values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
+   
+    print values;
     #generalise this..
    # if isinstance(values, list):
    #     if len(values) > 0:
