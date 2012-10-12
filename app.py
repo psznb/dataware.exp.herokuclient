@@ -131,7 +131,6 @@ def request_resources():
     f = urllib2.urlopen(url)
     data = f.read()  
     f.close()
-    print data
     return data
     
     
@@ -266,16 +265,12 @@ def purge():
 @app.route('/result/<execution_id>', methods=['POST'])
 def result(execution_id):
     
-    data = request.form['return']
-    
-    #success = request.form['success']
-    #result = request.form['return']
-   
+    result = request.form['return']
     execution_request = getExecutionRequest(execution_id)
     
-    #mydata = json.loads(result)
-    
+    print "-------------------------"
     print data
+    print "-------------------------"
     
     if not(execution_request is None):
         addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(data), received=int(time.time()))
@@ -340,7 +335,6 @@ def view(execution_id):
 @login_required
 def executions():
      executions = getAllExecutionResponses()
-     print executions
      return render_template("executions_summary.html", executions=executions)
 
     
