@@ -66,7 +66,7 @@ def getExecutionResponse(execution_id, access_token):
     return db_session.query(ExecutionResponse).filter(and_(ExecutionResponse.execution_id==execution_id, ExecutionResponse.access_token==access_token)).first()
 
 def getAllExecutionResponses():
-    result = db_session.query(ExecutionResponse.execution_id, ExecutionResponse.received, ExecutionResponse.access_token  ExecutionRequest.parameters, ProcessorRequest.query, ).join(ProcessorRequest, ProcessorRequest.token==ExecutionResponse.access_token).join(ExecutionRequest, ExecutionRequest.access_token==ExecutionResponse.access_token).all()
+    result = db_session.query(ExecutionResponse.execution_id, ExecutionResponse.received, ExecutionResponse.access_token, ExecutionRequest.parameters, ProcessorRequest.query, ).join(ProcessorRequest, ProcessorRequest.token==ExecutionResponse.access_token).join(ExecutionRequest, ExecutionRequest.access_token==ExecutionResponse.access_token).all()
     
     return result
     
