@@ -45,7 +45,7 @@ class ExecutionResponse(Base):
     received = Column(Integer)
     
     def __repr__(self):
-        return "{execution_id:'%s', access_token:'%s', result:'%s', received: %d}" % (self.execution_id, self.access_token, self.result, self.received)
+        return "{execution_id:'%s', access_token:'%s', result:'%s', received: %d}" % (self.execution_id, self.access_token, str(self.result), self.received)
 
 def addExecutionRequest(execution_id, access_token, parameters, sent):
     request = ExecutionRequest(execution_id = execution_id, access_token=access_token, parameters=parameters, sent=sent)
@@ -63,7 +63,7 @@ def addExecutionResponse(execution_id, access_token, result, received):
     return True
 
 def getExecutionResponse(execution_id, access_token):
-    print "getting execution responsed id %s token %s" % (execution_id, access_token)
+    print "getting execution response id %s token %s" % (execution_id, access_token)
     return db_session.query(ExecutionResponse).filter(and_(ExecutionResponse.execution_id==execution_id, ExecutionResponse.access_token==access_token)).first()
 
 def getAllExecutionResponses():
