@@ -182,8 +182,8 @@
                 success: function( data, status  ) {
                     console.log(data)
                     if (data.success){
-			            /* have to make each processor item observable if we want it to auto update? */
-			            rlm.processors().push({
+			            
+			            rlm.processors.push({
 			                "state":data.state,
 			                "resource":requestdata.resource_name,
 			                "query": requestdata.query,
