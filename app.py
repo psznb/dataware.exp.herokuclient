@@ -268,7 +268,6 @@ def result(execution_id):
     data = request.form['return']
     execution_request = getExecutionRequest(execution_id)
     result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-    
     values = result['return']
     
     print "--------VALUES---------------"
@@ -277,33 +276,8 @@ def result(execution_id):
     
     if not(execution_request is None):
         addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=json.dumps(values), received=int(time.time()))
-    
-    #if 'success' in result:
-                
-    #    values = result['return']
         
-        #save details to allow the resource (entity we received results from) to view
-        
-    #    addExecutionResponse(execution_id=execution_id, access_token=processor.token, #result=json.dumps(values), received=int(time.time()))
-        
-    #    if isinstance(values, list):
-    #        if len(values) > 0:
-    #            if isinstance(values[0], dict):
-    #                keys = list(values[0].keys())
-    #                return render_template('result.html', result=values, keys=keys)
-    #    
-    #    return data
-    #            
-    #elif 'error_description' in result:
-    #    
-    #    return result['error_description']
-    #    return "Error"
-     
-    #else:
-    #    processors = getProcessorRequests()
-    #    return render_template('execute.html', processors=processors)
-        
-    return "thanks!!"
+    return json.dumps({'success':True})
     
 @app.route('/view/<execution_id>', methods=['POST'])
 def view(execution_id):
