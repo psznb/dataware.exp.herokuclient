@@ -4,8 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('postgresql://eeidgoftqdnwru:bIGJrUw7dT2oM8aI0lmtMOuSJN@ec2-23-21-216-174.compute-1.amazonaws.com:5432/datun7jq64iqt7')
 
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
+db_session = scoped_session(sessionmaker(autocommit=True,
+                                         autoflush=True,
                                          bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
