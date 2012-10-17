@@ -50,7 +50,7 @@ class ExecutionResponse(Base):
 def addExecutionRequest(execution_id, access_token, parameters, sent):
     request = ExecutionRequest(execution_id = execution_id, access_token=access_token, parameters=parameters, sent=sent)
     db_session.add(request)
-    db_session.commit()
+   
     return True
 
 def getExecutionRequest(execution_id):
@@ -59,7 +59,7 @@ def getExecutionRequest(execution_id):
 def addExecutionResponse(execution_id, access_token, result, received):
     response = ExecutionResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
     db_session.add(response)
-    db_session.commit()
+   
     return True
 
 def getExecutionResponse(execution_id, access_token):
@@ -74,13 +74,13 @@ def getAllExecutionResponses():
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
     db_session.add(identifier)
-    db_session.commit()
+   
     return True
     
 def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry, query):   
     prorec = ProcessorRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query)
     db_session.add(prorec)
-    #db_session.commit()
+  
     return True
 
 def updateProcessorRequest(state, code=None, token=None):
@@ -93,7 +93,7 @@ def updateProcessorRequest(state, code=None, token=None):
         if (not(token is None)):
             p.token = token
         
-        #db_session.commit()
+    
         return p
         
     return None
@@ -113,4 +113,4 @@ def purgedata():
     db_session.query(Identifier).delete()
     db_session.query(ExecutionRequest).delete()
     db_session.query(ExecutionResponse).delete()
-    #db_session.commit()
+   
