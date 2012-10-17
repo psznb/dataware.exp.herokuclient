@@ -1,4 +1,7 @@
 import time
 
 def generateuniquestate():
-    return "%d" % time.time()
+    
+    state = "%d" % time.time()
+    print "generated %s" % state    
+    return state
