@@ -51,7 +51,7 @@ class ExecutionResponse(Base):
 def session_manager(func):
     def _wrap(*args, **kwargs):
         try:
-            retval = func(*args, *kwargs)
+            retval = func(*args, **kwargs)
             db_session.commit()
             return retval
         except:
