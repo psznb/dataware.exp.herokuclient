@@ -57,6 +57,7 @@ def addExecutionRequest(execution_id, access_token, parameters, sent):
         db_session.commit()   
     except:
         db_session.rollback()
+        raise
         return False
     
     return True   
@@ -74,6 +75,7 @@ def addExecutionResponse(execution_id, access_token, result, received):
         db_session.commit()   
     except:
         db_session.rollback()
+        raise
         return False
     
     return True
@@ -96,6 +98,7 @@ def addIdentifier(catalog, redirect, clientid):
         db_session.commit()   
     except:
         db_session.rollback()
+        raise
         return False
     
     return True   
@@ -109,6 +112,7 @@ def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry
         db_session.commit()   
     except:
         db_session.rollback()
+        raise
         return False
     
     return True   
@@ -131,7 +135,8 @@ def updateProcessorRequest(state, status, code=None, token=None):
               
     except:
         db_session.rollback()
-    
+        raise
+        
     return None
 
 def getProcessorRequest(state): 
@@ -154,6 +159,7 @@ def purgedata():
         db_session.commit()   
     except:
         db_session.rollback()
+        raise
         return False
     
     return True   
