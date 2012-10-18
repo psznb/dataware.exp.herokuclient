@@ -48,20 +48,33 @@ class ExecutionResponse(Base):
     def __repr__(self):
         return "{execution_id:'%s', access_token:'%s', result:'%s', received: %d}" % (self.execution_id, self.access_token, self.result, self.received)
 
+def session_manager(func):
+    def _wrap(*args, **kwargs):
+        try:
+            retval = func(*args, *kwargs)
+            db_session.commit()
+            return retval
+        except:
+            db_session.rollback()
+            raise
+
+@session_manager
 def addExecutionRequest(execution_id, access_token, parameters, sent):
     request = ExecutionRequest(execution_id = execution_id, access_token=access_token, parameters=parameters, sent=sent)
     db_session.add(request)
    
     return True
-
+    
 def getExecutionRequest(execution_id):
     return db_session.query(ExecutionRequest).filter(ExecutionRequest.execution_id==execution_id).first()
-    
+
+@session_manager
 def addExecutionResponse(execution_id, access_token, result, received):
     response = ExecutionResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
     db_session.add(response)
    
     return True
+    
 
 def getExecutionResponse(execution_id, access_token):
     return db_session.query(ExecutionResponse.result, ExecutionResponse.execution_id).filter(and_(ExecutionResponse.execution_id==execution_id, ExecutionResponse.access_token==access_token)).first()
@@ -71,19 +84,21 @@ def getAllExecutionResponses():
     
     return result
     
-    
+@session_manager
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
     db_session.add(identifier)
    
     return True
-    
+
+@session_manager
 def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry, query):   
     prorec = ProcessorRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query, status="pending")
     db_session.add(prorec)
   
     return True
-
+    
+@session_manager
 def updateProcessorRequest(state, status, code=None, token=None):
 
     p = db_session.query(ProcessorRequest).filter(ProcessorRequest.state==state).first()
@@ -98,7 +113,7 @@ def updateProcessorRequest(state, status, code=None, token=None):
         
         print "setting status to %s" % status
         p.status = status
-        db_session.commit()
+       
         return p
     print "p is none"    
     return None
