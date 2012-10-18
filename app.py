@@ -240,7 +240,7 @@ def token():
     if not(error is None):
         app.logger.info(error)
         app.logger.info(request.args.get('error_description', None))
-        prec = updateProcessorRequest(state=state, status=error)
+        prec = updateProcessorRequest(state=state, status="rejected")
         return "Noted rejection <a href='%s'>return to catalog</a>" % prec.catalog
     
     code  =  request.args.get('code', None)
@@ -260,7 +260,7 @@ def token():
         result = json.loads(data.replace( '\r\n','\n' ), strict=False)
         
         if result["success"]:
-            updateProcessorRequest(state=state, token=result["access_token"])
+            updateProcessorRequest(state=state, status="accepted" token=result["access_token"])
             
             return "Successfully obtained token <a href='%s'>return to catalog</a>" % prec.catalog
         else:
