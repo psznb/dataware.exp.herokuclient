@@ -231,6 +231,15 @@ def request_processor():
 @app.route('/processor')
 @login_required
 def token():
+
+    app.logger.info(request.args)
+    error = request.args.get('error', None)
+    
+    if not(error is None):
+        app.logger.info(error)
+        app.logger.info(error_description)
+        return "rejection noted"
+    
     code  =  request.args.get('code', None)
     state =  request.args.get('state', None)
     prec = updateProcessorRequest(state=state, code=code)
