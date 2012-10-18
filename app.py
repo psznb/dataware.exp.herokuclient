@@ -260,7 +260,7 @@ def token():
         result = json.loads(data.replace( '\r\n','\n' ), strict=False)
         
         if result["success"]:
-            updateProcessorRequest(state=state, status="accepted" token=result["access_token"])
+            updateProcessorRequest(state=state, status="accepted", token=result["access_token"])
             
             return "Successfully obtained token <a href='%s'>return to catalog</a>" % prec.catalog
         else:
