@@ -233,18 +233,21 @@ def request_processor():
 def token():
 
     app.logger.info(request.args)
+    
     error = request.args.get('error', None)
+    state =  request.args.get('state', None)
     
     if not(error is None):
         app.logger.info(error)
-        app.logger.info(error_description)
-        return "rejection noted"
+        app.logger.info(request.args.get('error_description', None))
+        prec = updateProcessorRequest(state=state, status=error)
+        return "Noted rejection <a href='%s'>return to catalog</a>" % prec.catalog
     
     code  =  request.args.get('code', None)
-    state =  request.args.get('state', None)
-    prec = updateProcessorRequest(state=state, code=code)
-    #now obtain the code!
+   
+    prec = updateProcessorRequest(state=state, status="accepted", code=code)
     
+    #if successful, swap the auth code for the token proper with catalog
     if not(prec is None): 
         url = '%s/client_access?grant_type=authorization_code&redirect_uri=%s&code=%s' % (prec.catalog, prec.redirect,code)
         
@@ -261,9 +264,9 @@ def token():
             
             return "Successfully obtained token <a href='%s'>return to catalog</a>" % prec.catalog
         else:
-            return result
+            return  "Failed to swap auth code for token <a href='%s'>return to catalog</a>" % prec.catalog
             
-    return "Hmmm couldn't retrieve the token"
+    return "No pending request found for state %s" % state
  
 @app.route('/purge')
 @login_required

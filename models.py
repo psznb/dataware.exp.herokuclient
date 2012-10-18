@@ -23,9 +23,10 @@ class ProcessorRequest(Base):
     query = Column(String(512))
     code = Column(String(256))
     token = Column(String(256))
-  
+    status = Column(String(256))
+    
     def __repr__(self):
-        return "{state:'%s', resource:'%s', resource_uri:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s'}" % (self.state, self.resource, self.resource_uri, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token)
+        return "{state:'%s', resource:'%s', resource_uri:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s', status:'%s'}" % (self.state, self.resource, self.resource_uri, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token, self.status)
 
 class ExecutionRequest(Base):
     __tablename__ = 'executionrequest'
@@ -78,12 +79,12 @@ def addIdentifier(catalog, redirect, clientid):
     return True
     
 def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry, query):   
-    prorec = ProcessorRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query)
+    prorec = ProcessorRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query, status="pending")
     db_session.add(prorec)
   
     return True
 
-def updateProcessorRequest(state, code=None, token=None):
+def updateProcessorRequest(state, status, code=None, token=None):
 
     p = db_session.query(ProcessorRequest).filter(ProcessorRequest.state==state).first()
     
@@ -93,6 +94,7 @@ def updateProcessorRequest(state, code=None, token=None):
         if (not(token is None)):
             p.token = token
         
+        p.status = status
     
         return p
         
