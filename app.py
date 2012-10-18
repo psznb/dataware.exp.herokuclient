@@ -240,7 +240,7 @@ def token():
     if not(error is None):
         app.logger.info(error)
         app.logger.info(request.args.get('error_description', None))
-        prec = updateProcessorRequest(state=state, status=error
+        prec = updateProcessorRequest(state=state, status=error)
         return "Noted rejection <a href='%s'>return to catalog</a>" % prec.catalog
     
     code  =  request.args.get('code', None)
