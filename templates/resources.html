@@ -179,8 +179,9 @@
 			    
                 success: function( data, status  ) {
                     console.log(data)
+                    
                     if (data.success){
-			            
+			            self.query(false);    
 			            rlm.processors.push({
 			                "state":data.state,
 			                "resource":requestdata.resource_name,
