@@ -98,7 +98,7 @@ def updateProcessorRequest(state, status, code=None, token=None):
         
         print "setting status to %s" % status
         p.status = status
-    
+        db_session.commit()
         return p
     print "p is none"    
     return None
