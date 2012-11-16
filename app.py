@@ -229,7 +229,6 @@ def request_processor():
         return render_template('request.html', options=options, error=error)
     
 @app.route('/processor')
-@login_required
 def token():
 
     app.logger.info(request.args)
