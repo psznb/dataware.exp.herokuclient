@@ -274,7 +274,7 @@ def processors():
     
     print processors
     
-    data = json.dumps(processors);
+    data = json.dumps(dict(processors));
     
     print data
     
