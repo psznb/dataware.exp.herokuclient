@@ -273,10 +273,10 @@ def processors():
     processors =  getProcessorRequests()  
     print "---processors---"
     print processors
-    
-    #response =  Response(str(processors), mimetype='application/json')
-    #response.headers.add('Content-Type', 'text/plain; charset=utf-8')
-    return jsonify({'result':'success'})
+    resp = processors;
+    resp.status_code = 200
+    return resp
+   
     
 @app.route('/purge')
 @login_required

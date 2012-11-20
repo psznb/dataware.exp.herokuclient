@@ -2,7 +2,7 @@ from database import Base, db_session
 from sqlalchemy import Column, Integer, String, BigInteger
 from sqlalchemy.dialects.postgresql import TEXT
 from sqlalchemy.sql import and_
-import json
+from flask import jsonify
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -27,7 +27,7 @@ class ProcessorRequest(Base):
     status = Column(String(256))
     
     def __repr__(self):
-        return  json.dumps({'state':self.state, 'resource':self.resource, 'resource_uri':self.resource_uri, 'expiry':self.expiry, 'redirect':self.redirect, 'catalog':self.catalog, 'query': self.query, 'code':self.code, 'token':self.token, 'status':self.status})
+        return  jsonify({'state':self.state, 'resource':self.resource, 'resource_uri':self.resource_uri, 'expiry':self.expiry, 'redirect':self.redirect, 'catalog':self.catalog, 'query': self.query, 'code':self.code, 'token':self.token, 'status':self.status})
 
 class ExecutionRequest(Base):
     __tablename__ = 'executionrequest'
