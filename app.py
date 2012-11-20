@@ -267,6 +267,11 @@ def token():
             
     return "No pending request found for state %s" % state
  
+@app.route('/processors')
+@login_required
+def processors():
+    return db.getProcessorRequests()
+
 @app.route('/purge')
 @login_required
 def purge():

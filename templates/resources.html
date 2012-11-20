@@ -8,7 +8,7 @@
     <div class="row">
         <div class="span8 offset2 well">
             <legend> Pick a catalog to view resources </legend>
-            <form action="javascript:request_resources()">
+            <form action="javascript:request_resources();javascript:request_processors()">
                 <select name="catalog_uri" class="span7" id="catalog_uri">
                         {% for catalog in catalogs%}
                             <option>{{catalog}}</option> 
@@ -162,16 +162,7 @@
             var desiredType = this.typeToShow();
             
             return ko.utils.arrayFilter(this.processors(), function(processor){
-                //if (desiredType == "pending"){
-                //    return processor.token=="None"; 
-                //}
-                
-                console.log("processor");
-                
-                console.log(processor);
-                
                 return processor.status == desiredType;
-                //return processor.token != "None";
             });
             
         }, this);
@@ -215,12 +206,30 @@
     };
 
     var rlm = new ResourceListModel([], {{processors | safe}})
-    console.log({{processors | safe}});
+    
     ko.applyBindings(rlm);
     
     
+    function request_processors(){
+        $.ajax({
+			type: 'GET',
+			url: '/processors'
+			dataType: "json",
+			
+			success: function( data, status  ) {
+			    console.log("great, got processors!");
+			    console.log(data);
+			    rlm.processors(data);
+			},
+			error: function( data, status ) {
+				alert( "We are currently unable to process this installation. Please try again later." );
+			}
+		});
+    
+    }
+    
     function request_resources() {
-        console.log("REQUESTING RESOURCES!")
+        
         console.log('/request_resources?catalog_uri=' +  $("#catalog_uri").val());
 		
 		$.ajax({
