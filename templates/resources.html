@@ -56,8 +56,12 @@
                      <a href='#' data-bind="click:function(){typeToShow('pending')}">Pending</a>
                    </li>
                    
-                  <li data-bind="css:{'active':!ampending()}">
-                     <a href='#' data-bind="click:function(){typeToShow('active')}">Accepted</a>
+                  <li data-bind="css:{'active':amaccepted()}">
+                     <a href='#' data-bind="click:function(){typeToShow('accepted')}">Accepted</a>
+                   </li>
+                   
+                    <li data-bind="css:{'active':amrejected()}">
+                     <a href='#' data-bind="click:function(){typeToShow('access_denied')}">Accepted</a>
                    </li>
                 </ul>
                 <div class="row">
