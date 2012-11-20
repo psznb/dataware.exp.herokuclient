@@ -27,7 +27,7 @@ class ProcessorRequest(Base):
     status = Column(String(256))
     
     def __repr__(self):
-        return  jsonify({'state':self.state, 'resource':self.resource, 'resource_uri':self.resource_uri, 'expiry':self.expiry, 'redirect':self.redirect, 'catalog':self.catalog, 'query': self.query, 'code':self.code, 'token':self.token, 'status':self.status})
+        return  json.dumps({'state':self.state, 'resource':self.resource, 'resource_uri':self.resource_uri, 'expiry':self.expiry, 'redirect':self.redirect, 'catalog':self.catalog, 'query': self.query, 'code':self.code, 'token':self.token, 'status':self.status})
 
 class ExecutionRequest(Base):
     __tablename__ = 'executionrequest'

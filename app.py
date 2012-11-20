@@ -273,8 +273,9 @@ def processors():
     processors =  getProcessorRequests()  
     print "---processors---"
     print processors
-    resp = processors;
+    resp = jsonify(processors)
     resp.status_code = 200
+    print resp
     return resp
    
     
