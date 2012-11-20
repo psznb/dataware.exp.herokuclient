@@ -127,11 +127,8 @@
         var self = this;
         
         this.resources = ko.observableArray(resources);
-        
         this.processors = ko.observableArray(processors);
-        
         this.query = ko.observable(false);
-
         this.selectedCatalog = resources.length > 0 ? ko.observable(resources[0]) : ko.observable();
         
         
@@ -149,14 +146,28 @@
             return self.typeToShow() == "pending";
         });
         
+        this.amaccepted = ko.computed(function(){
+            return self.typeToShow() == "accepted";
+        });
+        
+        this.amrejected = ko.computed(function(){
+            return self.typeToShow() == "access_denied";
+        });
+        
         this.processorsToShow = ko.computed(function(){
             var desiredType = this.typeToShow();
             
             return ko.utils.arrayFilter(this.processors(), function(processor){
-                if (desiredType == "pending"){
-                    return processor.token=="None"; 
-                }
-                return processor.token != "None";
+                //if (desiredType == "pending"){
+                //    return processor.token=="None"; 
+                //}
+                
+                console.log("processor");
+                
+                console.log(processor);
+                
+                return processor.status == desiredType;
+                //return processor.token != "None";
             });
             
         }, this);
