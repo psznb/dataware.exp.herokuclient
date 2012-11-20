@@ -2,8 +2,6 @@ from database import Base, db_session
 from sqlalchemy import Column, Integer, String, BigInteger
 from sqlalchemy.dialects.postgresql import TEXT
 from sqlalchemy.sql import and_
-from flask import jsonify
-import json
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -27,8 +25,24 @@ class ProcessorRequest(Base):
     token = Column(String(256))
     status = Column(String(256))
     
+    @property
+    def serialize(self):
+        """ return object in easily serializable format """
+        return{
+            'state':self.state,
+            'resource':self.resource,
+            'resource_uri':self.resource_uri,
+            'expiry': self.expiry,
+            'redirect': self.redirect,
+            'catalog':self.catalog,
+            'query':self.query,
+            'code':self.code,
+            'token':self.token,
+            'status':self.status
+        }
+        
     def __repr__(self):
-        return  json.dumps({'state':self.state, 'resource':self.resource, 'resource_uri':self.resource_uri, 'expiry':self.expiry, 'redirect':self.redirect, 'catalog':self.catalog, 'query': self.query, 'code':self.code, 'token':self.token, 'status':self.status})
+        return "{state:'%s', resource:'%s', resource_uri:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s', status:'%s'}" % (self.state, self.resource, self.resource_uri, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token, self.status)
 
 class ExecutionRequest(Base):
     __tablename__ = 'executionrequest'

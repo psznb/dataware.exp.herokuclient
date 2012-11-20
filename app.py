@@ -271,13 +271,9 @@ def token():
 @app.route('/processors')
 @login_required
 def processors():
-    processors =  getProcessorRequests()  
-    print "---processors---"
-    print processors
-    resp = jsonify(processors)
-    resp.status_code = 200
-    print resp
-    return resp
+    processors =  getProcessorRequests()
+    return jsonify(processors=[p.serialize for p in processors])  
+   
    
     
 @app.route('/purge')
