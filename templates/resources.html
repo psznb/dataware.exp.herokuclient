@@ -61,7 +61,7 @@
                    </li>
                    
                     <li data-bind="css:{'active':amrejected()}">
-                     <a href='#' data-bind="click:function(){typeToShow('access_denied')}">Accepted</a>
+                     <a href='#' data-bind="click:function(){typeToShow('access_denied')}">Rejected</a>
                    </li>
                 </ul>
                 <div class="row">
@@ -88,10 +88,10 @@
                                <div class="span3">
                                    <span data-bind="text: query"></span>
                                </div>
-                               <div class="span4" data-bind="visible:!$parent.ampending()">     
+                               <div class="span4" data-bind="visible:$parent.amaccepted()">     
                                     <input type="text" name="parameters"  value="{}">
                                </div>
-                                <div class="span2" data-bind="visible:!$parent.ampending()"> 
+                                <div class="span2" data-bind="visible:$parent.amaccepted()"> 
                                     <button type="submit" class="btn">Run</button>
                                 </div> 
                           </form>
