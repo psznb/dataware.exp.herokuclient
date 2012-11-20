@@ -219,7 +219,7 @@
 			success: function( data, status  ) {
 			    console.log("great, got processors!");
 			    console.log(data);
-			    rlm.processors(data);
+			    rlm.processors(data.processors);
 			},
 			error: function( data, status ) {
 				alert( "We are currently unable to process this installation. Please try again later." );
