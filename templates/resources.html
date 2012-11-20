@@ -229,6 +229,8 @@
 			dataType: "json",
 			
 			success: function( data, status  ) {
+			    console.log("great, got resources!");
+			    console.log(data);
 			    rlm.resources(data);
 			},
 			error: function( data, status ) {
