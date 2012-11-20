@@ -270,7 +270,7 @@ def token():
 @app.route('/processors')
 @login_required
 def processors():
-    return getProcessorRequests()
+    return json.dumps(getProcessorRequests())
 
 @app.route('/purge')
 @login_required
