@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, url_for, render_template, flash, redirect, session, jsonify
+from flask import Flask, request, url_for, render_template, flash, redirect, session
 from util import *
 import urllib2
 import urllib
@@ -270,8 +270,11 @@ def token():
 @app.route('/processors')
 @login_required
 def processors():
-    return jsonify(getProcessorRequests())
-
+    data =  getProcessorRequests();
+    result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+    print json.dumps(result)
+    return json.dumps(result)
+    
 @app.route('/purge')
 @login_required
 def purge():
