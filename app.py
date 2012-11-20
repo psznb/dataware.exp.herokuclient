@@ -10,7 +10,7 @@ from database import init_db
 from models import *
 from datetime import datetime, timedelta
 from functools import wraps
-import json
+
 
 app = Flask(__name__)
 app.config.from_object('settings')

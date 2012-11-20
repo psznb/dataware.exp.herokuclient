@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, BigInteger
 from sqlalchemy.dialects.postgresql import TEXT
 from sqlalchemy.sql import and_
 from flask import jsonify
+import json
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
