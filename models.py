@@ -25,8 +25,8 @@ class ProcessorRequest(Base):
     token = Column(String(256))
     status = Column(String(256))
     
-    def __repr__(self):
-        return "{state:'%s', resource:'%s', resource_uri:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s', status:'%s'}" % (self.state, self.resource, self.resource_uri, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token, self.status)
+    #def __repr__(self):
+    #    return "{state:'%s', resource:'%s', resource_uri:'%s', expiry: %d, redirect:'%s', catalog:'%s', query:'%s', code:'%s', token:'%s', status:'%s'}" % (self.state, self.resource, self.resource_uri, self.expiry, self.redirect, self.catalog, self.query, self.code, self.token, self.status)
 
 class ExecutionRequest(Base):
     __tablename__ = 'executionrequest'
