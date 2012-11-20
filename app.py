@@ -271,7 +271,9 @@ def token():
 @login_required
 def processors():
     processors =  getProcessorRequests()  
-    return Response(str(processors), mimetype='application/json')
+    response =  Response(str(processors), mimetype='application/json')
+    response.headers.add('Content-Type', 'text/plain; charset=utf-8')
+    return response
     
 @app.route('/purge')
 @login_required
