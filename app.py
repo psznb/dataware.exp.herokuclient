@@ -272,9 +272,9 @@ def token():
 def processors():
     processors = getProcessorRequests()
     
-    print processors.result
+    print processors
     
-    data = json.dumps(processors.result);
+    data = json.dumps(processors);
     
     print data
     
