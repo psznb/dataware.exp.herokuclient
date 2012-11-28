@@ -290,14 +290,9 @@ def result(execution_id):
     print request.form
     
     print request.form['success']
-    print '-----------------------------'
-    print request.form['success'] == 'True'
-    print request.form['success'] == 'False'
-    print request.form['success'] == True
-    print request.form['success'] == False
-    
+
     try:
-        if (request.form['success']):
+        if (request.form['success'] == 'True'):
             execution_request = getExecutionRequest(execution_id)
             #result = json.loads(data.replace( '\r\n','\n' ), strict=False)
             print "getting 'return'"
