@@ -287,21 +287,11 @@ def result(execution_id):
     
     success = True
     
-    print request.form
-    
-    #print response
-    
-    #print json.loads(response.replace( '\r\n','\n' ), strict=False)
-    
-    #print response
-    
     try:
         if (request.form['success'] == 'True'):
             execution_request = getExecutionRequest(execution_id)
             result = request.form['return']
-            
-            print str(result)
-            
+              
             if not(execution_request is None):
                 addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(result), received=int(time.time()))
    
