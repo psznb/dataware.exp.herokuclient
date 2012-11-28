@@ -297,10 +297,11 @@ def result(execution_id):
             #result = json.loads(data.replace( '\r\n','\n' ), strict=False)
             print "0----"
             print request.form['return']
+            print "0.5----"
             print "1----"
             print str(request.form['return'])
             print "2----"
-            print json.dumps(request.form['return'])
+            print "and finnally %s" % json.dumps(request.form['return'])
             print "-----"
         else:
             print "not doing anything at the mo!"
