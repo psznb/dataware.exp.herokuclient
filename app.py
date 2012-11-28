@@ -289,29 +289,21 @@ def result(execution_id):
     
     print request.form
     response = request.form['response']
+    
     print response
+    data = json.loads(response.replace( '\r\n','\n' ), strict=False)
+    success = data['success']
     
-    print json.loads(response.replace( '\r\n','\n' ), strict=False)
-    
-    #print response
-    
-    #try:
-    #    if (request.form['success'] == 'True'):
-    #        execution_request = getExecutionRequest(execution_id)
-            #result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-    #        print "0----"
-    #        print request.form['return']
-    #        print "0.5----"
-    #        print "1----"
-    #        print str(request.form['return'])
-    #        print "2----"
-    #        print "and finnally %s" % json.dumps(request.form['return'])
-    #        print "-----"
-    #    else:
-    #        print "not doing anything at the mo!"
+    try:
+        if (success):
+            execution_request = getExecutionRequest(execution_id)
+            result = data['return']
+            print json.dumps(result)
+        else:
+            print "not doing anything at the mo!"
                         
-    #except:
-    #    success = False
+    except:
+        success = False
         
     return json.dumps({'success':success}) 
         
