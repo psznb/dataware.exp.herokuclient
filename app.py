@@ -285,9 +285,14 @@ def purge():
 @app.route('/result/<execution_id>', methods=['POST'])
 def result(execution_id):
     
+    print request.form
+    
     data = request.form['return']
+    
     execution_request = getExecutionRequest(execution_id)
+    
     result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+    
     values = result['return']
     
     print "--------VALUES---------------"
