@@ -288,7 +288,14 @@ def result(execution_id):
     success = True
     
     print request.form
-      
+    
+    print request.form['success']
+    print '-----------------------------'
+    print request.form['success'] == 'True'
+    print request.form['success'] == 'False'
+    print request.form['success'] == True
+    print request.form['success'] == False
+    
     try:
         if (request.form['success']):
             execution_request = getExecutionRequest(execution_id)
