@@ -289,7 +289,16 @@ def result(execution_id):
     
     print request.form
     
-    
+    try:
+        print request.form['return']
+    except:
+        print "oops can't print return"
+        
+    try:
+        print request.form['success']
+    except:
+        print "oops can't print success"    
+        
     #print request.form
     
     #data = request.form['return']
