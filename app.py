@@ -295,10 +295,13 @@ def result(execution_id):
         if (request.form['success'] == 'True'):
             execution_request = getExecutionRequest(execution_id)
             #result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-            print "getting 'return'"
-            values = result['return']
-            print values
-            print json.dumps(values)
+            print "0----"
+            print result['return']
+            print "1----"
+            print str(result['return'])
+            print "2----"
+            print json.dumps(result['return'])
+            print "-----"
         else:
             print "not doing anything at the mo!"
                         
