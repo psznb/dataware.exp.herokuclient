@@ -288,10 +288,10 @@ def result(execution_id):
     success = True
     
     print request.form
-    response = request.form['response']
-    print response
+    #response = request.form['response']
+    #print response
     
-    print json.loads(response.replace( '\r\n','\n' ), strict=False)
+    #print json.loads(response.replace( '\r\n','\n' ), strict=False)
     
     #print response
     
