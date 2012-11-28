@@ -285,25 +285,31 @@ def purge():
 @app.route('/result/<execution_id>', methods=['POST'])
 def result(execution_id):
     
-    print request
+    success = True
     
     print request.form
-    
+      
     try:
-        print request.form['return']
+        if (request.form['success']):
+            execution_request = getExecutionRequest(execution_id)
+            #result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+            print "getting 'return'"
+            values = result['return']
+            print values
+            print json.dumps(values)
+        else:
+            print "not doing anything at the mo!"
+                        
     except:
-        print "oops can't print return"
+        success = False
         
-    try:
-        print request.form['success']
-    except:
-        print "oops can't print success"    
+    return json.dumps({'success':success}) 
         
     #print request.form
     
     #data = request.form['return']
     
-    #execution_request = getExecutionRequest(execution_id)
+    #
     
     #result = json.loads(data.replace( '\r\n','\n' ), strict=False)
     
@@ -316,7 +322,7 @@ def result(execution_id):
     #if not(execution_request is None):
     #    addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=json.dumps(values), received=int(time.time()))
         
-    return json.dumps({'success':True})
+    
     
 @app.route('/view/<execution_id>', methods=['POST'])
 def view(execution_id):
