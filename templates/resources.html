@@ -83,7 +83,7 @@
                          <form action={{url_for('execute')}} method=post> 
                             <input type="hidden" name="state" data-bind="value: state">
                                <div class="span2">
-                                   <span data-bind="text: $parent.queryurl(resource_uri)"></span>
+                                   <span data-bind="text: $parent.queryurl(resource_uri, resource)"></span>
                                </div>
                                <div class="span3">
                                    <span data-bind="text: query"></span>
@@ -147,16 +147,14 @@
             self.query(!self.query());
         }
         
-        this.queryurl = function(resource_uri){
+        this.queryurl = function(resource_uri, resource_name){
             console.log(resource_uri);
             
             idx = resource_uri.indexOf("//") == -1 ? 0 : 1
+            urltoks = resource_uri.split("\/\/");
+            schema = idx == 1 ? urtoks[0] : "http:";
             
-            console.log(idx);
-            
-            console.log(resource_uri.split("\/\/"));
-            
-            return resource_uri.split("\/\/")[idx].split(".")[0];
+            return schema  + "//" + resource_name + "." + resource_uri.split("\/\/")[idx];
         }
         
         this.typeToShow = ko.observable("pending")
