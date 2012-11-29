@@ -35,7 +35,7 @@
                         
                             <tr>
                                 <td data-bind="text: owner"></td>
-                                <td data-bind="text: resource_name"></td>  
+                                <td> <a data-bind="attr:{href: $parent.queryurl(resource_uri, resource)}"><span data-bind="text: resource_name"></span></a></td>  
                                 <td> <i class="icon-road"></i> <a href="#" data-bind="click:function(){$parent.selectedCatalog($data);$parent.toggleQuery();}"> create a new processing request </a> </td>
                             </tr> 
                        
@@ -83,7 +83,7 @@
                          <form action={{url_for('execute')}} method=post> 
                             <input type="hidden" name="state" data-bind="value: state">
                                <div class="span2">
-                                   <span data-bind="text: $parent.queryurl(resource_uri, resource)"></span>
+                                   <span data-bind="text: resource"></span>
                                </div>
                                <div class="span3">
                                    <span data-bind="text: query"></span>
