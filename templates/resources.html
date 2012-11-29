@@ -148,7 +148,7 @@
         }
         
         this.queryurl = function(resource_uri){
-            return resource_uri.split("://")[0].split(".")[0];
+            return resource_uri.split("http:\/\/")[0].split(".")[0];
         }
         
         this.typeToShow = ko.observable("pending")
