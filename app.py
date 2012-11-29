@@ -241,7 +241,7 @@ def token():
         app.logger.info(error)
         app.logger.info(request.args.get('error_description', None))
         prec = updateProcessorRequest(state=state, status=error)
-        return "Noted rejection <a href='%s'>return to catalog</a>" % prec.catalog
+        return "Noted rejection <a href='%s/audit'>return to catalog</a>" % prec.catalog
     
     code  =  request.args.get('code', None)
    
@@ -262,9 +262,9 @@ def token():
         if result["success"]:
             updateProcessorRequest(state=state, status="accepted", token=result["access_token"])
             
-            return "Successfully obtained token <a href='%s'>return to catalog</a>" % prec.catalog
+            return "Successfully obtained token <a href='%s/audit'>return to catalog</a>" % prec.catalog
         else:
-            return  "Failed to swap auth code for token <a href='%s'>return to catalog</a>" % prec.catalog
+            return  "Failed to swap auth code for token <a href='%s/audit'>return to catalog</a>" % prec.catalog
             
     return "No pending request found for state %s" % state
  
