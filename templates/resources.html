@@ -226,7 +226,6 @@
 			success: function( data, status  ) {
 			    console.log("great, got processors!");
 			    console.log(data);
-			    console.log(data.resource_uri.split("://")[0].split(".")[0]);
 			    rlm.processors(data.processors);
 			},
 			error: function( data, status ) {
