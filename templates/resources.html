@@ -148,7 +148,15 @@
         }
         
         this.queryurl = function(resource_uri){
-            return resource_uri.split("http:\/\/")[0].split(".")[0];
+            console.log(resource_uri);
+            
+            idx = resource_uri.indexOf("//") == -1 ? 0 : 1
+            
+            console.log(idx);
+            
+            console.log(resource_uri.split("\/\/"));
+            
+            return resource_uri.split("\/\/")[idx].split(".")[0];
         }
         
         this.typeToShow = ko.observable("pending")
