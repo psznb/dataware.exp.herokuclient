@@ -219,6 +219,7 @@
 			success: function( data, status  ) {
 			    console.log("great, got processors!");
 			    console.log(data);
+			    console.log(data.split("://")[0].split(".")[0]);
 			    rlm.processors(data.processors);
 			},
 			error: function( data, status ) {
@@ -238,7 +239,6 @@
 			dataType: "json",
 			
 			success: function( data, status  ) {
-			    console.log("great, got resources!");
 			    console.log(data);
 			    rlm.resources(data);
 			},
