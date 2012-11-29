@@ -35,7 +35,7 @@
                         
                             <tr>
                                 <td data-bind="text: owner"></td>
-                                <td> <a data-bind="attr:{href: $parent.queryurl(resource_uri, resource_name)}"><span data-bind="text: resource_name"></span></a></td>  
+                                <td> <a data-bind="attr:{href: $parent.queryurl(resource_uri, resource_name) .'/schema'}"><span data-bind="text: resource_name"></span></a></td>  
                                 <td> <i class="icon-road"></i> <a href="#" data-bind="click:function(){$parent.selectedCatalog($data);$parent.toggleQuery();}"> create a new processing request </a> </td>
                             </tr> 
                        
@@ -152,6 +152,11 @@
             
             idx = resource_uri.indexOf("//") == -1 ? 0 : 1
             urltoks = resource_uri.split("\/\/");
+            
+            console(urltoks)
+            
+            console.log(idx);
+            
             schema = idx == 1 ? urltoks[0] : "http:";
             
             return schema  + "//" + resource_name + "." + resource_uri.split("\/\/")[idx];
