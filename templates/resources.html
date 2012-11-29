@@ -83,7 +83,7 @@
                          <form action={{url_for('execute')}} method=post> 
                             <input type="hidden" name="state" data-bind="value: state">
                                <div class="span2">
-                                   <span data-bind="text: resource"></span>
+                                   <span data-bind="text: $parent.queryurl(resource_uri)"></span>
                                </div>
                                <div class="span3">
                                    <span data-bind="text: query"></span>
@@ -131,8 +131,11 @@
         var self = this;
         
         this.resources = ko.observableArray(resources);
+        
         this.processors = ko.observableArray(processors);
+        
         this.query = ko.observable(false);
+        
         this.selectedCatalog = resources.length > 0 ? ko.observable(resources[0]) : ko.observable();
         
         
@@ -142,6 +145,10 @@
         
         this.toggleQuery = function(){
             self.query(!self.query());
+        }
+        
+        this.queryurl = function(resource_uri){
+            return resource_uri.split("://")[0].split(".")[0];
         }
         
         this.typeToShow = ko.observable("pending")
