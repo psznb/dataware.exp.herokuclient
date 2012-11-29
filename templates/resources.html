@@ -152,7 +152,7 @@
             
             idx = resource_uri.indexOf("//") == -1 ? 0 : 1
             urltoks = resource_uri.split("\/\/");
-            schema = idx == 1 ? urtoks[0] : "http:";
+            schema = idx == 1 ? urltoks[0] : "http:";
             
             return schema  + "//" + resource_name + "." + resource_uri.split("\/\/")[idx];
         }
