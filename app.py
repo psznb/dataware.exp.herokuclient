@@ -127,7 +127,7 @@ def resources():
 @login_required
 def request_resources():
     catalog  =  request.args.get('catalog_uri', None)  
-    client = getMyIdentifier(catalog)
+    client = fetchIdentifier(catalog)
     url = "%s/client_list_resources?client_id=%s&client_uri=%s" % (catalog, client.id, client.redirect) 
     f = urllib2.urlopen(url)
     data = f.read()  
@@ -141,6 +141,10 @@ def register():
 
     if request.method == 'POST':
         catalog = request.form['catalog_uri']
+        
+        if not fetchIdentifier(catalog) is None:
+            flash('Already registered with %s' % catalog)
+            return redirect(url_for('resources'))
         
         url = "%s/client_register" % catalog
         
@@ -161,7 +165,7 @@ def register():
         if (result['success']):
             addIdentifier(catalog, "%s/%s" % (REALM, "processor"), result['client_id'])
         
-        flash('Successfully regsitered with %s' % catalog)
+        flash('Successfully registered with %s' % catalog)
         return redirect(url_for('resources'))
     
     else:
@@ -184,7 +188,7 @@ def request_processor():
         resource_uri = request.form['resource_uri']
         owner = request.form['owner']
         state = generateuniquestate()
-        client = getMyIdentifier(catalog)
+        client = fetchIdentifier(catalog)
     
         values = {
             'client_id': client.id,

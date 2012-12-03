@@ -122,7 +122,10 @@ def addIdentifier(catalog, redirect, clientid):
     
     return True   
    
-
+def fetchIdentifier(catalog):
+    return Identifier.query.filter(Identifier.catalog==catalog).first()
+    
+    
 def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry, query):   
     prorec = ProcessorRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query, status="pending")
     
@@ -164,9 +167,7 @@ def getProcessorRequest(state):
 def getProcessorRequests():
      return db_session.query(ProcessorRequest).all()
      
-def getMyIdentifier(catalog):
-    #return {'id':'something','redirect':'somewhere','catalog':'acatalog'}
-    return Identifier.query.filter(Identifier.catalog==catalog).first()
+
     
 def purgedata():
     db_session.query(ProcessorRequest).delete()
