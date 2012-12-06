@@ -7,7 +7,7 @@ import json
 import OpenIDManager
 import hashlib
 from database import init_db
-from models import *
+from models import * #TODO - import models
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -262,7 +262,7 @@ def token():
         f.close()
         
         result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-        
+        log.info(result)
         if result["success"]:
             updateProcessorRequest(state=state, status="accepted", token=result["access_token"])
             
@@ -365,6 +365,7 @@ def execute():
                 'access_token':processor.token,
                 'parameters': parameters,
                 'result_url' : "%s/result/%s" % (REALM,id)
+                'view_url' : "%s/view/%s" % (REALM,id)
             }
 
             data = urllib.urlencode(values)
@@ -375,6 +376,7 @@ def execute():
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
             
             addExecutionRequest(execution_id=id, access_token=processor.token, parameters=parameters, sent=int(time.time()))
+            
             return redirect(url_for('executions'))
     else:
         processors = getProcessorRequests()
