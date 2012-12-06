@@ -364,7 +364,7 @@ def execute():
             values = {
                 'access_token':processor.token,
                 'parameters': parameters,
-                'result_url' : "%s/result/%s" % (REALM,id)
+                'result_url' : "%s/result/%s" % (REALM,id),
                 'view_url' : "%s/view/%s" % (REALM,id)
             }
 
