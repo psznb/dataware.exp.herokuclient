@@ -262,7 +262,7 @@ def token():
         f.close()
         
         result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-        log.info(result)
+        
         if result["success"]:
             updateProcessorRequest(state=state, status="accepted", token=result["access_token"])
             
