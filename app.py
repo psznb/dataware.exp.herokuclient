@@ -183,7 +183,7 @@ def request_processor():
        
         expiry = request.form['expiry']
         catalog = request.form['catalog'] 
-        query = request.form['query']
+        query = request.form['query'].replace('\n',  ' ')
         resource_name = request.form['resource_name']
         resource_uri = request.form['resource_uri']
         owner = request.form['owner']
