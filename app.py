@@ -349,11 +349,13 @@ def stream():
         um.event.wait()
         #message = um.latest()
         #jsonmsg = json.dumps(message)
-        yield jsonmsg
+        return "HELLO!!!"
         
     except Exception, e:  
         print "longpoll exception"
-       
+    
+    return "goodbye"
+     
 @app.route('/executions')
 @login_required
 def executions():
