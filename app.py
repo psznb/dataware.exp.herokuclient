@@ -249,22 +249,18 @@ def token():
         app.logger.info(error)
         app.logger.info(request.args.get('error_description', None))
         prec = updateProcessorRequest(state=state, status=error)
+        
+        um.trigger({    
+                "type": "resource",
+                "message": "a resource request has been rejected",
+                "data": json.dumps(prec.serialize)                   
+        });
+        
         return "Noted rejection <a href='%s/audit'>return to catalog</a>" % prec.catalog
     
     code  =  request.args.get('code', None)
    
     prec = updateProcessorRequest(state=state, status="accepted", code=code)
-    
-    print "prec is "
-    print prec
-    
-    
-    #ADD LIVE UPDATE HERE!!
-    um.trigger({    
-        "type": "resource",
-        "message": "a resource request has been considered",
-        "data": json.dumps(prec.serialize)                   
-    });
     
     #if successful, swap the auth code for the token proper with catalog
     if not(prec is None): 
@@ -279,10 +275,22 @@ def token():
         result = json.loads(data.replace( '\r\n','\n' ), strict=False)
         
         if result["success"]:
-            updateProcessorRequest(state=state, status="accepted", token=result["access_token"])
+            prec = updateProcessorRequest(state=state, status="accepted", token=result["access_token"])    
+            
+            #update the client to notify of acceptance.
+            
+            um.trigger({    
+                "type": "resource",
+                "message": "a resource request has been accepted",
+                "data": json.dumps(prec.serialize)                   
+            });
+    
             
             return "Successfully obtained token <a href='%s/audit'>return to catalog</a>" % prec.catalog
+        
+        
         else:
+            
             return  "Failed to swap auth code for token <a href='%s/audit'>return to catalog</a>" % prec.catalog
             
     return "No pending request found for state %s" % state

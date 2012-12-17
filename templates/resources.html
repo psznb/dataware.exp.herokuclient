@@ -137,8 +137,6 @@
         this.event = ko.observable().subscribeTo("myevents", true);
         
         this.event.subscribe(function(newValue){
-                console.log("yes!!!!");
-                console.log(self.event())
                 console.log($.parseJSON(self.event().data));
         });
          
