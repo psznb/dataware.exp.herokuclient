@@ -342,21 +342,21 @@ def view(execution_id):
 @login_required
 def stream():
     app.logger.info("waiting on events!")
-      
-    try:
+    return "STREAM!!" 
+    #try:
     
-        um.event.wait()
-        app.logger.info("hmm got something")
-        message = um.latest()
+    #    um.event.wait()
+    #    app.logger.info("hmm got something")
+    #    message = um.latest()
        
         #if (message['user'] and message['user'] == user['user_id']):
-        app.logger.info("sending %s" % message['message'])
-        app.logger.info(message)
-        jsonmsg = json.dumps(message)
-        yield jsonmsg
+    #    app.logger.info("sending %s" % message['message'])
+    #    app.logger.info(message)
+    #   jsonmsg = json.dumps(message)
+    #   yield jsonmsg
         
-    except Exception, e:  
-        log.error("longpoll exception")
+    #except Exception, e:  
+    #    log.error("longpoll exception")
         
 @app.route('/executions')
 @login_required
