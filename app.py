@@ -341,9 +341,12 @@ def view(execution_id):
 @app.route( '/stream')
 @login_required
 def stream():
-          
+    app.logger.info("waiting on events!")
+      
     try:
+    
         um.event.wait()
+        app.logger.info("hmm got something")
         message = um.latest()
        
         #if (message['user'] and message['user'] == user['user_id']):
