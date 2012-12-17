@@ -255,11 +255,14 @@ def token():
    
     prec = updateProcessorRequest(state=state, status="accepted", code=code)
     
+    print "prec is "
+    print prec
+    
     #ADD LIVE UPDATE HERE!!
     um.trigger({    
         "type": "resource",
         "message": "a resource request has been considered",
-        "data": json.dumps(prec)                       
+        "data": json.dumps({"resource": prec})                       
     });
     
     #if successful, swap the auth code for the token proper with catalog
