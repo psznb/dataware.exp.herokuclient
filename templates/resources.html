@@ -139,7 +139,7 @@
         this.event.subscribe(function(newValue){
                 console.log("yes!!!!");
                 console.log(self.event())
-                console.log(eval(self.event().data));
+                console.log($.parseJSON(self.event().data));
         });
          
         this.selectedCatalog = resources.length > 0 ? ko.observable(resources[0]) : ko.observable();
