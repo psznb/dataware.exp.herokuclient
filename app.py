@@ -257,15 +257,16 @@ def token():
     
     print "prec is "
     print prec
-    print "and dumped is"
-    print json.dumps(prec)
+    
     
     #ADD LIVE UPDATE HERE!!
     um.trigger({    
         "type": "resource",
         "message": "a resource request has been considered",
-        "data": json.dumps({'a':'resource'})                    
+        "data": prec                   
     });
+    
+    print "sent something"
     
     #if successful, swap the auth code for the token proper with catalog
     if not(prec is None): 
