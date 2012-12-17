@@ -17,6 +17,8 @@ app = Flask(__name__)
 app.config.from_object('settings')
 init_db()
 um = UpdateManager()
+print "created update manager"
+
 CATALOG     = "http://datawarecatalog.appspot.com"
 REALM       = "http://pure-lowlands-6585.herokuapp.com"
 CLIENTNAME  = "herokuclient"
@@ -341,22 +343,17 @@ def view(execution_id):
 @app.route( '/stream')
 @login_required
 def stream():
-    app.logger.info("waiting on events!")
+    print "waiting on events!!"
     
     try:
     
         um.event.wait()
-        app.logger.info("hmm got something")
         message = um.latest()
-       
-        
-        app.logger.info("sending %s" % message['message'])
-        app.logger.info(message)
         jsonmsg = json.dumps(message)
         yield jsonmsg
         
     except Exception, e:  
-        app.logger.info("longpoll exception")
+        print "longpoll exception"
         
 @app.route('/executions')
 @login_required

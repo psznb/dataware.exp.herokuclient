@@ -1,10 +1,13 @@
 from gevent.event import Event
   
 class UpdateManager(object):
-     
+    
     def __init__(self):
+        print "created update manager"
         self.event    = Event()
+        print "created event object"
         self.messages = []
+        print "inited message queue!"
         
     def trigger(self, message):
         try:  
