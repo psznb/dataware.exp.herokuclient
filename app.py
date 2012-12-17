@@ -10,6 +10,7 @@ from database import init_db
 from models import * #TODO - import models
 from datetime import datetime, timedelta
 from functools import wraps
+from UpdateManager import *
 from gevent.wsgi import WSGIServer
 
 app = Flask(__name__)
@@ -337,6 +338,23 @@ def view(execution_id):
     return str(data)
     
 
+@app.route( '/stream')
+@login_required
+def stream():
+          
+    try:
+        um.event.wait()
+        message = um.latest()
+       
+        #if (message['user'] and message['user'] == user['user_id']):
+        app.logger.info("sending %s" % message['message'])
+        app.logger.info(message)
+        jsonmsg = json.dumps(message)
+        yield jsonmsg
+        
+    except Exception, e:  
+        log.error("longpoll exception")
+        
 @app.route('/executions')
 @login_required
 def executions():
@@ -397,6 +415,7 @@ def user_error( e ):
                
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.ccl
+    um = UpdateManager()
     port = int(os.environ.get('PORT', 5000))
     
     http_server = WSGIServer(('', port), app)
