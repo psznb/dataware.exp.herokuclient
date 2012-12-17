@@ -263,10 +263,8 @@ def token():
     um.trigger({    
         "type": "resource",
         "message": "a resource request has been considered",
-        "data": prec                   
+        "data": {'id':prec['state'] ,'status':prec['status']}                   
     });
-    
-    print "sent something"
     
     #if successful, swap the auth code for the token proper with catalog
     if not(prec is None): 
