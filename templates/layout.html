@@ -6,9 +6,37 @@
 <script src="{{ url_for('static', filename='jquery/jquery-1.7.2.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 
+<script src="{{ url_for('static', filename='knockout/knockout-min.js') }}"></script> 
+<script src="{{ url_for('static', filename='knockout/knockout-mapping.js') }}"></script> 
+<script src="{{ url_for('static', filename='knockout/knockout-postbox.min.js') }}"></script>
+
 <script>
 
-    startpolling = function(frequency){
+    var NotificationModel = function(){
+        
+        var self = this;
+        
+        this.events = ko.observableArray([]);
+        
+        this.lastEvent = ko.observable("").publishOn("myevents");
+         
+        /*
+         * subscribe to the events observable array and publish the last
+         * element, to be viewed by other view models.  Note that this currently
+         * sends a reference.  To create a deep copy we could do ko.toJSON and recreate
+         * at the other end.
+         */
+        this.events.subscribe(function(newValue){
+            console.log(this.events()[this.events().length -1]);
+            this.lastEvent(this.events()[this.events().length -1]);   
+        },this);
+        
+        
+        this.read = function(message){
+            self.events.remove(message);
+        };
+        
+        this.startpolling = function(frequency){
             
             setTimeout(function(){
         
@@ -21,6 +49,7 @@
                     success: function(data) {
                         frequency = 500;
                         console.log(data);
+                        self.events.push(data);
                         //self.latestEvent(data.message);
                         //$('.top-right').notify({
                         // message: { text: data.message }
@@ -44,10 +73,16 @@
                 });
             
             },frequency);
-    };
-    
-    
-    startpolling(500);
+        }
+    }
+</script>
+
+<script>
+    $(function(){
+        var nm = new NotificationModel();	
+		ko.applyBindings(nm,$(".navbar-inner")[0]);
+        nm.startpolling(500);
+    });
 </script>
 
 <div class="navbar">

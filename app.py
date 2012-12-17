@@ -126,6 +126,7 @@ def user_openid_authenticate():
 def resources():
     return render_template('resources.html', catalogs=["http://datawarecatalog.appspot.com"], processors=getProcessorRequests());
     
+    
 @app.route('/request_resources')
 @login_required
 def request_resources():
@@ -307,7 +308,7 @@ def result(execution_id):
                         
     except:
         success = False
-        
+           
     return json.dumps({'success':success}) 
     
     

@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 
 {% block resources %}
-<script src="{{ url_for('static', filename='knockout/knockout-min.js') }}"></script> 
-<script src="{{ url_for('static', filename='knockout/knockout-mapping.js') }}"></script> 
 
 <div class="container">
     <div class="row">
@@ -136,6 +134,13 @@
         
         this.query = ko.observable(false);
         
+        this.event = ko.observable().subscribeTo("myevents", true);
+        
+        this.event.subscribe(function(newValue){
+                console.log("yes!!!!");
+                console.log(self.event())
+        });
+         
         this.selectedCatalog = resources.length > 0 ? ko.observable(resources[0]) : ko.observable();
         
         
