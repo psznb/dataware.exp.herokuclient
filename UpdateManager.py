@@ -12,7 +12,7 @@ class UpdateManager(object):
             self.event.set()
             self.event.clear() 
         except Exception, e:   
-            log.error("exception notifying") 
+            print "exception notifying" 
             print e
             
     def latest(self):

@@ -16,7 +16,7 @@ from gevent.wsgi import WSGIServer
 app = Flask(__name__)
 app.config.from_object('settings')
 init_db()
-
+um = UpdateManager()
 CATALOG     = "http://datawarecatalog.appspot.com"
 REALM       = "http://pure-lowlands-6585.herokuapp.com"
 CLIENTNAME  = "herokuclient"
@@ -342,21 +342,21 @@ def view(execution_id):
 @login_required
 def stream():
     app.logger.info("waiting on events!")
-    return "STREAM!!" 
-    #try:
     
-    #    um.event.wait()
-    #    app.logger.info("hmm got something")
-    #    message = um.latest()
+    try:
+    
+        um.event.wait()
+        app.logger.info("hmm got something")
+        message = um.latest()
        
-        #if (message['user'] and message['user'] == user['user_id']):
-    #    app.logger.info("sending %s" % message['message'])
-    #    app.logger.info(message)
-    #   jsonmsg = json.dumps(message)
-    #   yield jsonmsg
         
-    #except Exception, e:  
-    #    log.error("longpoll exception")
+        app.logger.info("sending %s" % message['message'])
+        app.logger.info(message)
+        jsonmsg = json.dumps(message)
+        yield jsonmsg
+        
+    except Exception, e:  
+        app.logger.info("longpoll exception")
         
 @app.route('/executions')
 @login_required
@@ -418,7 +418,7 @@ def user_error( e ):
                
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.ccl
-    um = UpdateManager()
+    
     port = int(os.environ.get('PORT', 5000))
     
     http_server = WSGIServer(('', port), app)
