@@ -343,19 +343,27 @@ def view(execution_id):
 @app.route( '/stream')
 @login_required
 def stream():
-    print "waiting on events!!"
     
     try:
         um.event.wait()
-        #message = um.latest()
-        #jsonmsg = json.dumps(message)
-        return "HELLO!!!"
+        message = um.latest()
+        jsonmsg = json.dumps(message)
+        return jsonmsg
         
     except Exception, e:  
         print "longpoll exception"
     
     return "goodbye"
-     
+    
+@app.route('/testevent')
+def testevent():
+    um.trigger({    
+                    "type": "test",
+                    "message": "a new execution has been undertaken!",
+                    "data": json.dumps({"a":"thing"})                       
+                })
+    return json.dumps({"result":"success"})
+
 @app.route('/executions')
 @login_required
 def executions():

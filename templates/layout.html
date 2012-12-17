@@ -6,6 +6,50 @@
 <script src="{{ url_for('static', filename='jquery/jquery-1.7.2.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 
+<script>
+
+    startpolling = function(frequency){
+            
+            setTimeout(function(){
+        
+                $.ajax({
+                    url: "/stream",
+                    dataType: 'json', 
+                    timeout: 30000,
+                    cache: false,
+                    
+                    success: function(data) {
+                        frequency = 500;
+                        console.log(data);
+                        //self.latestEvent(data.message);
+                        $('.top-right').notify({
+                         message: { text: data.message }
+                        }).show();
+                    },
+                     
+                    error: function(XMLHttpRequest, textStatus, errorThrown){
+                        switch(XMLHttpRequest.status){
+                            case 502: //update server is down
+                            case 403: //forbidden - unlikely to get access anytime soon
+                                frequency = 60000;
+                                break; 
+                            default:
+                                frequency = 500;
+                        }
+                    },
+                    
+                    complete: function(){
+                        self.startpolling(frequency);        
+                    }
+                });
+            
+            },frequency);
+        }
+    }
+    
+    startpolling(500);
+</script>
+
 <div class="navbar">
     <div class="navbar-inner">
         <a class="brand" href="#">A third party client!</a>
