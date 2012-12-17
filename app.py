@@ -259,7 +259,7 @@ def token():
     um.trigger({    
         "type": "resource",
         "message": "a resource request has been considered",
-        "data": json.dumps({"a":"resource!"})                       
+        "data": json.dumps(prec)                       
     });
     
     #if successful, swap the auth code for the token proper with catalog
