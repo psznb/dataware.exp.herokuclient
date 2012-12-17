@@ -85,7 +85,7 @@ def user_openid_authenticate():
         if user_id:
             try:
                 
-                print "wohoo!  got a new user id %s emial: %s" % (user_id, email)
+               
                 session['logged_in'] = True 
                 #user = db.user_fetch_by_id( user_id )
                  
@@ -254,6 +254,13 @@ def token():
     code  =  request.args.get('code', None)
    
     prec = updateProcessorRequest(state=state, status="accepted", code=code)
+    
+    #ADD LIVE UPDATE HERE!!
+    um.trigger({    
+        "type": "resource",
+        "message": "a resource request has been considered",
+        "data": json.dumps({"a":"resource!"})                       
+    });
     
     #if successful, swap the auth code for the token proper with catalog
     if not(prec is None): 
