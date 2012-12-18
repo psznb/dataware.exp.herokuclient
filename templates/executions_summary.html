@@ -2,31 +2,27 @@
 
 {% block executions_summary %}
     <h3> Execution Results </h3>
-        <div class="row">
-            <div class="span4">
-                <strong> query </strong>
-            </div>
-            <div class="span2">
-                <strong> received </strong>
-            </div>
-            <div class="span2">
-                <strong> action </strong>
-            </div>
-        </div>
-    {% for execution in executions %}
-        <form action="{{url_for('view', execution_id=execution.execution_id)}}" method=post>
-            <input type="hidden" name="processor_id" value="{{execution.access_token}}">
-            <div class="row">
-                <div class="span4">
-                    {{execution.query}}
-                </div>
-                <div class="span2">
-                    {{execution.received}}
-                </div>
-                <div class="span2">
-                    <button class="btn btn-primary" type="submit">View!</button>
-                </div>
-             </div>
-        </form>
-    {% endfor %}
+    <table class="table table-condensed table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Query</th>
+                <th>Received</th>
+                <th>Action</th>
+            </tr>   
+        </thead>                
+        <tbody>
+        {% for execution in executions %}
+            <tr>
+                <td> {{execution.query}}</td>
+                <td> {{execution.received}}</td>  
+                <td>    
+                    <form action="{{url_for('view', execution_id=execution.execution_id)}}" method=post>
+                        <input type="hidden" name="processor_id" value="{{execution.access_token}}">
+                        <button class="btn btn-primary" type="submit">View!</button>
+                    </form>
+                </td>
+            </tr> 
+         {% endfor %}  
+        </tbody>
+    </table> 
 {% endblock %}
