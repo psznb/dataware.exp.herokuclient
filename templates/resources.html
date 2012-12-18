@@ -221,13 +221,21 @@
                     console.log(data)
                     
                     if (data.success){
-			            self.query(false);    
-			            self.processors.push({
+			            self.query(false);
+			            processor = {
 			                "state":data.state,
 			                "resource":requestdata.resource_name,
 			                "query": requestdata.query,
 			                "token": "None"
-			            });
+			            };    
+			            console.log("pushing ");
+			            console.log(processor);
+			            
+			            self.processors.push(processor);
+			            console.log(self.processors());
+			            console.log("now showing...");
+			            console.log(self.processorsToShow());
+			            
 			        }else{
 			            alert("error, sorry, client rejected request");
 			        }
