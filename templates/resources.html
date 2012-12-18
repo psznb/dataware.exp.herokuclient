@@ -170,7 +170,7 @@
             var desiredType = this.typeToShow();
             
             return ko.utils.arrayFilter(this.processors(), function(processor){
-                return processor.status == desiredType;
+                return processor.status() == desiredType;
             });
             
         }, this);
@@ -251,7 +251,7 @@
                 dataType: "json",
                 
                 success: function( data, status  ) {
-                    console.log(data);
+                    console.log(data.processors);
                     self.loadProcessors(data.processors);
                 },
                 error: function( data, status ) {
