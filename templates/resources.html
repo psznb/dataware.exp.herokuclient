@@ -8,7 +8,7 @@
             <legend> Pick a catalog to view resources </legend>
             
            
-            <form data-bind="submit:loadData">
+            <form data-bind="submit:requestData">
                 <select name="catalog_uri" class="span7" id="catalog_uri">
                         {% for catalog in catalogs%}
                             <option>{{catalog}}</option> 
@@ -127,13 +127,13 @@
 
 <script type="text/javascript">
     
-    var ResourceListModel = function(resources,processors) {
+    var ResourceListModel = function() {
     
         var self = this;
         
-        this.resources = ko.observableArray(resources);
+        this.resources = ko.observableArray([]);
         
-        this.processors = ko.observableArray(processors);
+        this.processors = ko.observableArray([]); //this needs to be managed so objects are observable!
         
         this.query = ko.observable(false);
         
@@ -179,7 +179,7 @@
              var p = ko.utils.arrayFirst(self.processors(), function(item) {return item.state == processor.state;});
              if (p){
                 console.log(p); //perhaps should make this observable?
-                p.status = processor.status;
+                p.status(processor.status);
              }
         };
         
@@ -251,7 +251,7 @@
                 
                 success: function( data, status  ) {
                     console.log(data);
-                    self.processors(data.processors);
+                    self.loadProcessors(data.processors);
                 },
                 error: function( data, status ) {
                     alert( "We are currently unable to process this installation. Please try again later." );
@@ -270,7 +270,7 @@
                 
                 success: function( data, status  ) {
                     console.log(data);
-                    self.resources(data);
+                    self.loadResources(data);
                 },
                 error: function( data, status ) {
                     alert( "We are currently unable to process this installation. Please try again later." );
@@ -278,16 +278,30 @@
             });
         };
         
-        this.loadData = function(){
+        this.requestData = function(){
             self.request_resources();
             self.request_processors();
+        };
+        
+        this.loadResources = function(resourcedata){
+            $.each(resourcedata, function(i, resource){
+                self.resources.push(ko.mappingFromJS(resourcedata));
+            });
+        };
+        
+        this.loadProcessors = function(processordata){
+           
+            $.each(processordata, function(i, processor){
+                self.processors.push(ko.mappingFromJS(processor));
+            });
         };
     }
 </script>
 
 <script>
     $(function(){
-        var rlm = new ResourceListModel([], {{processors | safe}})
+        var rlm = new ResourceListModel();
+        //rlm.loadProcessors({{processors | safe}});
         ko.applyBindings(rlm);
     });
 </script>
