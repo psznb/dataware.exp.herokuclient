@@ -190,8 +190,8 @@
         this.queryurl = function(resource_uri, resource_name){
             console.log(resource_uri);
             
-            idx = resource_uri.indexOf("//") == -1 ? 0 : 1
-            urltoks = resource_uri.split("\/\/");
+            idx = resource_uri().indexOf("//") == -1 ? 0 : 1
+            urltoks = resource_uri().split("\/\/");
             
             console.log(urltoks);
             
@@ -199,7 +199,7 @@
             
             schema = idx == 1 ? urltoks[0] : "http:";
             
-            return schema  + "//" + resource_name + "." + resource_uri.split("\/\/")[idx];
+            return schema  + "//" + resource_name + "." + resource_uri().split("\/\/")[idx];
         };
         
         this.requestProcessor = function(){
