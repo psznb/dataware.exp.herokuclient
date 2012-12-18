@@ -223,6 +223,7 @@
                     
                     if (data.success){
 			            self.query(false);
+			        
 			            processor = {
 			                "state":data.state,
 			                "status":"pending",
@@ -230,7 +231,7 @@
 			                "query": requestdata.query,
 			                "token": "None"
 			            };        
-			            self.processors.push(processor);
+			            self.processors.push(ko.mapping.fromJS(processor));
 			        }else{
 			            alert("error, sorry, client rejected request");
 			        }
@@ -285,7 +286,7 @@
         
         this.loadResources = function(resourcedata){
             $.each(resourcedata, function(i, resource){
-                self.resources.push(ko.mapping.fromJS(resourcedata));
+                self.resources.push(ko.mapping.fromJS(resource));
             });
         };
         
