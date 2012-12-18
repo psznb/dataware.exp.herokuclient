@@ -102,7 +102,7 @@ def getExecutionResponse(execution_id, access_token):
 
 def getAllExecutionResponses():
 
-    result = db_session.query(ExecutionResponse.execution_id, ExecutionResponse.received, ExecutionResponse.access_token, ExecutionRequest.parameters).filter(ExecutionRequest.execution_id ==ExecutionResponse.execution_id).all()
+    result = db_session.query(ExecutionResponse.execution_id, ExecutionResponse.received, ExecutionResponse.access_token, ExecutionRequest.parameters, ProcessorRequest.query).filter(ExecutionRequest.execution_id ==ExecutionResponse.execution_id).filter(ProcessorRequest.token == ExecutionResponse.access_token).all()
     
    # result = db_session.query(ExecutionResponse.execution_id, ExecutionResponse.received, ExecutionResponse.access_token, ExecutionRequest.parameters, ProcessorRequest.query).filter(ExecutionResponse.execution_id=ExecutionRequest.execution_id).join(ProcessorRequest, ProcessorRequest.token==ExecutionResponse.access_token).join(ExecutionRequest, ExecutionRequest.access_token==ExecutionResponse.access_token).all()
     
