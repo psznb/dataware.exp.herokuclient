@@ -222,7 +222,7 @@
                     
                     if (data.success){
 			            self.query(false);    
-			            rlm.processors.push({
+			            self.processors.push({
 			                "state":data.state,
 			                "resource":requestdata.resource_name,
 			                "query": requestdata.query,
