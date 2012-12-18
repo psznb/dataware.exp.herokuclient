@@ -178,8 +178,8 @@
         this.updateProcessor = function(processor){
              var p = ko.utils.arrayFirst(self.processors(), function(item) {return item.state == processor.state;});
              if (p){
-                console.log(p);
-                p.status(processor.status);
+                console.log(p); //perhaps should make this observable?
+                p.status = processor.status;
              }
         };
         
