@@ -285,14 +285,14 @@
         
         this.loadResources = function(resourcedata){
             $.each(resourcedata, function(i, resource){
-                self.resources.push(ko.mappingFromJS(resourcedata));
+                self.resources.push(ko.mapping.fromJS(resourcedata));
             });
         };
         
         this.loadProcessors = function(processordata){
            
             $.each(processordata, function(i, processor){
-                self.processors.push(ko.mappingFromJS(processor));
+                self.processors.push(ko.mapping.fromJS(processor));
             });
         };
     }
