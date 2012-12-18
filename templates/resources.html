@@ -178,8 +178,9 @@
         this.updateProcessor = function(processor){
              var p = ko.utils.arrayFirst(self.processors(), function(item) {return item.state == processor.state;});
              if (p){
-                console.log(p); //perhaps should make this observable?
                 p.status(processor.status);
+                console.log("UPDATED STATUS-------");
+                console.log(p());
              }
         };
         
@@ -285,13 +286,14 @@
         };
         
         this.loadResources = function(resourcedata){
+            self.resources([]);
             $.each(resourcedata, function(i, resource){
                 self.resources.push(ko.mapping.fromJS(resource));
             });
         };
         
         this.loadProcessors = function(processordata){
-           
+            self.processors([]);
             $.each(processordata, function(i, processor){
                 self.processors.push(ko.mapping.fromJS(processor));
             });
