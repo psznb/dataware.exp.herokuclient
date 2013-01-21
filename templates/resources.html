@@ -213,7 +213,7 @@
         };
         
         
-        this.retreive_schema(resource_uri, resource_name){
+        this.retreive_schema= function(resource_uri, resource_name){
             url = self.query_url(resource_uri, resource_name) + "/schema";
             console.log("getting schema from url " + url);
              $.ajax({
