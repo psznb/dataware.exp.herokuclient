@@ -35,7 +35,7 @@
                         
                             <tr>
                                 <td data-bind="text: owner"></td>
-                                <td> <a data-bind="attr:{href: $parent.queryurl(resource_uri, resource_name) +'/schema'}"><span data-bind="text: resource_name"></span></a></td>  
+                                <td> <a data-bind="attr:{click: function(){$parent.retreive_schema(resource_uri, resource_name)}, href: $parent.queryurl(resource_uri, resource_name) +'/schema'}"><span data-bind="text: resource_name"></span></a></td>  
                                 <td> <i class="icon-road"></i> <a href="#" data-bind="click:function(){$parent.selectedCatalog($data);$parent.toggleQuery();}"> create a new processing request </a> </td>
                             </tr> 
                        
@@ -192,6 +192,7 @@
             self.query(!self.query());
         };
         
+    
         this.queryurl = function(resource_uri, resource_name){
             console.log(resource_uri);
             
@@ -204,7 +205,29 @@
             
             schema = idx == 1 ? urltoks[0] : "http:";
             
+            url = schema  + "//" + resource_name + "." + resource_uri().split("\/\/")[idx];
+            
+            console.log("schema url = " + queryurl);
+            
             return schema  + "//" + resource_name + "." + resource_uri().split("\/\/")[idx];
+        };
+        
+        
+        this.retreive_schema(resource_uri, resource_name){
+            url = self.query_url(resource_uri, resource_name) + "/schema";
+            console.log("getting schema from url " + url);
+             $.ajax({
+			    type: 'GET',
+			    url: url,
+			    dataType: "json",
+			 
+                success: function( data, status  ) {
+                    console.log(data)
+			    },
+                error: function( data, status ) {
+				    console.log( "Sorry, could not request your process" );
+			    }
+			});
         };
         
         this.requestProcessor = function(){
