@@ -204,10 +204,8 @@
             console.log(idx);
             
             schema = idx == 1 ? urltoks[0] : "http:";
-            
-            url = schema  + "//" + resource_name + "." + resource_uri().split("\/\/")[idx];
-            
-            console.log("schema url = " + queryurl);
+             
+            console.log(schema  + "//" + resource_name + "." + resource_uri().split("\/\/")[idx]);
             
             return schema  + "//" + resource_name + "." + resource_uri().split("\/\/")[idx];
         };
