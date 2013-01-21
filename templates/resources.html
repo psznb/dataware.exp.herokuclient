@@ -194,7 +194,7 @@
         
     
         this.queryurl = function(resource_uri, resource_name){
-            console.log(resource_uri);
+            console.log(resource_uri());
             
             idx = resource_uri().indexOf("//") == -1 ? 0 : 1
             urltoks = resource_uri().split("\/\/");
@@ -204,8 +204,8 @@
             console.log(idx);
             
             schema = idx == 1 ? urltoks[0] : "http:";
-             
-            console.log(schema  + "//" + resource_name + "." + resource_uri().split("\/\/")[idx]);
+            console.log("schema is "); 
+            console.log(schema  + "//" + resource_name() + "." + resource_uri().split("\/\/")[idx]);
             
             return schema  + "//" + resource_name + "." + resource_uri().split("\/\/")[idx];
         };
