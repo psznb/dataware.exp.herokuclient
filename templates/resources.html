@@ -35,7 +35,7 @@
                         
                             <tr>
                                 <td data-bind="text: owner"></td>
-                                <td> <a data-bind="attr:{click: function(){$parent.retreive_schema(resource_uri, resource_name)}, href: $parent.queryurl(resource_uri, resource_name) +'/schema'}"><span data-bind="text: resource_name"></span></a></td>  
+                                <td> <a data-bind="click: function(){$parent.retrieve_schema(resource_uri, resource_name)}, text:resource_name}"></a></td>  
                                 <td> <i class="icon-road"></i> <a href="#" data-bind="click:function(){$parent.selectedCatalog($data);$parent.toggleQuery();}"> create a new processing request </a> </td>
                             </tr> 
                        
@@ -211,7 +211,7 @@
         };
         
         
-        this.retreive_schema= function(resource_uri, resource_name){
+        this.retrieve_schema= function(resource_uri, resource_name){
             url = self.query_url(resource_uri, resource_name) + "/schema";
             console.log("getting schema from url " + url);
              $.ajax({
