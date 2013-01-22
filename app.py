@@ -139,7 +139,7 @@ def request_resources():
     f.close()
     return data
 
-@app.route('/schema/<resource_uri>/<resource_name>')
+@app.route('/schema/:resource_uri/:resource_name')
 def schema(resource_uri, resource_name):
     print "in schema!!"
     print resource_uri
