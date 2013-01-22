@@ -141,17 +141,23 @@ def request_resources():
 
 @app.route('/schema', methods=['POST'])
 def schema():
+    print "in schema!"
     resource_uri = request.form['resource_uri']
     resource_name = request.form['resource_name']
+    print "resource uri uis %s" % resource_uri
+    print "resournce name is %s" % resource_name
+    
     parsed_url = urlparse(resource_uri)
     path   = "schema" if parsed.path[1:] == "" else "%s/schema" % parsed.path
     scheme = "http" if parsed.scheme[1:] == "" else "%s" % parsed.scheme
     url = "%s://%s.%s/%s" % (scheme, resource_name, parsed_url.netloc, path) 
+    
     print "url is %s" % url 
-    f = urllib2.urlopen(url)
-    data = f.read()  
-    f.close()
-    return data 
+    
+    #f = urllib2.urlopen(url)
+    #data = f.read()  
+    #f.close()
+    return "{\"thanks\":\"a bunch\"}" 
         
 @app.route('/register', methods=['GET','POST'])
 @login_required
