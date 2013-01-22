@@ -139,11 +139,10 @@ def request_resources():
     f.close()
     return data
 
-@app.route('/schema/:resource_uri/:resource_name')
-def schema(resource_uri, resource_name):
-    print "in schema!!"
-    print resource_uri
-    print resource_name
+@app.route('/schema', methods=['POST'])
+def schema():
+    resource_uri = request.form['resource_uri']
+    resource_name = request.form['resource_name']
     parsed_url = urlparse(resource_uri)
     path   = "schema" if parsed.path[1:] == "" else "%s/schema" % parsed.path
     scheme = "http" if parsed.scheme[1:] == "" else "%s" % parsed.scheme

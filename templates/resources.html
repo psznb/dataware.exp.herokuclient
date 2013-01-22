@@ -193,12 +193,18 @@
         };
         
         this.retrieve_schema= function(resource_uri, resource_name){
-            url = "/schema/" + encodeURIComponent(resource_uri()) + "/" + resource_name();
+            
+            data = {
+                resource_uri: resource_uri(),
+                resource_name: resource_name()
+            }
             
             $.ajax({
-			    type: 'GET',
-			    url: url,
-			   
+			    type: 'POST',
+			    url: '/schema',
+			    dataType: "json",
+			    data: data,
+			    
                 success: function( data, status  ) {
                     console.log(data)
 			    },
