@@ -140,8 +140,10 @@ def request_resources():
     return data
 
 @app.route('/schema/<resource_uri>/<resource_name>')
-@login_required
 def schema(resource_uri, resource_name):
+    print "in schema!!"
+    print resource_uri
+    print resource_name
     parsed_url = urlparse(resource_uri)
     path   = "schema" if parsed.path[1:] == "" else "%s/schema" % parsed.path
     scheme = "http" if parsed.scheme[1:] == "" else "%s" % parsed.scheme
