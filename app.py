@@ -147,7 +147,7 @@ def schema():
     print "resource uri uis %s" % resource_uri
     print "resournce name is %s" % resource_name
     
-    parsed_url = urlparse(resource_uri)
+    parsed_url = urlparse.urlparse(resource_uri)
     print "parsed url"
     
     path   = "schema" if parsed.path[1:] == "" else "%s/schema" % parsed.path
