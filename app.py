@@ -3,6 +3,7 @@ from flask import Flask, Response, request, url_for, render_template, flash, red
 from util import *
 import urllib2
 import urllib
+import urlparse
 import json
 import OpenIDManager
 import hashlib
@@ -137,8 +138,20 @@ def request_resources():
     data = f.read()  
     f.close()
     return data
-    
-    
+
+@app.route('/schema/<resource_uri>/<resource_name>')
+@login_required
+def schema(resource_uri, resource_name):
+    parsed_url = urlparse(resource_uri)
+    path   = "schema" if parsed.path[1:] == "" else "%s/schema" % parsed.path
+    scheme = "http" if parsed.scheme[1:] == "" else "%s" % parsed.scheme
+    url = "%s://%s.%s/%s" % (scheme, resource_name, parsed_url.netloc, path) 
+    print "url is %s" % url 
+    f = urllib2.urlopen(url)
+    data = f.read()  
+    f.close()
+    return data 
+        
 @app.route('/register', methods=['GET','POST'])
 @login_required
 def register():

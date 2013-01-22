@@ -192,33 +192,13 @@
             self.query(!self.query());
         };
         
-    
-        this.queryUrl = function(resource_uri, resource_name){
-            console.log(resource_uri());
-            
-            idx = resource_uri().indexOf("//") == -1 ? 0 : 1
-            urltoks = resource_uri().split("\/\/");
-            
-            console.log(urltoks);
-            
-            console.log(idx);
-            
-            schema = idx == 1 ? urltoks[0] : "http:";
-            console.log("schema is "); 
-            console.log(schema  + "//" + resource_name() + "." + resource_uri().split("\/\/")[idx]);
-            
-            return schema  + "//" + resource_name() + "." + resource_uri().split("\/\/")[idx];
-        };
-        
-        
         this.retrieve_schema= function(resource_uri, resource_name){
-            url = self.queryUrl(resource_uri, resource_name) + "/schema";
-            console.log("getting schema from url " + url);
-             $.ajax({
+            url = "/schema/" + resource_uri() + "/" + resource_name();
+            
+            $.ajax({
 			    type: 'GET',
 			    url: url,
-			    dataType: "json",
-			 
+			   
                 success: function( data, status  ) {
                     console.log(data)
 			    },
