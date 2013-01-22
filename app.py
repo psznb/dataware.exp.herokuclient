@@ -148,8 +148,14 @@ def schema():
     print "resournce name is %s" % resource_name
     
     parsed_url = urlparse(resource_uri)
+    print "parsed url"
+    
     path   = "schema" if parsed.path[1:] == "" else "%s/schema" % parsed.path
+    print "path is %s" % path
+    
     scheme = "http" if parsed.scheme[1:] == "" else "%s" % parsed.scheme
+    print "scheme is %s" % scheme
+    
     url = "%s://%s.%s/%s" % (scheme, resource_name, parsed_url.netloc, path) 
     
     print "url is %s" % url 
