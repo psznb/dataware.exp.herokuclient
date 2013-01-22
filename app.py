@@ -147,7 +147,7 @@ def schema():
     print "resource uri uis %s" % resource_uri
     print "resournce name is %s" % resource_name
     
-    parsed_url = urlparse.urlparse(resource_uri)
+    parsed = urlparse.urlparse(resource_uri)
     print "parsed url"
     
     path   = "schema" if parsed.path[1:] == "" else "%s/schema" % parsed.path
@@ -156,14 +156,14 @@ def schema():
     scheme = "http" if parsed.scheme[1:] == "" else "%s" % parsed.scheme
     print "scheme is %s" % scheme
     
-    url = "%s://%s.%s/%s" % (scheme, resource_name, parsed_url.netloc, path) 
+    url = "%s://%s.%s/%s" % (scheme, resource_name, parsed.netloc, path) 
     
     print "url is %s" % url 
     
-    #f = urllib2.urlopen(url)
-    #data = f.read()  
-    #f.close()
-    return "{\"thanks\":\"a bunch\"}" 
+    f = urllib2.urlopen(url)
+    data = f.read()  
+    f.close()
+    return data
         
 @app.route('/register', methods=['GET','POST'])
 @login_required
