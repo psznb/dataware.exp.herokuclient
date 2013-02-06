@@ -141,8 +141,6 @@
         
         this.event.subscribe(function(newValue){
             processor = $.parseJSON(self.event().data);
-            console.log("GOT A NEW PROCESSOR:");
-            console.log(processor);
             this.updateProcessor(processor);
         },this);
          
@@ -181,8 +179,6 @@
              var p = ko.utils.arrayFirst(self.processors(), function(item) {return item.state() == processor.state;});
              if (p){
                 p.status(processor.status);
-                console.log("UPDATED STATUS-------");
-                console.log(p());
              }else{
                 console.log("couldn't find it..");
              }
@@ -299,7 +295,10 @@
         this.loadResources = function(resourcedata){
             self.resources([]);
             $.each(resourcedata, function(i, resource){
-                self.resources.push(ko.mapping.fromJS(resource));
+                resource = ko.mapping.fromJS(resource);
+                //tack on schema
+                resource.schema = ko.observable();
+                self.resources.push(resource);
             });
         };
         

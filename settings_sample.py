@@ -1,10 +1,8 @@
-SECRET_KEY  = 'dsjdsoduasdhsssssa'
-URI         = "postgresql://eeidgoftqdnwru:bIGJrUw7dT2oM8aI0lmtMOuSJN@ec2-23-21-216-174.compute-1.amazonaws.com:5432/datun7jq64iqt7" 
+SECRET_KEY  = 'ASECRETKEY'
+URI         = "[postgresql|mysql]://user:password@hostname:port/database" 
 CATALOG     = "http://datawarecatalog.appspot.com"
 REALM       = "http://pure-lowlands-6585.herokuapp.com"
 CLIENTNAME  = "herokuclient"
-
-#catalog must provide an api for us to get these!
 RESOURCEUSERNAME = "tlodgecatalog"
 RESOURCENAME     = "homework"
 EXTENSION_COOKIE = "tpc_logged_in"

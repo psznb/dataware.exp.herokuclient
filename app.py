@@ -7,7 +7,7 @@ import urlparse
 import json
 import OpenIDManager
 import hashlib
-from database import init_db
+from database import init_db, create_engine
 from models import * #TODO - import models
 from datetime import datetime, timedelta
 from functools import wraps
@@ -16,7 +16,8 @@ from gevent.wsgi import WSGIServer
 
 app = Flask(__name__)
 app.config.from_object('settings')
-init_db()
+
+init_db(app.config['URI'])
 um = UpdateManager()
 print "created update manager"
 
@@ -141,25 +142,12 @@ def request_resources():
 
 @app.route('/schema', methods=['POST'])
 def schema():
-    print "in schema!"
     resource_uri = request.form['resource_uri']
     resource_name = request.form['resource_name']
-    print "resource uri uis %s" % resource_uri
-    print "resournce name is %s" % resource_name
-    
     parsed = urlparse.urlparse(resource_uri)
-    print "parsed url"
-    
     path   = "schema" if parsed.path[1:] == "" else "%s/schema" % parsed.path
-    print "path is %s" % path
-    
-    scheme = "http" if parsed.scheme[1:] == "" else "%s" % parsed.scheme
-    print "scheme is %s" % scheme
-    
+    scheme = "http" if parsed.scheme[1:] == "" else "%s" % parsed.scheme 
     url = "%s://%s.%s/%s" % (scheme, resource_name, parsed.netloc, path) 
-    
-    print "url is %s" % url 
-    
     f = urllib2.urlopen(url)
     data = f.read()  
     f.close()
