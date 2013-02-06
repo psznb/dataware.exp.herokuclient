@@ -21,14 +21,12 @@ init_db(app.config['URI'])
 um = UpdateManager()
 print "created update manager"
 
-CATALOG     = "http://datawarecatalog.appspot.com"
-REALM       = "http://pure-lowlands-6585.herokuapp.com"
-CLIENTNAME  = "herokuclient"
-
-#catalog must provide an api for us to get these!
-RESOURCEUSERNAME = "tlodgecatalog" 
-RESOURCENAME     = "homework"
-EXTENSION_COOKIE = "tpc_logged_in"
+CATALOG     = app.config['CATALOG']
+REALM       = app.config['REALM']
+CLIENTNAME  = app.config['CLIENTNAME'] 
+RESOURCEUSERNAME = app.config['RESOURCEUSERNAME'] 
+RESOURCENAME     = app.config['RESOURCENAME'] 
+EXTENSION_COOKIE = app.config['EXTENSION_COOKIE']
 
 
 def login_required(f):
