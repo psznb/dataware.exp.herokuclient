@@ -457,8 +457,7 @@ def user_error( e ):
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.ccl
     
-    port = int(os.environ.get('PORT', 5000))
-    
+    port =  int(app.config['PORT'])
     http_server = WSGIServer(('', port), app)
     http_server.serve_forever()
     

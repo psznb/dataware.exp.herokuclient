@@ -1,4 +1,5 @@
 SECRET_KEY  = 'ASECRETKEY'
+PORT	    = "5000"
 URI         = "[postgresql|mysql]://user:password@hostname:port/database" 
 CATALOG     = "http://datawarecatalog.appspot.com"
 REALM       = "http://pure-lowlands-6585.herokuapp.com"
