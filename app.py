@@ -458,8 +458,8 @@ if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.ccl
     
     port =  int(app.config['PORT'])
-    http_server = WSGIServer(('', port), app)
-    http_server.serve_forever()
+    #http_server = WSGIServer(('', port), app)
+    #http_server.serve_forever()
     
-    #app.run(debug=True,host='0.0.0.0', port=port)
+    app.run(debug=True,host='0.0.0.0', port=port)
  
