@@ -7,8 +7,7 @@ import urlparse
 import json
 import OpenIDManager
 import hashlib
-from database import init_db, create_engine
-from models import * #TODO - import models
+from database import init_db
 from datetime import datetime, timedelta
 from functools import wraps
 from UpdateManager import *
@@ -18,6 +17,7 @@ app = Flask(__name__)
 app.config.from_object('settings')
 
 init_db(app.config['URI'])
+from models import *
 um = UpdateManager()
 print "created update manager"
 
