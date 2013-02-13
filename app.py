@@ -124,7 +124,7 @@ def user_openid_authenticate():
 @app.route('/resources')
 @login_required
 def resources():
-    return render_template('resources.html', catalogs=["http://datawarecatalog.appspot.com"], processors=getProcessorRequests());
+    return render_template('resources.html', catalogs=["%s" % CATALOG], processors=getProcessorRequests());
     
     
 @app.route('/request_resources')
@@ -186,7 +186,7 @@ def register():
     
     else:
     
-        return render_template('register.html', catalogs=["http://datawarecatalog.appspot.com"])
+        return render_template('register.html', catalogs=["%s" % CATALOG])
         
 
 @app.route('/request', methods=['GET','POST'])
