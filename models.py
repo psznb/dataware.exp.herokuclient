@@ -2,6 +2,9 @@ from database import Base, db_session
 from sqlalchemy import Column, Integer, String, BigInteger
 from sqlalchemy.dialects.postgresql import TEXT
 from sqlalchemy.sql import and_
+from random import shuffle
+import traceback
+import ast
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -85,11 +88,12 @@ def getExecutionRequest(execution_id):
 
 def addExecutionResponse(execution_id, access_token, result, received):
     response = ExecutionResponse(execution_id = execution_id, access_token=access_token, result=result, received=received)
-    
     try:
         db_session.add(response)
         db_session.commit()   
     except:
+        tb = traceback.format_exc()
+        print tb
         db_session.rollback()
         raise
         return False
@@ -98,7 +102,8 @@ def addExecutionResponse(execution_id, access_token, result, received):
     
 
 def getExecutionResponse(execution_id, access_token):
-    return db_session.query(ExecutionResponse.result, ExecutionResponse.execution_id).filter(and_(ExecutionResponse.execution_id==execution_id, ExecutionResponse.access_token==access_token)).first()
+    result = db_session.query(ExecutionResponse.result, ExecutionResponse.execution_id).filter(and_(ExecutionResponse.execution_id==execution_id, ExecutionResponse.access_token==access_token)).first()
+    return result
 
 def getAllExecutionResponses():
 
@@ -107,8 +112,7 @@ def getAllExecutionResponses():
    # result = db_session.query(ExecutionResponse.execution_id, ExecutionResponse.received, ExecutionResponse.access_token, ExecutionRequest.parameters, ProcessorRequest.query).filter(ExecutionResponse.execution_id=ExecutionRequest.execution_id).join(ProcessorRequest, ProcessorRequest.token==ExecutionResponse.access_token).join(ExecutionRequest, ExecutionRequest.access_token==ExecutionResponse.access_token).all()
     
     return result
-    
-
+      
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
     
@@ -174,7 +178,6 @@ def purgedata():
     db_session.query(Identifier).delete()
     db_session.query(ExecutionRequest).delete()
     db_session.query(ExecutionResponse).delete()
-    
     try:
         db_session.commit()   
     except:

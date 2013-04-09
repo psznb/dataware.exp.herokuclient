@@ -5,6 +5,7 @@ import urllib2
 import urllib
 import urlparse
 import json
+import sys
 import OpenIDManager
 import hashlib
 from database import init_db
@@ -124,6 +125,7 @@ def user_openid_authenticate():
 @app.route('/resources')
 @login_required
 def resources():
+    
     return render_template('resources.html', catalogs=["%s" % CATALOG], processors=getProcessorRequests());
     
     
@@ -248,7 +250,68 @@ def request_processor():
             'owners': [RESOURCEUSERNAME]
         }
         return render_template('request.html', options=options, error=error)
+
+#/////////////////////////////////////////////////////////////////////
+#For Experiment request made by client
+@app.route('/experimentRequest', methods=['GET','POST'])
+@login_required
+def request_experiment_processor():
     
+    error = None
+    
+    if request.method == 'POST':
+       
+        expiry = request.form['expiry']
+        catalog = request.form['catalog'] 
+        query = request.form['query'].replace('\n',  ' ')
+        resource_name = request.form['resource_name']
+        resource_uri = request.form['resource_uri']
+        owner = request.form['owner']
+        state = generateuniquestate()
+            
+        values = {
+            'state': state,
+            'redirect_uri': ' http://192.168.33.15:9090/processor',
+            'scope': '{"resource_name" : "%s", "expiry_time": %s, "query": "%s"}' % (resource_name,expiry,query)
+        }
+        
+       
+        app.logger.info(values)
+       
+        url = "%s/user/%s/client_experiment_request" % (catalog,owner)
+        
+        app.logger.info(url)
+        
+        data = urllib.urlencode(values)
+        req = urllib2.Request(url,data)
+        response = urllib2.urlopen(req)
+        result = response.read()
+        result = json.loads( 
+                result.replace( '\r\n','\n' ), 
+                strict=False 
+            )
+            
+        app.logger.info(result)    
+        
+        if (not(result['success'])):
+            return json.dumps({'success':False})
+        
+        #store the state and the code and the various bits for re-use?
+         
+        addProcessorRequest(state=state, catalog=catalog, resource=resource_name,resource_uri=resource_uri,redirect="http://192.168.33.15:9090/processor",expiry=int(expiry),query=query)
+        
+        return json.dumps({'success':True, 'state':state})
+    
+    else:
+        #provide the user with the options relating to our catalogs
+        options = {
+            'catalogs': [CATALOG],
+            'resources': [RESOURCENAME],
+            'owners': [RESOURCEUSERNAME]
+        }
+        return render_template('request.html', options=options, error=error)
+
+
 @app.route('/processor')
 def token():
 
@@ -310,7 +373,11 @@ def token():
 @app.route('/processors')
 @login_required
 def processors():
-    processors =  getProcessorRequests()
+    try:
+        processors =  getProcessorRequests()
+    except:
+        e,p,t = sys.exc_info()
+        print e,p
     return jsonify(processors=[p.serialize for p in processors])  
    
    
@@ -333,7 +400,6 @@ def result(execution_id):
               
             if not(execution_request is None):
                 addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(result), received=int(time.time()))
-   
         else:
             print "not doing anything at the mo!"
                         
@@ -355,13 +421,14 @@ def view(execution_id):
     
     #processor access token
     processor_id = request.form['processor_id'] 
-    
+       
     #lookup the execution details and confirm that this user is allowed access. Return a page
     #with the same view of the data as seen by this TPC.
+    
     data = getExecutionResponse(execution_id=execution_id, access_token=processor_id)
     
     values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
-   
+    print "string is ^^^^ %s" % str(data)
     #generalise this..
     if isinstance(values, list):
         if len(values) > 0:
