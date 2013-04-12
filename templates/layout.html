@@ -4,6 +4,7 @@
 
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
 <script src="{{ url_for('static', filename='jquery/jquery-1.7.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery/jquery-ui.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename='knockout/knockout-min.js') }}"></script> 
@@ -11,11 +12,10 @@
 <script src="{{ url_for('static', filename='knockout/knockout-postbox.min.js') }}"></script>
 
 <script>
-
     var NotificationModel = function(){
         
         var self = this;
-        
+                 
         this.events = ko.observableArray([]);
         
         this.lastEvent = ko.observable("").publishOn("myevents");
@@ -78,11 +78,9 @@
 </script>
 
 <script>
-    $(function(){
         var nm = new NotificationModel();	
 		ko.applyBindings(nm,$(".navbar-inner")[0]);
         nm.startpolling(500);
-    });
 </script>
 
 <div class="navbar">

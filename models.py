@@ -68,6 +68,15 @@ class ExecutionResponse(Base):
         return "{execution_id:'%s', access_token:'%s', result:'%s', received: %d}" % (self.execution_id, self.access_token, self.result, self.received)
 
 
+class ExperimentResponse(Base):
+    __tablename__ = 'experimentresponse'
+    execution_id = Column(String(256), primary_key=True)
+    result = Column(TEXT)
+    received = Column(Integer)
+    
+    def __repr__(self):
+        return "{execution_id:'%s', result:'%s', received: %d}" % (self.execution_id, self.result, self.received)
+
 def addExecutionRequest(execution_id, access_token, parameters, sent):
     request = ExecutionRequest(execution_id = execution_id, access_token=access_token, parameters=parameters, sent=sent)
     
@@ -83,7 +92,15 @@ def addExecutionRequest(execution_id, access_token, parameters, sent):
 
     
 def getExecutionRequest(execution_id):
-    return db_session.query(ExecutionRequest).filter(ExecutionRequest.execution_id==execution_id).first()
+    try:
+        print "Inside try of getExecutionREquest ******** %s and db session var is %s" % (execution_id, db_session) 
+        result = db_session.query(ExecutionRequest).filter(ExecutionRequest.execution_id==execution_id).first()
+    except:
+        print "Inside except of getExecutionREquest ********"
+        tb = traceback.format_exc()
+        print tb
+        result = None
+    return result
 
 
 def addExecutionResponse(execution_id, access_token, result, received):
@@ -99,10 +116,28 @@ def addExecutionResponse(execution_id, access_token, result, received):
         return False
     
     return True
+
+def addExperimentResponse(execution_id, result, received):
+    response = ExperimentResponse(execution_id = execution_id, result=result, received=received)
+    try:
+        db_session.add(response)
+        db_session.commit()   
+    except:
+        tb = traceback.format_exc()
+        print tb
+        db_session.rollback()
+        raise
+        return False
+    
+    return True
     
 
 def getExecutionResponse(execution_id, access_token):
     result = db_session.query(ExecutionResponse.result, ExecutionResponse.execution_id).filter(and_(ExecutionResponse.execution_id==execution_id, ExecutionResponse.access_token==access_token)).first()
+    return result
+
+def getExperimentResponse(execution_id):
+    result = db_session.query(ExperimentResponse.result, ExperimentResponse.execution_id).filter(ExperimentResponse.execution_id==execution_id).first()
     return result
 
 def getAllExecutionResponses():
@@ -169,15 +204,23 @@ def getProcessorRequest(state):
     return db_session.query(ProcessorRequest).filter(ProcessorRequest.state==state).first()
   
 def getProcessorRequests():
-     return db_session.query(ProcessorRequest).all()
+    return db_session.query(ProcessorRequest).all()
      
-
+def purgeExperimentResponse():
+    db_session.query(ExperimentResponse).delete()
+    try:
+        db_session.commit()   
+    except:
+        db_session.rollback()
+        raise
+        return False
     
 def purgedata():
     db_session.query(ProcessorRequest).delete()
     db_session.query(Identifier).delete()
     db_session.query(ExecutionRequest).delete()
     db_session.query(ExecutionResponse).delete()
+    db_session.query(ExperimentResponse).delete()
     try:
         db_session.commit()   
     except:

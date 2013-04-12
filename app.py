@@ -6,6 +6,7 @@ import urllib
 import urlparse
 import json
 import sys
+import random
 import OpenIDManager
 import hashlib
 from database import init_db
@@ -13,6 +14,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 from UpdateManager import *
 from gevent.wsgi import WSGIServer
+from sqlalchemy.sql.expression import except_
 
 app = Flask(__name__)
 app.config.from_object('settings')
@@ -390,16 +392,21 @@ def purge():
 
 @app.route('/result/<execution_id>', methods=['POST'])
 def result(execution_id):
-    
+    print "Inside result ***** % s" % execution_id
     success = True
     
     try:
         if (request.form['success'] == 'True'):
-            execution_request = getExecutionRequest(execution_id)
+            print "inside try ^^^^^^^^^^^^"
             result = request.form['return']
-              
-            if not(execution_request is None):
-                addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(result), received=int(time.time()))
+            print "result is % s " % result
+            #execution_request = getExecutionRequest(execution_id)
+            #print "execution_request is %s " % execution_request
+                          
+            if not(execution_id is None):
+                #addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(result), received=int(time.time()))
+                addExperimentResponse(execution_id=execution_id, result=str(result), received=int(time.time()))
+
         else:
             print "not doing anything at the mo!"
                         
@@ -466,21 +473,61 @@ def testevent():
 @app.route('/executions')
 @login_required
 def executions():
-     executions = getAllExecutionResponses()
-     return render_template("executions_summary.html", executions=executions)
+    executions = getAllExecutionResponses()
+    return render_template("executions_summary.html", executions=executions)
+ 
+@app.route('/experiment/<execution_id>')
+@login_required
+def experiment(execution_id):
+    print "execution id is % s " % execution_id
+    data = getExperimentResponse(execution_id=execution_id)
+    
+    values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
+    print "string is ^^^^ %s" % str(data)
+    #generalise this..
+    if isinstance(values, list):
+        experimentUrlList = []
+        if len(values) > 0:
+            if isinstance(values[0], dict):
+                #keys = list(values[0].keys())
+                for item in values:
+                    url =  str(item['url'])
+                    experimentUrlList.append(url)
+                print "length of list is % s " % len(experimentUrlList)
+                fileList = []
+                try:
+                    textFile = open("randomUrls.txt","r")
+                    print "textfile is % s " % textFile
+                    for line in textFile:
+                        fileList.append(line)
+                    print "length of fileList is % s " % len(fileList) 
+                except:
+                    print "exception while reading file %%%%%%% "
+                    tb = traceback.format_exc()
+                    print tb
+                finally:
+                    textFile.close()
+                experimentUrlList.extend(fileList)
+                random.shuffle(experimentUrlList)
+                print "new length of list is % s " % len(experimentUrlList)
+                #now purge the experiment response
+                purgeExperimentResponse()
+                return render_template('experiment.html', experimentUrlList=experimentUrlList)
+    
+    return str(data)
 
     
 @app.route('/execute', methods=['GET','POST'])
 @login_required
 def execute():
     if request.method == 'POST':
-    
+        print "inside execute *****"
         state = request.form['state']
         parameters = request.form['parameters'] 
+        #parameters = None 
         processor = getProcessorRequest(state=state)
-        
         if not(processor is None):
-           
+            print "inside processor *****"
             url = '%s/invoke_processor' % processor.resource_uri
             
             m = hashlib.md5()
@@ -500,10 +547,10 @@ def execute():
             data = response.read()
             
             result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-            
+            print "*********** result is %s " % result
             addExecutionRequest(execution_id=id, access_token=processor.token, parameters=parameters, sent=int(time.time()))
-            
-            return redirect(url_for('executions'))
+            return redirect(url_for('experiment', execution_id=id ))
+            #return redirect(url_for('executions'))
     else:
         processors = getProcessorRequests()
         return render_template('execute.html', processors=processors)

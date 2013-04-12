@@ -30,41 +30,44 @@
                    
                   <li data-bind="css:{'active':amaccepted()}">
                      <a href='#' data-bind="click:function(){typeToShow('accepted')}">Accepted</a>
-                  </li>
-                  
-                   <li data-bind="css:{'active':amrejected()}">
-                    <a href='#' data-bind="click:function(){typeToShow('access_denied')}">Rejected</a>
-                  </li>
+                   </li>
+                   
+                    <li data-bind="css:{'active':amrejected()}">
+                     <a href='#' data-bind="click:function(){typeToShow('access_denied')}">Rejected</a>
+                   </li>
                 </ul>
+                <div class="row">
+                    <div class="span2">
+                        <strong> Message </strong>
+                    </div>
+                    <div class="span2" data-bind="visible:amaccepted()">
+                      <strong> Actions </strong>
+                    </div>
+                </div>
                 <div data-bind="foreach: processorsToShow">
-                	<div class="row">
-                        <div class="span2" data-bind="visible:$parent.amrejected()"> 
-                        	<label>Experiment request is rejected, try again!</label>
-                        </div>
-                    </div>
-                	<div class="row">
-                        <div class="span2" data-bind="visible:$parent.ampending()"> 
-                        	<label>Experiment request is pending.Wait for it to get accepted by Catalog!</label>
-                        </div>
-                    </div>
                     <div class="row">
                          <form action={{url_for('execute')}} method=post> 
                             <input type="hidden" name="state" data-bind="value: state">
+                                <div class="span2">
+                                    <label data-bind="visible:$parent.amrejected()">Experiment request is rejected, try again!</label>
+                                    <label data-bind="visible:$parent.ampending()">Experiment request is pending.Wait for it to get accepted by Catalog!</label>
+                                    <label data-bind="visible:$parent.amaccepted()">Experiment request is accepted start the experiment!</label>
+                                </div>
                                 <div class="span2" data-bind="visible:$parent.amaccepted()"> 
-                                    <button type="submit" class="btn">Start Experiment!</button>
+                                	<input type="hidden" name="parameters" id="parameters"  value="{}">
+                                    <button type="submit" class="btn">Start</button>
                                 </div> 
                           </form>
                      </div>
                   </div>
              </div>
         </div>
-    </div>
-    
-    
+    </div>    
         
 </div> <!-- end of container -->
 
-<script type="text/javascript">
+<script type="text/javascript"> 
+    
     
     var ResourceListModel = function() {
     
@@ -155,8 +158,14 @@
 			});
         };
         
+        $('#catalog_username').bind("change keyup mouseup", function() {
+		    console.log('changed');
+		    self.request_processors();
+		});
+        
+        
         this.requestProcessor = function(){
-            self.request_processors();
+            
         	console.log('inside request catalog owner is  ' +  $("#catalog_uri").val());
             requestdata =  {    "catalog": $("#catalog_uri").val(),
                                 "resource_name": "urls",
@@ -264,6 +273,7 @@
         var rlm = new ResourceListModel();
         //rlm.loadProcessors({{processors | safe}});
         ko.applyBindings(rlm);
+        
     });
 </script>
 {% endblock %}
