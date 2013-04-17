@@ -2,9 +2,7 @@ from database import Base, db_session
 from sqlalchemy import Column, Integer, String, BigInteger
 from sqlalchemy.dialects.postgresql import TEXT
 from sqlalchemy.sql import and_
-from random import shuffle
 import traceback
-import ast
 
 class Identifier(Base):
     __tablename__ = 'identifiers'
@@ -76,6 +74,17 @@ class ExperimentResponse(Base):
     
     def __repr__(self):
         return "{execution_id:'%s', result:'%s', received: %d}" % (self.execution_id, self.result, self.received)
+    
+class ExperimentResults(Base):
+    __tablename__ = 'experimentresults'
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    user_id = Column(String(256))
+    result = Column(TEXT)
+    received = Column(Integer)
+    
+    def __repr__(self):
+        return "{user_id:'%s', result:'%s',received: %d}" % (self.user_id, self.result, self.received)
+
 
 def addExecutionRequest(execution_id, access_token, parameters, sent):
     request = ExecutionRequest(execution_id = execution_id, access_token=access_token, parameters=parameters, sent=sent)
@@ -92,11 +101,18 @@ def addExecutionRequest(execution_id, access_token, parameters, sent):
 
     
 def getExecutionRequest(execution_id):
-    try:
-        print "Inside try of getExecutionREquest ******** %s and db session var is %s" % (execution_id, db_session) 
+    try: 
         result = db_session.query(ExecutionRequest).filter(ExecutionRequest.execution_id==execution_id).first()
     except:
-        print "Inside except of getExecutionREquest ********"
+        tb = traceback.format_exc()
+        print tb
+        result = None
+    return result
+
+def getExecutionRequestByToken(access_token):
+    try:
+        result = db_session.query(ExecutionRequest).filter(ExecutionRequest.access_token==access_token).first()
+    except:
         tb = traceback.format_exc()
         print tb
         result = None
@@ -143,14 +159,31 @@ def getExperimentResponse(execution_id):
 def getAllExecutionResponses():
 
     result = db_session.query(ExecutionResponse.execution_id, ExecutionResponse.received, ExecutionResponse.access_token, ExecutionRequest.parameters, ProcessorRequest.query).filter(ExecutionRequest.execution_id ==ExecutionResponse.execution_id).filter(ProcessorRequest.token == ExecutionResponse.access_token).all()
-    
-   # result = db_session.query(ExecutionResponse.execution_id, ExecutionResponse.received, ExecutionResponse.access_token, ExecutionRequest.parameters, ProcessorRequest.query).filter(ExecutionResponse.execution_id=ExecutionRequest.execution_id).join(ProcessorRequest, ProcessorRequest.token==ExecutionResponse.access_token).join(ExecutionRequest, ExecutionRequest.access_token==ExecutionResponse.access_token).all()
-    
     return result
+
+def addExperimentResults(user_id, result, received):
+    try:
+        request = ExperimentResults(user_id=user_id, result=result, received=received)
+        db_session.add(request)
+        db_session.commit()  
+    except:
+        tb = traceback.format_exc()
+        print tb 
+        db_session.rollback()
+        raise
+        return False
+    
+    return True  
+
+def getAllExperimentResults():
+
+    result = db_session.query(ExperimentResults).all()
+     
+    return result
+
       
 def addIdentifier(catalog, redirect, clientid):   
     identifier = Identifier(id=clientid, redirect=redirect, catalog=catalog)
-    
     try:
         db_session.add(identifier)
         db_session.commit()   
@@ -167,7 +200,6 @@ def fetchIdentifier(catalog):
     
 def addProcessorRequest(state, catalog, resource, resource_uri, redirect, expiry, query):   
     prorec = ProcessorRequest(state=state, catalog=catalog, resource=resource, resource_uri=resource_uri, redirect=redirect, expiry=expiry, query=query, status="pending")
-    
     try:
         db_session.add(prorec)
         db_session.commit()   

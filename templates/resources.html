@@ -7,6 +7,7 @@
         <div class="span8 offset2 well">
             <legend> Catalog details for the experiment.</legend>           
             <form data-bind="submit:requestProcessor">
+            	<input type="hidden" name="parameters" id="parameters"  value="{}">
                 <label for="catalog_uri">Select your catalog</label>
                 <select name="catalog_uri" class="span7" id="catalog_uri">
                         {% for catalog in catalogs%}
@@ -17,52 +18,20 @@
                 <input type="text" name="catalog_username" id="catalog_username">
                 <button class="btn btn-warning" type="submit">Experiment Request!</button>
             </form>
-        </div>
+            <div data-bind="if: haveprocessors()">
+            	<legend>Experiment Start </legend>
+	             <div data-bind="foreach: processorsToShow"> 
+                      <form action={{url_for('execute')}} method=post> 
+                      	<input type="hidden" name="access_token" data-bind="value: token">
+                            	Experiment request is made before, start the experiment!
+                                <button type="submit" class="btn">Start</button>
+                       </form>
+	             </div>
+            </div>
+           
+        </div>      
     </div>
-    <div data-bind="if: haveprocessors()">
-    	<div class="row">
-             <div class="span12">
-                <legend> Requests </legend>
-                <ul class="nav nav-pills">
-                   <li data-bind="css:{'active':ampending()}">
-                     <a href='#' data-bind="click:function(){typeToShow('pending')}">Pending</a>
-                   </li>
-                   
-                  <li data-bind="css:{'active':amaccepted()}">
-                     <a href='#' data-bind="click:function(){typeToShow('accepted')}">Accepted</a>
-                   </li>
-                   
-                    <li data-bind="css:{'active':amrejected()}">
-                     <a href='#' data-bind="click:function(){typeToShow('access_denied')}">Rejected</a>
-                   </li>
-                </ul>
-                <div class="row">
-                    <div class="span2">
-                        <strong> Message </strong>
-                    </div>
-                    <div class="span2" data-bind="visible:amaccepted()">
-                      <strong> Actions </strong>
-                    </div>
-                </div>
-                <div data-bind="foreach: processorsToShow">
-                    <div class="row">
-                         <form action={{url_for('execute')}} method=post> 
-                            <input type="hidden" name="state" data-bind="value: state">
-                                <div class="span2">
-                                    <label data-bind="visible:$parent.amrejected()">Experiment request is rejected, try again!</label>
-                                    <label data-bind="visible:$parent.ampending()">Experiment request is pending.Wait for it to get accepted by Catalog!</label>
-                                    <label data-bind="visible:$parent.amaccepted()">Experiment request is accepted start the experiment!</label>
-                                </div>
-                                <div class="span2" data-bind="visible:$parent.amaccepted()"> 
-                                	<input type="hidden" name="parameters" id="parameters"  value="{}">
-                                    <button type="submit" class="btn">Start</button>
-                                </div> 
-                          </form>
-                     </div>
-                  </div>
-             </div>
-        </div>
-    </div>    
+   
         
 </div> <!-- end of container -->
 
@@ -114,10 +83,11 @@
         });
         
         this.processorsToShow = ko.computed(function(){
-            var desiredType = this.typeToShow();
-            
+            var desiredType = "accepted";
             return ko.utils.arrayFilter(this.processors(), function(processor){
+            	
                 return processor.status() == desiredType;
+                 
             });
             
         }, this);
@@ -172,6 +142,7 @@
                                 "resource_uri": "http://192.168.33.12:7000",
                                 "owner" : $("#catalog_username").val(),
                                 "expiry": 5999999999,
+                                "parameters": $("#parameters").val(),
                                 "query": "select * from urls;"
                             };
 
@@ -183,10 +154,8 @@
 			    
                 success: function( data, status  ) {
                     console.log(data)
-                    
                     if (data.success){
 			            self.query(false);
-			        
 			            processor = {
 			                "state":data.state,
 			                "status":"pending",

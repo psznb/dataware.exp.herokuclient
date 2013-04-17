@@ -47,6 +47,7 @@ def root():
     #session['logged_in'] = True 
     #return render_template('summary.html')
 
+
 @app.route('/login')
 def login():
 
@@ -90,6 +91,7 @@ def user_openid_authenticate():
                 
                
                 session['logged_in'] = True 
+                session['user_id'] = o.get_user_email()
                 #user = db.user_fetch_by_id( user_id )
                  
                 #if this is a new user add them
@@ -129,8 +131,8 @@ def user_openid_authenticate():
 def resources():
     
     return render_template('resources.html', catalogs=["%s" % CATALOG], processors=getProcessorRequests());
-    
-    
+        
+  
 @app.route('/request_resources')
 @login_required
 def request_resources():
@@ -314,6 +316,44 @@ def request_experiment_processor():
         return render_template('request.html', options=options, error=error)
 
 
+def createExecutionReq(state,parameters):
+    if state is not None:
+        print "inside createExecutionReq *****"
+        #parameters = None 
+        processor = getProcessorRequest(state=state)
+        if not(processor is None):
+            print "inside processor and token is % s *****" % processor.token 
+            url = '%s/invoke_processor' % processor.resource_uri
+            
+            m = hashlib.md5()
+            m.update('%f' % time.time())
+            id = m.hexdigest()
+                
+            values = {
+                'access_token':processor.token,
+                'parameters': parameters,
+                'result_url' : "%s/result/%s" % (REALM,id),
+                'view_url' : "%s/view/%s" % (REALM,id)
+            }
+
+            data = urllib.urlencode(values)
+            req = urllib2.Request(url,data)
+            response = urllib2.urlopen(req)
+            data = response.read()
+            
+            result = json.loads(data.replace( '\r\n','\n' ), strict=False)
+            print "*********** result is %s " % result
+            addExecutionRequest(execution_id=id, access_token=processor.token, parameters=parameters, sent=int(time.time()))
+            print "******* s" 
+            execution_request = getExecutionRequest(id)
+            print "******* id is % s" %execution_request.execution_id
+            return json.dumps({'success':True, 'execution_id':execution_request.execution_id})
+    else:
+        processors = getProcessorRequests()
+        return render_template('execute.html', processors=processors)
+
+
+
 @app.route('/processor')
 def token():
 
@@ -341,6 +381,7 @@ def token():
     
     #if successful, swap the auth code for the token proper with catalog
     if not(prec is None): 
+        print ("inside prec*****************************************************")
         url = '%s/client_access?grant_type=authorization_code&redirect_uri=%s&code=%s' % (prec.catalog, prec.redirect,code)
         
         f = urllib2.urlopen(url)
@@ -361,7 +402,8 @@ def token():
                 "message": "a resource request has been accepted",
                 "data": json.dumps(prec.serialize)                   
             });
-    
+            parameters = '{}'
+            createExecutionReq(state=state,parameters=parameters)
             
             return "Successfully obtained token <a href='%s/audit'>return to catalog</a>" % prec.catalog
         
@@ -405,6 +447,7 @@ def result(execution_id):
                           
             if not(execution_id is None):
                 #addExecutionResponse(execution_id=execution_id, access_token=execution_request.access_token, result=str(result), received=int(time.time()))
+                print "i am here 2"
                 addExperimentResponse(execution_id=execution_id, result=str(result), received=int(time.time()))
 
         else:
@@ -481,7 +524,6 @@ def executions():
 def experiment(execution_id):
     print "execution id is % s " % execution_id
     data = getExperimentResponse(execution_id=execution_id)
-    
     values = json.loads(data.result.replace( '\r\n','\n' ), strict=False)
     print "string is ^^^^ %s" % str(data)
     #generalise this..
@@ -510,50 +552,83 @@ def experiment(execution_id):
                 experimentUrlList.extend(fileList)
                 random.shuffle(experimentUrlList)
                 print "new length of list is % s " % len(experimentUrlList)
-                #now purge the experiment response
-                purgeExperimentResponse()
                 return render_template('experiment.html', experimentUrlList=experimentUrlList)
     
     return str(data)
 
+
+
+
+@app.route('/storeAnswer', methods=['POST'])
+@login_required
+def storeAnswer():
+    user_id = None
+    if request.method == 'POST':
+        #get user details from authentication token
+        if (session.get("user_id") is not None):
+            user_id = session.get("user_id")
+            print "inside post answer****** %s" % (user_id )
+        results = request.form['finalResults']
+        finalResultList = eval(ast.literal_eval(json.dumps(results)))
+        print  "converted list % s" % finalResultList
+        #remove\r\n from the urls before storing them in the database
+        for element in finalResultList:
+            element['url'] = element['url'].rstrip('\r\n')
+            print(element['url'])
+        print "inside post answer % s ****** %s" % (user_id,finalResultList )
+        try:
+            result = True
+            addExperimentResults(user_id=user_id,result=str(finalResultList),received=int(time.time()))
+            print "Inside try of experiment results "
+        except:
+            print "Inside except of experiment results "
+            result = False           
+       
+        if (result == False):
+            return  render_template('experimentEnd.html')
+        print "experiment over %%%"
+        #store the state and the code and the various bits for re-use?        
+        return render_template('experimentEnd.html')
     
+    else:
+        #provide the user with the options relating to our catalogs
+        print "inside else of store ***************"
+        
+        return render_template('resources.html', catalogs=["%s" % CATALOG], processors=getProcessorRequests());
+
+
+@app.route('/experimentEnd', methods=['POST'])
+@login_required   
+def endPage():
+    return render_template('experimentEnd.html');
+
+
 @app.route('/execute', methods=['GET','POST'])
 @login_required
 def execute():
     if request.method == 'POST':
-        print "inside execute *****"
-        state = request.form['state']
-        parameters = request.form['parameters'] 
-        #parameters = None 
-        processor = getProcessorRequest(state=state)
-        if not(processor is None):
-            print "inside processor *****"
-            url = '%s/invoke_processor' % processor.resource_uri
-            
-            m = hashlib.md5()
-            m.update('%f' % time.time())
-            id = m.hexdigest()
-                
-            values = {
-                'access_token':processor.token,
-                'parameters': parameters,
-                'result_url' : "%s/result/%s" % (REALM,id),
-                'view_url' : "%s/view/%s" % (REALM,id)
-            }
-
-            data = urllib.urlencode(values)
-            req = urllib2.Request(url,data)
-            response = urllib2.urlopen(req)
-            data = response.read()
-            
-            result = json.loads(data.replace( '\r\n','\n' ), strict=False)
-            print "*********** result is %s " % result
-            addExecutionRequest(execution_id=id, access_token=processor.token, parameters=parameters, sent=int(time.time()))
-            return redirect(url_for('experiment', execution_id=id ))
-            #return redirect(url_for('executions'))
+        print "inside execute *********************"
+        access_token = request.form['access_token']
+        print "inside execute ***** % s" % access_token
+        executionRequest = getExecutionRequestByToken(access_token=access_token)
+        return redirect(url_for('experiment', execution_id=executionRequest.execution_id ))
+        #return redirect(url_for('executions'))
     else:
         processors = getProcessorRequests()
         return render_template('execute.html', processors=processors)
+    
+
+@app.route('/displayResults')
+def displayResults():
+    data = getAllExperimentResults()
+    for row in data:
+        row.result = eval(row.result) 
+        print (type(row.result))
+        
+    #generalise this..
+    return render_template('displayResults.html', results=data)
+    
+
         
 def _delete_authentication_cookie():
     
