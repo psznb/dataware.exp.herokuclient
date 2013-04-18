@@ -128,10 +128,7 @@
 			});
         };
         
-        $('#catalog_username').bind("change keyup mouseup", function() {
-		    console.log('changed');
-		    self.request_processors();
-		});
+        
         
         
         this.requestProcessor = function(){
@@ -164,15 +161,18 @@
 			                "token": "None"
 			            };        
 			            self.processors.push(ko.mapping.fromJS(processor));
-			        }else{
-			            alert("error, sorry, client rejected request");
+			            console.log('url is ' + data.redirect)
+			            window.location = data.redirect;
+			        }
+			        else{
+			            alert("error, sorry, catalog rejected request");
 			        }
 			    },
                 error: function( data, status ) {
 				    alert( "Sorry, could not request your process" );
 			    }
 			});
-			alert('Wait for catalog to accept your experiment request!');
+			//alert('Wait for catalog to accept your experiment request!');
         };
         
       
@@ -241,6 +241,7 @@
     $(function(){
         var rlm = new ResourceListModel();
         //rlm.loadProcessors({{processors | safe}});
+        rlm.request_processors();
         ko.applyBindings(rlm);
         
     });

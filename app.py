@@ -15,6 +15,7 @@ from functools import wraps
 from UpdateManager import *
 from gevent.wsgi import WSGIServer
 from sqlalchemy.sql.expression import except_
+import ast
 
 app = Flask(__name__)
 app.config.from_object('settings')
@@ -281,30 +282,27 @@ def request_experiment_processor():
         
        
         app.logger.info(values)
-       
-        url = "%s/user/%s/client_experiment_request" % (catalog,owner)
-        
-        app.logger.info(url)
+              
         
         data = urllib.urlencode(values)
-        req = urllib2.Request(url,data)
-        response = urllib2.urlopen(req)
-        result = response.read()
-        result = json.loads( 
-                result.replace( '\r\n','\n' ), 
-                strict=False 
-            )
-            
-        app.logger.info(result)    
+        #req = urllib2.Request(url,data)
+        #response = urllib2.urlopen(req)
+        #result = response.read()
+        #result = json.loads( 
+        #       result.replace( '\r\n','\n' ), 
+        #       strict=False 
+        #   )
+        url = "%s/user/%s/client_experiment_request?%s" % (catalog,owner,data)   
+        #app.logger.info(result)    
         
-        if (not(result['success'])):
-            return json.dumps({'success':False})
+        #if (not(result['success'])):
+        #   return json.dumps({'success':False})
         
         #store the state and the code and the various bits for re-use?
-         
+        app.logger.info(url)
         addProcessorRequest(state=state, catalog=catalog, resource=resource_name,resource_uri=resource_uri,redirect="http://192.168.33.15:9090/processor",expiry=int(expiry),query=query)
         
-        return json.dumps({'success':True, 'state':state})
+        return json.dumps({'success':True, 'state':state,'redirect':url})
     
     else:
         #provide the user with the options relating to our catalogs
@@ -314,6 +312,9 @@ def request_experiment_processor():
             'owners': [RESOURCEUSERNAME]
         }
         return render_template('request.html', options=options, error=error)
+
+
+
 
 
 def createExecutionReq(state,parameters):
@@ -405,7 +406,7 @@ def token():
             parameters = '{}'
             createExecutionReq(state=state,parameters=parameters)
             
-            return "Successfully obtained token <a href='%s/audit'>return to catalog</a>" % prec.catalog
+            return render_template('resources.html', catalogs=["%s" % CATALOG], processors=getProcessorRequests());
         
         
         else:

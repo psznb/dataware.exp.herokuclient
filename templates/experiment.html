@@ -5,16 +5,24 @@
 	<h3> Experiment </h3>
 	
 	<div class="container">
-	    <iframe id = "iframeContent"  width="100%" height="70%" frameborder="0" scrolling="yes">				
-		 	<p>Your browser does not support iframes.</p>
-		</iframe> 
+	    <div id = "iframeContainer">
+	    	<iframe id = "iframeContent"  width="100%" height="70%" frameborder="0" scrolling="yes">				
+			 	<p>Your browser does not support iframes.</p>
+			</iframe>
+	    </div>
+	    
 		<div id="dialog" title="Select your option">
 	    	<p>Click 'Yes' if you have visited the page underneath the dialog before, 'No' if you haven't and 'Can't see' 
 	    	if there is no page. </p>
 		</div>
 	</div>
 	
-	
+<style>
+	iframe {
+	 	background-image: url("http://192.168.33.15:9090/static/images/ajax-loader.gif");   
+	    background-repeat: no-repeat;
+	}
+</style>	
 <script type="text/javascript">
    var count = 0;
    var urlList;
@@ -56,6 +64,7 @@
    }
    
    $(function(){
+   		   		
         urlList = {{experimentUrlList | safe}};
         console.log('list is ' + urlList[count]);
         loadIframe();
